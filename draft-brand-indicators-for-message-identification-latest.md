@@ -217,20 +217,63 @@ BIMI policies are published by Domain Owners and applied by Protocol Clients.
 
 A Domain Owner advertises BIMI participation of one or more of its domains by adding a DNS TXT record to those domains.  In doing so, Domain Owners make specific requests of Mail User Agents regarding the preferred set of icons to be displayed with messages purporting to be from one of the Domain Owner's domains.
 
-A Domain Owner may choose not to participate in BIMI.  In this case, the Domain Owner simply declines to advertise participation by not publishing a BIMI assertion record.
+A Domain Owner may choose not to participate in BIMI.  In this case, the Domain Owner simply declines to advertise participation by not publishing any BIMI assertion record.
 
 A Mail User Agent implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner's published BIMI policy.  But Mail User Agents have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.
 
 Assertion Record {#assertion-record}
 -----------------
 
-All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains named "_bimi".  BIMI allows the definition of multiple preferences associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI uses selectors.
+All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains named "_bimi".  BIMI allows the definition of multiple preferences associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI uses selectors. Senders advertise which selector to use by specifying it in a BIMI-Selector header (see below).
 
 For example, the Domain Owner of "example.com" would post BIMI preferences in a TXT record at "default._bimi.example.com".  Similarly, a Mail Receiver wishing to query for BIMI preferences regarding mail with an RFC5322.From domain of "example.com" and a selector "default" would issue a TXT query to the DNS for the subdomain of "default._bimi.example.com".  The DNS-located BIMI preference data will hereafter be called the "BIMI assertion record".
 
 BIMI's use of the Domain Name Service is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
 Per [DNS], a TXT record can comprise several "character-string" objects.  Where this is the case, the module performing DMARC evaluation MUST concatenate these strings by joining together the objects in order and parsing the result as a single string.
+
+Extracting the BIMI Selector {#bimi-selector}
+----------------------
+
+BIMI DNS records are placed in <selector>._bimi.<domain>, and by default they are placed in default._bimi.<domain>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a domain owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
+
+v: Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. This field is not case-sensitive.
+
+s: Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the 'd' key value pair.
+
+d: Domain (plain-text; OPTIONAL). The domain to lookup of the BIMI DNS record. If not present, the DNS record defaults back to the domain in the RFC 5322 From header, and then possibly to the organizational domain (see #indicator_discovery).
+
+The BIMI-Selector header SHOULD be DKIM-signed. 
+
+The following are brief examples on BIMI record discovery, see #indicator_discovery for full description.
+
+Example 1 - The domain example.com does not send with a BIMI-Selector header. The MTA would lookup default._bimi.example.com for the BIMI DNS record.
+
+From: sender@example.com
+
+Example 2 - The domain example.com sends with a BIMI-Selector header:
+
+From: sender@example.com
+BIMI-Selector: v=bimi1; s=selector;
+
+The MTA would lookup selector._bimi.example.com.
+
+Example 3 - The domain example.com sends with a BIMI-Selector header but the BIMI record is hosted on a different domain:
+
+From: sender@example.com
+BIMI-Selector:  v=bimi1; s=selector; d=example.net
+
+The MTA would lookup selector._bimi.example.net.
+
+Example 4 - The domain example.com sends with a BIMI-Selector header, but does not include the required field 'v=':
+
+From: sender@example.com
+BIMI-Selector: s=selector; d=example.com
+
+The MTA would ignore this header, and lookup default._bimi.example.example.
+
+In Example 2 and Example 3, the BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment.
+
 
 General Record Format {#general-record-format}
 ----------------------
@@ -287,13 +330,13 @@ the appropriate BIMI record for the message:
 
 1. Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Asserted Domain.
 
-2. If the message for which the indicator is being determined specifies a selector value, use this value for the selector.  Otherwise use the value 'default' for the selector
+2. If the message for which the indicator is being determined specifies a selector value, use this value for the selector (see #bimi-selector).  Otherwise use the value 'default' for the selector
 
 3. Clients MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string '_bimi', and the Asserted Domain.  A possibly empty set of records is returned.
 
 4. Records that do not start with a "v=" tag that identifies the current version of BIMI are discarded.
 
-5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Asserted Domain.  A possibly empty set of records is returned.
+5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Asserted Domain. A custom selector that does not exist falls back to default._bimi.<organizationalDomain>, and not <selector>._bimi.<organizationalDomain>.  A possibly empty set of records is returned.
 
 6. Records that do not start with a "v=" tag that identifies the current version of BIMI are discarded.
 
@@ -301,7 +344,82 @@ the appropriate BIMI record for the message:
 
 8. If the remaining set contains only a single record, this record is used for indicator discovery.
 
+BIMI Lookup results in the message headers {#bimi_results}
+----------------------------------
 
+Upon completion of BIMI analysis, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with key/value pair key=value
+
+bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check did not perform, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., bimi=skipped (sender not trusted) or bimi=skipped (message failed DMARC).
+
+header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.
+
+selector: Selector used in a successful BIMI lookup (plain-text; Required). Range of values include the value in the BIMI-Location header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
+
+Example 1 - Successful BIMI lookup
+
+From: sender@example.com
+BIMI-Selector: v=BIMI1; s=selector;
+Authentication-Results: bimi=pass header.d=example.com selector=selector;
+
+Example 2 - No BIMI record
+
+From: sender@sub.example.com
+Authentication-Results: bimi=none header.d=sub.example.com selector=default;
+
+In example 2, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.sub.example.com
+
+Example 3 - Subdomain has no record, but organizataional domain does
+
+From: sender@sub.example.com
+Authentication-Results: bimi=pass header.d=example.com selector=default;
+
+Example 4 - Non-default selector specified but DNS record does not exist
+
+From: sender@sub.example.com
+BIMI-Selector: v=BIMI1; s=selector;
+Authentication-Results: bimi=pass header.d=example.com selector=default;
+
+In example 4, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com (not selector._bimi.example.com) which does exist.
+
+BIMI Location in the message headers {#bimi_results}
+----------------------------------
+
+Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA should also stamp the lookup location of the BIMI logo in the RFC5322 BIMI-Location header. The syntax of the header is as following:
+
+BIMI-Location: Header telling the MUA where to get the BIMI logo from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
+
+If the BIMI-Location header already exists, it MUST be either stripped off, or renamed.
+
+Example end-to-end flow
+
+1. The domain example.com publishes the following BIMI record:
+
+brand._bimi.example.com IN TXT "v=BIMI1; z=64x64; f=png; l=https://image.example.com/bimi/logo"
+
+2. The sender now sends the message, DKIM signs it, and transmits to the receiver
+
+DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Location;Date;bh=...;b=...
+From: sender@example.com
+BIMI-Selector: v=BIMI1; s=brand;
+BIMI-Location: image.example.com/bimi.logo/128x128.gif
+Subject: Hi, this is a message from the good folks at Example Learning
+
+3. The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). It then proceeds to perform a BIMI lookup. 
+
+It sees that the message has a BIMI-Location header, AND it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Location header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.sub.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
+
+Next, it stamps the results of the BIMI to the Authentication-Results header:
+
+Authentication-Results: spf=pass smtp.mailfrom=example.com;
+  dkim=pass (signature was verified) header.d=example.com;
+  dmarc=pass action=none header.from=example.com;
+  bimi=pass header.d=example.com selector=brand;
+  
+Finally, it removes the BIMI-Location, and stamps a new one:
+
+BIMI-Location: https://image.example.com/bimi.logo/64x64.png
+
+In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.
 
 Security Considerations   {#security}
 ===================
