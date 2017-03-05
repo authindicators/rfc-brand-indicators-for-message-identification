@@ -62,6 +62,12 @@ normative:
     author:
       ins: Berners-Lee, T., Fielding, R., and L. Masinter
     date: January 2005
+  Authentication-Results:
+    target: https://tools.ietf.org/html/rfc7601
+    title: Message Header Field for Indicating Message Authentication Status
+    author:
+      ins: Kucherawy, M.
+    date: August 2015
 
 stand_alone: yes
 pi: [toc, sortrefs, symrefs]
@@ -180,6 +186,8 @@ The following terms are also used:
    Mark Asserting Entity (MAE): A Domain Owner who publishes information via the protocol to facilitate distribution of its graphical icons or marks in association with messages for which the domain they "own" is the Author Domain.
 
    Mark Verifying Authority (MVA): An entity of organization that can provide evidence of verification of marks asserted by an MAE to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain mark standards (ie. size, trademark, content, etc).
+   
+   Mail User Agent (MUA): An endpoint client that a user (a real human being) uses to access their and read their email.
 
    Protocol Client: An entity that uses the protocol to discover and fetch published icons or marks.
 
@@ -344,7 +352,7 @@ the appropriate BIMI record for the message:
 
 8. If the remaining set contains only a single record, this record is used for indicator discovery.
 
-BIMI Lookup results in the message headers {#bimi_results}
+BIMI verification results in the message headers {#bimi_results}
 ----------------------------------
 
 Upon completion of BIMI analysis, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with key/value pair key=value
@@ -366,7 +374,7 @@ Example 2 - No BIMI record
 From: sender@sub.example.com
 Authentication-Results: bimi=none header.d=sub.example.com selector=default;
 
-In example 2, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.sub.example.com
+In example 2, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com
 
 Example 3 - Subdomain has no record, but organizataional domain does
 
@@ -384,7 +392,7 @@ In example 4, the sender specified a DNS record at selector._bimi.sub.example.co
 BIMI Location in the message headers {#bimi_results}
 ----------------------------------
 
-Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA should also stamp the lookup location of the BIMI logo in the RFC5322 BIMI-Location header. The syntax of the header is as following:
+Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA MUST also stamp the lookup location of the BIMI logo in the RFC5322 BIMI-Location header. The syntax of the header is as following:
 
 BIMI-Location: Header telling the MUA where to get the BIMI logo from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
 
@@ -415,13 +423,68 @@ Authentication-Results: spf=pass smtp.mailfrom=example.com;
   dmarc=pass action=none header.from=example.com;
   bimi=pass header.d=example.com selector=brand;
   
-Finally, it removes the BIMI-Location, and stamps a new one:
+Finally, it removes the existing BIMI-Location header, and stamps a new one:
 
 BIMI-Location: https://image.example.com/bimi.logo/64x64.png
 
 In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.
 
+
+Set appropriate flags on the mail store {#mail_store}
+----------------------------------
+
+Once an MTA has finished filtering, it needs to deposit the email somewhere where the user can eventually access it with an MUA. Users typically access their email on mail stores through either POP3, IMAP, and MAPI. BIMI currently only supports IMAP (MAPI will have its own implementation).
+
+If a mail store is BIMI-compliant, it sets an IMAP flag on the message when depositing it into the mail store:
+
+$BIMI_display
+
+This tells an accessing MUA that the message passed BIMI. 
+
+If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the $BIMI_display when it pulls down from the other mail store and copies onto itself. If it trusts the other mail store, it may simply set the same flag. Or, it may revalidate BIMI upon ingesting it. Or, it may simply choose not to set the $BIMI_display flag at all.
+
+For more details on the IMAP configuration, see [insert link]
+
 Security Considerations   {#security}
 ===================
 
+There are several security considarations for BIMI.
 
+1. What's stopping a phisher from creating a lookalike domain, e.g., exxample.com, and publishing BIMI records with a copycat logo, and then those images showing up in the email client?
+
+Answer: Publishing BIMI records is not sufficient for an MTA to signal to the to load the BIMI logo. Instead, the domain-owner should have a good reputation with the MTA. Thus, BIMI display requires passing BIMI, and passing SPF/DKIM/DMARC, and having a good reputation at the receiver. The receiver may use a manually maintained list of large brands, or it may import a list from a third party of good domains, or it may apply its own reputation heuristics before deciding whether or not to load the BIMI logo.
+
+2. Can't the BIMI location have an extremely large logo causing buffer overflows, or cause the client to load a huge image, or something similar?
+
+Answer: The MTA or MUA should perform some basic analysis and avoid loading logos that are too large or too small. The receiver may choose to maintain a manual list and do the inspection of its list offline so it doesn't have to do it at time-of-scan.
+
+3. What about DNS records that take an extremely long time to query?
+
+Answer: All email receivers already have to query for DNS records, and all of them have built-in timeouts when performing DNS queries. Furthermore, the use of caching when loading images can help cut down on load time. Virtually all email clients have some sort of image-downloading built-in and make decisions when to load or not load images.
+
+IANA Considerations   {#iana}
+===================
+
+IANA will need to reserve two new entrries to the "Permanent Message Header Field Names" registry.
+
+   Header field name: BIMI-Selector
+
+   Applicable protocol: mail
+
+   Status: standard
+
+   Author/Change controller: IETF
+
+   Specification document: This one
+   
+   
+    Header field name: BIMI-Location
+
+   Applicable protocol: mail
+
+   Status: standard
+
+   Author/Change controller: IETF
+
+   Specification document: This one
+   
