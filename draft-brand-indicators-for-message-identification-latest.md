@@ -249,8 +249,6 @@ v: Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMI
 
 s: Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the 'd' key value pair.
 
-d: Domain (plain-text; OPTIONAL). The domain to lookup of the BIMI DNS record. If not present, the DNS record defaults back to the domain in the RFC 5322 From header, and then possibly to the organizational domain (see #indicator_discovery).
-
 The BIMI-Selector header SHOULD be DKIM-signed. 
 
 The following are brief examples on BIMI record discovery, see #indicator_discovery for full description.
@@ -266,21 +264,14 @@ BIMI-Selector: v=bimi1; s=selector;
 
 The MTA would lookup selector._bimi.example.com.
 
-Example 3 - The domain example.com sends with a BIMI-Selector header but the BIMI record is hosted on a different domain:
-
-From: sender@example.com
-BIMI-Selector:  v=bimi1; s=selector; d=example.net
-
-The MTA would lookup selector._bimi.example.net.
-
 Example 4 - The domain example.com sends with a BIMI-Selector header, but does not include the required field 'v=':
 
 From: sender@example.com
-BIMI-Selector: s=selector; d=example.com
+BIMI-Selector: s=selector; 
 
 The MTA would ignore this header, and lookup default._bimi.example.example.
 
-In Example 2 and Example 3, the BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment.
+In Example 2 and Example 3, the BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy.
 
 
 General Record Format {#general-record-format}
