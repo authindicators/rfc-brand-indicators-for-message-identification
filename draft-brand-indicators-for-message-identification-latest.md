@@ -352,6 +352,7 @@ the appropriate BIMI record for the message:
 
 8. If the remaining set contains only a single record, this record is used for indicator discovery.
 
+
 BIMI verification results in the message headers {#bimi_results}
 ----------------------------------
 
@@ -396,6 +397,10 @@ Upon successful completion of the BIMI lookup, in addition to stamping the resul
 
 BIMI-Location: Header telling the MUA where to get the BIMI logo from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
 
+v: BIMI version (plain-text; REQUIRED). Only acceptable value is BIMI1
+
+l: location of the BIMI logo. Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.
+
 If the BIMI-Location header already exists, it MUST be either stripped off, or renamed.
 
 Example end-to-end flow
@@ -409,7 +414,7 @@ brand._bimi.example.com IN TXT "v=BIMI1; z=64x64; f=png; l=https://image.example
 DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Location;Date;bh=...;b=...
 From: sender@example.com
 BIMI-Selector: v=BIMI1; s=brand;
-BIMI-Location: image.example.com/bimi.logo/128x128.gif
+BIMI-Location: image.example.com/bimi/logo/128x128.gif
 Subject: Hi, this is a message from the good folks at Example Learning
 
 3. The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). It then proceeds to perform a BIMI lookup. 
@@ -425,10 +430,49 @@ Authentication-Results: spf=pass smtp.mailfrom=example.com;
   
 Finally, it removes the existing BIMI-Location header, and stamps a new one:
 
-BIMI-Location: https://image.example.com/bimi.logo/64x64.png
+BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/64x64.png
 
 In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.
 
+
+BIMI Record Parsing for the image file {#bimi_record_parsing}
+----------------------------------
+
+[tzink] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.[/tzink]
+
+A brand or domain owner may have multiple BIMI logos for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
+
+1. Look up the DNS record for the l= tag which tells the location of the brand’s logo: 
+
+   default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks
+
+The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
+
+2. The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
+
+   default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks
+
+This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:
+
+https://bimi.example.com/marks/256x256.png
+https://bimi.example.com/marks/256x256.tif
+https://bimi.example.com/marks/256x256.jpg
+https://bimi.example.com/marks/512x512.png
+https://bimi.example.com/marks/512x512.tif
+https://bimi.example.com/marks/512x512.jpg
+
+It is NOT done this way (interweaving the sizes):
+
+https://bimi.example.com/marks/256x256.png
+https://bimi.example.com/marks/512x512.png
+https://bimi.example.com/marks/256x256.tif
+https://bimi.example.com/marks/512x512.tif
+https://bimi.example.com/marks/256x256.jpg
+https://bimi.example.com/marks/512x512.jpg
+
+If a brand owner wants the largest images to show first, they should ensure the 512x512 appears first in the BIMI DNS record. If they want the jpg to take priority, they should publish it first in the DNS record.
+
+This does not guarantee that the first one will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first image SHOULD be the one that is used.
 
 Set appropriate flags on the mail store {#mail_store}
 ----------------------------------
