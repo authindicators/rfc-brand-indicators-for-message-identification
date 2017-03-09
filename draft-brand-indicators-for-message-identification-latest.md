@@ -186,7 +186,7 @@ The following terms are also used:
    Mark Asserting Entity (MAE): A Domain Owner who publishes information via the protocol to facilitate distribution of its graphical icons or marks in association with messages for which the domain they "own" is the Author Domain.
 
    Mark Verifying Authority (MVA): An entity of organization that can provide evidence of verification of marks asserted by an MAE to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain mark standards (ie. size, trademark, content, etc).
-   
+
    Mail User Agent (MUA): An endpoint client that a user (a real human being) uses to access their and read their email.
 
    Protocol Client: An entity that uses the protocol to discover and fetch published icons or marks.
@@ -243,13 +243,13 @@ Per [DNS], a TXT record can comprise several "character-string" objects.  Where 
 Extracting the BIMI Selector {#bimi-selector}
 ----------------------
 
-BIMI DNS records are placed in <selector>._bimi.<domain>, and by default they are placed in default._bimi.<domain>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a domain owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
+BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a domain owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
 
 v: Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. This field is not case-sensitive.
 
 s: Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the 'd' key value pair.
 
-The BIMI-Selector header SHOULD be DKIM-signed. 
+The BIMI-Selector header SHOULD be DKIM-signed.
 
 The following are brief examples on BIMI record discovery, see #indicator_discovery for full description.
 
@@ -267,7 +267,7 @@ The MTA would lookup selector._bimi.example.com.
 Example 4 - The domain example.com sends with a BIMI-Selector header, but does not include the required field 'v=':
 
 From: sender@example.com
-BIMI-Selector: s=selector; 
+BIMI-Selector: s=selector;
 
 The MTA would ignore this header, and lookup default._bimi.example.example.
 
@@ -335,7 +335,7 @@ the appropriate BIMI record for the message:
 
 4. Records that do not start with a "v=" tag that identifies the current version of BIMI are discarded.
 
-5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Asserted Domain. A custom selector that does not exist falls back to default._bimi.<organizationalDomain>, and not <selector>._bimi.<organizationalDomain>.  A possibly empty set of records is returned.
+5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Asserted Domain. A custom selector that does not exist falls back to default._bimi.\<organizationalDomain\>, and not \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
 
 6. Records that do not start with a "v=" tag that identifies the current version of BIMI are discarded.
 
@@ -381,7 +381,7 @@ Authentication-Results: bimi=pass header.d=example.com selector=default;
 
 In example 4, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com (not selector._bimi.example.com) which does exist.
 
-BIMI Location in the message headers {#bimi_results}
+BIMI Location in the message headers {#bimi_location_in_headers}
 ----------------------------------
 
 Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA MUST also stamp the lookup location of the BIMI logo in the RFC5322 BIMI-Location header. The syntax of the header is as following:
@@ -408,7 +408,7 @@ BIMI-Selector: v=BIMI1; s=brand;
 BIMI-Location: image.example.com/bimi/logo/128x128.gif
 Subject: Hi, this is a message from the good folks at Example Learning
 
-3. The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). It then proceeds to perform a BIMI lookup. 
+3. The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). It then proceeds to perform a BIMI lookup.
 
 It sees that the message has a BIMI-Location header, AND it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Location header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.sub.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
 
@@ -418,7 +418,7 @@ Authentication-Results: spf=pass smtp.mailfrom=example.com;
   dkim=pass (signature was verified) header.d=example.com;
   dmarc=pass action=none header.from=example.com;
   bimi=pass header.d=example.com selector=brand;
-  
+
 Finally, it removes the existing BIMI-Location header, and stamps a new one:
 
 BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/64x64.png
@@ -429,11 +429,11 @@ In this example, the BIMI-Location header that the sender included is different 
 BIMI Record Parsing for the image file {#bimi_record_parsing}
 ----------------------------------
 
-[tzink] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.[/tzink]
+\[tzink\] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.\[/tzink\]
 
 A brand or domain owner may have multiple BIMI logos for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
 
-1. Look up the DNS record for the l= tag which tells the location of the brand’s logo: 
+1. Look up the DNS record for the l= tag which tells the location of the brand’s logo:
 
    default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks
 
@@ -474,11 +474,11 @@ If a mail store is BIMI-compliant, it sets an IMAP flag on the message when depo
 
 $BIMI_display
 
-This tells an accessing MUA that the message passed BIMI. 
+This tells an accessing MUA that the message passed BIMI.
 
 If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the $BIMI_display when it pulls down from the other mail store and copies onto itself. If it trusts the other mail store, it may simply set the same flag. Or, it may revalidate BIMI upon ingesting it. Or, it may simply choose not to set the $BIMI_display flag at all.
 
-For more details on the IMAP configuration, see [insert link]
+For more details on the IMAP configuration, see \[insert link\]
 
 Security Considerations   {#security}
 ===================
@@ -511,8 +511,8 @@ IANA will need to reserve two new entrries to the "Permanent Message Header Fiel
    Author/Change controller: IETF
 
    Specification document: This one
-   
-   
+
+
     Header field name: BIMI-Location
 
    Applicable protocol: mail
@@ -522,4 +522,4 @@ IANA will need to reserve two new entrries to the "Permanent Message Header Fiel
    Author/Change controller: IETF
 
    Specification document: This one
-   
+
