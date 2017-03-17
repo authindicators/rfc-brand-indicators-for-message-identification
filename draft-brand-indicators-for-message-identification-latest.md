@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-01-23
+date: 2017-03-16
 category: info
 
 workgroup: Authindicators Working Group
@@ -88,6 +88,11 @@ author:
     name: Peter Goldstein
     organization: ValiMail
     email: peter@valimail.com
+ -
+    ins: S. Blank
+    name: Seth Blank
+    organization: ValiMail
+    email: seth@valimail.com
 
 --- abstract
 
@@ -118,7 +123,7 @@ Over time, some mail-receiving organizations have developed closed systems for d
 2. Scalability is challenging for closed systems that attempt to capture complete sets of data across the whole of the Internet.
 3. A lack of uniformity across different mail-receiving organizations - each organization will have its own indicator set, which may or may not agree with those maintained by other organizations for any given domain.
 4. Domain owners have limited ability to influence the brand indicator for the domain(s) they own, and such ability they do have is likely to require coordination with many mail-receiving organizations.
-5. MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely
+5. MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive indicators in a manner optimized for their user interfaces.
 
 This all speaks to the need for a standardized mechanism by which Domain Owners can publish and distribute brand indicators for use by any participating MUA.
 
@@ -496,6 +501,14 @@ Answer: The MTA or MUA should perform some basic analysis and avoid loading logo
 3. What about DNS records that take an extremely long time to query?
 
 Answer: All email receivers already have to query for DNS records, and all of them have built-in timeouts when performing DNS queries. Furthermore, the use of caching when loading images can help cut down on load time. Virtually all email clients have some sort of image-downloading built-in and make decisions when to load or not load images.
+
+4. Shouldn't location-uris in an assertion record be required to exist only on the same domain the assertion record is for?
+
+Answer: No. There is no guarantee that a group responsible for managing brand indicators will have access to put these indicators directly in any specific location of a domain, and requiring a match is too high a bar. Additionally, there is no added security from this requirements, as the domain-owner is creating and has control over the location-uri.
+
+5. Shouldn't the BIMI Selector always be DKIM signed?
+
+Answer: It depends. If a domain owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender. On the other hand, receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.
 
 IANA Considerations   {#iana}
 ===================
