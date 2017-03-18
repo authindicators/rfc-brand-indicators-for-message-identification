@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-03-17
+date: 2017-03-18
 category: info
 
 workgroup: Authindicators Working Group
@@ -167,7 +167,7 @@ High-Level Goals    {#goals}
 
 BIMI has the following high-level goals:
 
-* Enable the authors of MUAs to display meaningful imagery associated with the domain owner to recipients of authenticated email.
+* Enable the authors of MUAs to display meaningful imagery associated with the Domain Owner to recipients of authenticated email.
 * Allow Domain Owners to suggest appropriate images for display with authenticated messages originating from their domains.
 * Provide mechanisms to prevent attempts by malicious Domain Owners to fraudulently represent messages from their domains as originating with other entities.
 * Work at Internet Scale.
@@ -258,7 +258,7 @@ This section provides a general overview of the design and operation of the BIMI
 Selectors   {#selectors}
 ------------------------
 
-To support multiple brand indicators per domain, the brand indicator namespace is subdivided using "selectors".  Selectors allow the domain owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.
+To support multiple brand indicators per domain, the brand indicator namespace is subdivided using "selectors".  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.
 
 Periods are allowed in selectors and are component separators.  When BIMI assertion records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
 
@@ -268,7 +268,7 @@ selector =   sub-domain *( "." sub-domain )
              ; from [SMTP] Domain,
              ; excluding address-literal
 
-The number of selectors for each domain is determined by the domain owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.
+The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.
 
 BIMI supports the notion of a "default" selector.
 
@@ -297,7 +297,7 @@ Per [DNS], a TXT record can comprise several "character-string" objects.  Where 
 Extracting the BIMI Selector {#bimi-selector}
 ----------------------
 
-BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a domain owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
+BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
 
 v: Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. This field is not case-sensitive.
 
@@ -345,7 +345,7 @@ l: locations (URI).  The value of this tag is a comma separated list of base URL
 
 v: Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of "BIMI1".  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
-z: List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a domain owner broadcast intent that no brand indicator should be used.
+z: List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no brand indicator should be used.
 
 Formal Definition {#formal_defintion}
 -----------------------
@@ -485,7 +485,7 @@ BIMI Record Parsing for the image file {#bimi_record_parsing}
 
 \[tzink\] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.\[/tzink\]
 
-A brand or domain owner may have multiple BIMI logos for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
+A brand or Domain Owner may have multiple BIMI logos for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
 
 1. Look up the DNS record for the l= tag which tells the location of the brand’s logo:
 
@@ -557,7 +557,7 @@ Answer: No. There is no guarantee that a group responsible for managing brand in
 
 5. Shouldn't the BIMI Selector always be DKIM signed?
 
-Answer: It depends. If a domain owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender. On the other hand, receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.
+Answer: It depends. If a Domain Owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender. On the other hand, receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.
 
 IANA Considerations   {#iana}
 ===================
