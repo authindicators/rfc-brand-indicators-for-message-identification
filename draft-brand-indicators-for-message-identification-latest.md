@@ -96,18 +96,18 @@ author:
 
 --- abstract
 
-Brand Indicators for Message Identification (BIMI) permits domain owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for domain owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how domain owners communicate their desired indicators through the BIMI assertion record in [DNS] and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
+Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in [DNS] and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
 
 --- middle
 
 Introduction        {#problems}
 ============
 
-This document defines Brand Indicators for Message Identification (BIMI), which permits domain owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.
+This document defines Brand Indicators for Message Identification (BIMI), which permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.
 
 Due to the amount of spam and forged email on the internet today, many mail receivers wish to benefit their users by clearly identifying authenticated email.  For email-sending organizations, the belief is that clear indicators of their brand is the most effective way to accomplish this.  This has in turn led receivers to build closed systems to manage brand indicators.
 
-BIMI is an open system that works at internet scale, so that domain owners can coordinate with MUAs to display appropriate indicators.  BIMI has the added benefit of incentivizing domain owners to authenticate their email.
+BIMI is an open system that works at internet scale, so that Domain Owners can coordinate with MUAs to display appropriate indicators.  BIMI has the added benefit of incentivizing Domain Owners to authenticate their email.
 
 The approach taken by BIMI is nearly identical to the approach taken by [DKIM](https://tools.ietf.org/html/rfc6376#section-1), in that BIMI:
 
@@ -119,7 +119,7 @@ The approach taken by BIMI is nearly identical to the approach taken by [DKIM](h
 * can be deployed incrementally; and
 * allows delegation of indicator hosting to third parties.
 
-This document covers the BIMI methodology for domain owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP) should be extended to work with BIMI.  Other documents will cover these topics.
+This document covers the BIMI methodology for Domain Owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP) should be extended to work with BIMI.  Other documents will cover these topics.
 
 Why BIMI        {#why-bimi}
 ============
@@ -147,7 +147,7 @@ Due to this need for [brand specific indicators](#brandauth), some mail-receivin
 1. It puts a significant burden on each mail-receiving organization, because they must identify and manage a large database of brand indicators.
 2. Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.
 3. A lack of uniformity across different mail-receiving organizations - each organization will have its own indicator set, which may or may not agree with those maintained by other organizations for any given domain.
-4. Domain owners have limited ability to influence the brand indicator for the domain(s) they own, and such ability they do have is likely to require coordination with many mail-receiving organizations.
+4. Domain Owners have limited ability to influence the brand indicator for the domain(s) they own, and such ability they do have is likely to require coordination with many mail-receiving organizations.
 5. MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive indicators in a manner optimized for their user interfaces.
 
 This all speaks to the need for a standardized mechanism by which Domain Owners can publish and distribute brand indicators for use by any participating MUA.
@@ -155,7 +155,7 @@ This all speaks to the need for a standardized mechanism by which Domain Owners 
 Indicator Curation     {#curation}
 -------------
 
-Domain owners have an interest in ensuring that the imagery displayed in these situations is correct and appropriate, so it is desirable to provide a mechanism to allow these mail-originating organizations to provide imagery to MUAs.  This mechanism removes the substantial burden of curating and maintaining an image database from the MUAs, and allows each brand to manage its own imagery.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.
+Domain Owners have an interest in ensuring that the imagery displayed in these situations is correct and appropriate, so it is desirable to provide a mechanism to allow these mail-originating organizations to provide imagery to MUAs.  This mechanism removes the substantial burden of curating and maintaining an image database from the MUAs, and allows each brand to manage its own imagery.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.
 
 Requirements   {#requirements}
 ========================
@@ -268,7 +268,7 @@ selector =   sub-domain *( "." sub-domain )
              ; from [SMTP] Domain,
              ; excluding address-literal
 
-The number of selectors for each domain is determined by the domain owner.  Many domain owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.
+The number of selectors for each domain is determined by the domain owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.
 
 BIMI supports the notion of a "default" selector.
 
