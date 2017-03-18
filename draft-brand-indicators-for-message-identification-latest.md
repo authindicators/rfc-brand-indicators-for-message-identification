@@ -172,6 +172,16 @@ BIMI has the following high-level goals:
 * Provide mechanisms to prevent attempts by malicious Domain Owners to fraudulently represent messages from their domains as originating with other entities.
 * Work at Internet Scale.
 
+Security     {#security}
+------------
+
+Brand indicators are a potential vector for abuse.  BIMI creates a relationship between sending organization and Mail Receiver so that the receiver can display appropriately designated indicators if the sending domain is verified and has meaningful reputation with the receiver.  Without verification and reputation, there is no way to prevent a bad actor exxample.com from using example.com's brand indicators and behaving in a malicious manner.  This document does not cover these verification and reputation mechanisms, but BIMI requires them to control abuse.
+
+Scalability     {#scalability}
+------------
+
+Scalability is a major issue for systems that need to operate in a system as widely deployed as current SMTP email.  For this reason, BIMI seeks to avoid the need for pre-sending agreements between senders and receivers.  This preserves the positive aspects of the current email infrastructure.
+
 Out of Scope     {#out-of-scope}
 -------------
 
@@ -180,29 +190,15 @@ Several topics and issues are specifically out of scope for the initial version 
 * Defining what consitutes authenticated email for the purposes of this standard.
 * Publishing policy other than via the DNS.
 * Specific requirements for indicator display on MUAs.
+* How receivers should use reputation to influence the display of BIMI indicators.
 * The explicit mechanisms used by Verifying Protocol Clients - this will be deferred to a later document.
-
-Scalability     {#scalability}
-------------
-
-Scalability is a major issue for systems that need to operate in a system as widely deployed as current SMTP email.  For this reason, BIMI seeks to avoid the need for pre-sending agreements between senders and receivers.  This preserves the positive aspects of the current email infrastructure.
-
-Security     {#security}
-------------
-
-Brand indicators are a potential vector for abuse.  BIMI creates a relationship between sending organization and Mail Receiver so that the receiver can display appropriately designated indicators if the sending domain is verified and has meaningful reputation with the receiver.  Without reputation, there is no way to prevent a bad actor exxample.com from using example.com's brand indicators and behaving in a malicious manner.  This document does not cover these verification and reputation mechanisms, but BIMI requires them to control abuse.
-
-Domain Reputation     {#reputation}
-------------
-
-THIS SECTION NEEDS TO BE WRITTEN.
 
 Outline   {#outline}
 ----------------------------
 
 The basic outline of BIMI is as follows:
 
-1. Domain Owners publish brand indicator assertions for domains via the DNS.
+1. Domain Owners publish brand indicator assertions for domains via the [DNS].
 2. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
 3. If the message authenticates, the receiver queries the DNS for a corresponding BIMI record.
 4. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner's preferred brand indicator.
