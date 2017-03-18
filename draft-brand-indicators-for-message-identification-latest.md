@@ -177,10 +177,10 @@ Out of Scope {#out-of-scope}
 
 Several topics and issues are specifically out of scope for the initial version of this work.  These include the following:
 
-* Defining what consitutes authenticated email for the purposes of this standard
-* Publishing policy other than via the DNS
-* Specific requirements for indicator display on MUAs
-* The explicit mechanisms used by Verifying Protocol Clients - this will be deferred to a later document
+* Defining what consitutes authenticated email for the purposes of this standard.
+* Publishing policy other than via the DNS.
+* Specific requirements for indicator display on MUAs.
+* The explicit mechanisms used by Verifying Protocol Clients - this will be deferred to a later document.
 
 Scalability {#scalability}
 ------------
