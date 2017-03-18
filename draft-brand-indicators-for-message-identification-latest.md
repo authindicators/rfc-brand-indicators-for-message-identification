@@ -221,6 +221,11 @@ Author Domain
 
 The domain name of the apparent author, as extracted from the RFC5322.From field.
 
+Assertion Record
+-------------
+
+The BIMI preferences stored in DNS TXT records as defined in [Section 6.1](#assertion-record-def).
+
 Domain Owner
 -------------
 
@@ -289,7 +294,7 @@ A Domain Owner may choose not to participate in BIMI.  In this case, the Domain 
 
 A Mail User Agent implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner's published BIMI policy.  But Mail User Agents have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.
 
-Assertion Record {#assertion-record}
+Assertion Record {#assertion-record-def}
 -----------------
 
 All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains named "_bimi".  BIMI allows the definition of multiple preferences associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI uses selectors. Senders advertise which selector to use by specifying it in a BIMI-Selector header (see below).
