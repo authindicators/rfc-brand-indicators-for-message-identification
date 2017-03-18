@@ -226,6 +226,11 @@ Assertion Record
 
 The BIMI preferences stored in DNS TXT records as defined in [Section 6.1](#assertion-record-def).
 
+BIMI Assertion
+-------------
+
+The mechanism through which a Protocol Client verifies the BIMI Assertion Record and constructs the URI to the requested indicator or indictaors.
+
 Domain Owner
 -------------
 
@@ -266,22 +271,32 @@ Overview   {#overview}
 
 This section provides a general overview of the design and operation of the BIMI environment.
 
-Selectors   {#selectors}
-------------------------
+For Domain Owners   {#for-domain-owners}
+-------------
 
-To support multiple brand indicators per domain, the brand indicator namespace is subdivided using "selectors".  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.
+BIMI requires Domain Owners to publish several records to communicate indicators they wish MUAs to use.
 
-Periods are allowed in selectors and are component separators.  When BIMI assertion records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
+### Assertion Record   {#assertion-overview}
 
-[ABNF]:
+An Assertion Record is a DNS TXT record that a Domain Owner publishes to advertise participation in BIMI.
 
-selector =   sub-domain *( "." sub-domain )
-             ; from [SMTP] Domain,
-             ; excluding address-literal
+### Selectors    {#selector-overview}
 
-The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.
+Selectors allows Domain Owners to support multiple indicators per domain.
 
-BIMI supports the notion of a "default" selector.
+For Mail Receivers   {#for-mail-receivers}
+-------------
+
+BIMI suggests that Mail Receivers and their MTAs add or modify several headers.
+
+### Authentication-Results Header    {#bimi-ar-header}
+
+The status of a BIMI determination SHOULD be added to the Authentication-Results header.
+
+### BIMI-Location Header   {#bimi-location}
+
+Upon a successful authentication check and indicator lookup, the MTA should add the appropriate indicator(s) to the BIMI-Location header so that the MUA can apply minimal logic to display the appropriate indicator.
+
 
 Policy {#policy}
 ===================
@@ -301,9 +316,26 @@ All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains na
 
 For example, the Domain Owner of "example.com" would post BIMI preferences in a TXT record at "default._bimi.example.com".  Similarly, a Mail Receiver wishing to query for BIMI preferences regarding mail with an RFC5322.From domain of "example.com" and a selector "default" would issue a TXT query to the DNS for the subdomain of "default._bimi.example.com".  The DNS-located BIMI preference data will hereafter be called the "BIMI assertion record".
 
-BIMI's use of the Domain Name Service is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
+BIMI's use of the DNS is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
-Per [DNS], a TXT record can comprise several "character-string" objects.  Where this is the case, the module performing DMARC evaluation MUST concatenate these strings by joining together the objects in order and parsing the result as a single string.
+Per [DNS], a TXT record can comprise several "character-string" objects.  Where this is the case, the module performing BIMI Assertion MUST concatenate these strings by joining together the objects in order and parsing the result as a single string.
+
+Selectors   {#selectors}
+------------------------
+
+To support multiple brand indicators per domain, the brand indicator namespace is subdivided using "selectors".  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.  BIMI selectors are modeled after DKIM selectors.
+
+Periods are allowed in selectors and are component separators.  When BIMI assertion records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
+
+[ABNF]:
+
+selector =   sub-domain *( "." sub-domain )
+             ; from [SMTP] Domain,
+             ; excluding address-literal
+
+The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.  BIMI sets no maximum limit on the number of selectors.
+
+BIMI supports the notion of a "default" selector.
 
 Extracting the BIMI Selector {#bimi-selector}
 ----------------------
