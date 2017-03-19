@@ -411,7 +411,7 @@ v: Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI re
 
 z: List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no brand indicator should be used.
 
-Formal Definition {#formal_defintion}
+Formal Definition {#formal-defintion}
 -----------------------
 
 The formal definition of the BIMI format, using [ABNF], is as follows:
@@ -511,13 +511,17 @@ v: BIMI version (plain-text; REQUIRED).  It MUST have the value of "BIMI1".  The
 
 l: location of the BIMI logo (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand logo files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.
 
+\[ABNF NEEDED HERE\]
+
 Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA MUST also stamp the lookup location of the BIMI logo in the RFC5322 BIMI-Location header.
 
 ### BIMI-Location URI Construction
 
 The l= value of the BIMI-Location header is a comma separated list of URIs the MTA believes are most applicable to its MUAs.
 
-The URIs in the list are created from the exact concatenation of the l= and appropriate z= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  If concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
+The URIs in the list are created from the exact concatenation of the l= and appropriate z= and f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
+
+The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
 
 MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.
 
@@ -574,49 +578,55 @@ In this example, the BIMI-Location header that the sender included is different 
 
 The mail is opened in an MUA and that MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.
 
-BIMI Record Parsing for the image file {#bimi_record_parsing}
+BIMI Record Parsing for indicator selection {#bimi-record-parsing}
 ----------------------------------
 
 \[tzink\] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.\[/tzink\]
 
 A brand or Domain Owner may have multiple BIMI logos for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
 
-1. Look up the DNS record for the l= tag which tells the location of the brand’s logo:
+### Indicator Selection
 
-   default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks
+Look up the DNS record for the l= tag which tells the location of the brand’s logo:
+
+    default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
 
 The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
 
-2. The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
+### Indicator preferences and precedence
 
-   default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks
+The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
+
+    default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
 
 This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:
 
-https://bimi.example.com/marks/256x256.png
-https://bimi.example.com/marks/256x256.tif
-https://bimi.example.com/marks/256x256.jpg
-https://bimi.example.com/marks/512x512.png
-https://bimi.example.com/marks/512x512.tif
-https://bimi.example.com/marks/512x512.jpg
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/256x256.tif
+    https://bimi.example.com/marks/256x256.jpg
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/512x512.tif
+    https://bimi.example.com/marks/512x512.jpg
 
 It is NOT done this way (interweaving the sizes):
 
-https://bimi.example.com/marks/256x256.png
-https://bimi.example.com/marks/512x512.png
-https://bimi.example.com/marks/256x256.tif
-https://bimi.example.com/marks/512x512.tif
-https://bimi.example.com/marks/256x256.jpg
-https://bimi.example.com/marks/512x512.jpg
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/256x256.tif
+    https://bimi.example.com/marks/512x512.tif
+    https://bimi.example.com/marks/256x256.jpg
+    https://bimi.example.com/marks/512x512.jpg
+
+### Domain Owner Preference
 
 If a brand owner wants the largest images to show first, they should ensure the 512x512 appears first in the BIMI DNS record. If they want the jpg to take priority, they should publish it first in the DNS record.
 
 This does not guarantee that the first one will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first image SHOULD be the one that is used.
 
-Set appropriate flags on the mail store {#mail_store}
+Set appropriate flags on the mail store {#mail-stores}
 ----------------------------------
 
-Once an MTA has finished filtering, it needs to deposit the email somewhere where the user can eventually access it with an MUA. Users typically access their email on mail stores through either POP3, IMAP, and MAPI. BIMI currently only supports IMAP (MAPI will have its own implementation).
+Once an MTA has finished filtering, it needs to deposit the email somewhere where the user can eventually access it with an MUA. Users typically access their email on mail stores through either POP3, IMAP, and MAPI. The following example is for IMAP; separate documents will define protocol-specific BIMI extensions for mail stores.
 
 If a mail store is BIMI-compliant, it sets an IMAP flag on the message when depositing it into the mail store:
 
@@ -626,32 +636,35 @@ This tells an accessing MUA that the message passed BIMI.
 
 If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the $BIMI_display when it pulls down from the other mail store and copies onto itself. If it trusts the other mail store, it may simply set the same flag. Or, it may revalidate BIMI upon ingesting it. Or, it may simply choose not to set the $BIMI_display flag at all.
 
-For more details on the IMAP configuration, see \[insert link\]
-
 Security Considerations   {#security-considerations}
 ===================
 
-There are several security considarations for BIMI.
+The consistent use of brand indicators is valuable for Domain Owners, Mail Receivers, and End Users. However, this also creates room for abuse.
 
-1. What's stopping a phisher from creating a lookalike domain, e.g., exxample.com, and publishing BIMI records with a copycat logo, and then those images showing up in the email client?
+Lookalike Domains and Copycat Indicators
+------------
 
-Answer: Publishing BIMI records is not sufficient for an MTA to signal to the to load the BIMI logo. Instead, the domain-owner should have a good reputation with the MTA. Thus, BIMI display requires passing BIMI, and passing SPF/DKIM/DMARC, and having a good reputation at the receiver. The receiver may use a manually maintained list of large brands, or it may import a list from a third party of good domains, or it may apply its own reputation heuristics before deciding whether or not to load the BIMI logo.
+Publishing BIMI records is not sufficient for an MTA to signal to the MUA to load the BIMI indicator.  Instead, the Domain Owner should have a good reputation with the MTA. Thus, BIMI display requires passing BIMI, and passing email authentication checks, and having a good reputation at the receiver.  The receiver may use a manually maintained list of large brands, or it may import a list from a third party of good domains, or it may apply its own reputation heuristics before deciding whether or not to load the BIMI logo.
 
-2. Can't the BIMI location have an extremely large logo causing buffer overflows, or cause the client to load a huge image, or something similar?
+Large files and buffer overflows
+------------
 
-Answer: The MTA or MUA should perform some basic analysis and avoid loading logos that are too large or too small. The receiver may choose to maintain a manual list and do the inspection of its list offline so it doesn't have to do it at time-of-scan.
+The MTA or MUA should perform some basic analysis and avoid loading logos that are too large or too small.  The Receiver may choose to maintain a manual list and do the inspection of its list offline so it doesn't have to do it at time-of-scan.
 
-3. What about DNS records that take an extremely long time to query?
+Slow DNS queries
+------------
 
-Answer: All email receivers already have to query for DNS records, and all of them have built-in timeouts when performing DNS queries. Furthermore, the use of caching when loading images can help cut down on load time. Virtually all email clients have some sort of image-downloading built-in and make decisions when to load or not load images.
+All email Receivers already have to query for DNS records, and all of them have built-in timeouts when performing DNS queries.  Furthermore, the use of caching when loading images can help cut down on load time.  Virtually all email clients have some sort of image-downloading built-in and make decisions when to load or not load images.
 
-4. Shouldn't location-uris in an assertion record be required to exist only on the same domain the assertion record is for?
+Unaligned indicators and asserting domains
+------------
 
-Answer: No. There is no guarantee that a group responsible for managing brand indicators will have access to put these indicators directly in any specific location of a domain, and requiring a match is too high a bar. Additionally, there is no added security from this requirements, as the domain-owner is creating and has control over the location-uri.
+There is no guarantee that a group responsible for managing brand indicators will have access to put these indicators directly in any specific location of a domain, and requiring that indicators live on the asserted domain is too high a bar.  Additionally, letting a brand have indicator locations outside its domain may be desirable so that someone sending legitimate authenticated email on the Domain Owner's behalf can manage and set selectors as an authorized third party.
 
-5. Shouldn't the BIMI Selector always be DKIM signed?
+Unsigned BIMI-Selector Header
+------------
 
-Answer: It depends. If a Domain Owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender. On the other hand, receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.
+If a Domain Owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender.  On the other hand, Receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.
 
 IANA Considerations   {#iana}
 ===================
