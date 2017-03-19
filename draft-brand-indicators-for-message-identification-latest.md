@@ -193,17 +193,6 @@ Several topics and issues are specifically out of scope for the initial version 
 * How receivers should use reputation to influence the display of BIMI indicators.
 * The explicit mechanisms used by Verifying Protocol Clients - this will be deferred to a later document.
 
-Outline   {#outline}
-----------------------------
-
-The basic outline of BIMI is as follows:
-
-1. Domain Owners publish brand indicator assertions for domains via the [DNS].
-2. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
-3. If the message authenticates, the receiver queries the DNS for a corresponding BIMI record.
-4. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner's preferred brand indicator.
-5. The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.
-
 Terminology and Definitions   {#terminology}
 ========================
 
@@ -271,7 +260,23 @@ Overview   {#overview}
 
 This section provides a general overview of the design and operation of the BIMI environment.
 
-For Domain Owners   {#for-domain-owners}
+Outline    {#outline}
+-------------
+
+The basic structure of BIMI is as follows:
+
+1. Domain Owners publish brand indicator assertions for domains via the [DNS].
+
+2. Then, for any message received by a Mail Receiver:
+
+    1. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
+    2. If the message authenticates and has sufficient reputation per receiver policy, the receiver queries the DNS for a corresponding BIMI record.
+    3. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner's preferred brand indicator.
+    4. The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.
+
+The purpose of this structure is to reduce operational complexity at each step and to consolidate validation and image selection into the MTA, so that Domain Owners only need to publish simple rules and MUAs only need simple display logic.
+
+Records For Domain Owners   {#for-domain-owners}
 -------------
 
 BIMI requires Domain Owners to publish several records to communicate indicators they wish MUAs to use.
@@ -284,19 +289,18 @@ An Assertion Record is a DNS TXT record that a Domain Owner publishes to adverti
 
 Selectors allows Domain Owners to support multiple indicators per domain.
 
-For Mail Receivers   {#for-mail-receivers}
+Headers For Mail Receivers   {#for-mail-receivers}
 -------------
 
 BIMI suggests that Mail Receivers and their MTAs add or modify several headers.
 
-### Authentication-Results Header    {#bimi-ar-header}
+### Authentication-Results    {#bimi-ar}
 
 The status of a BIMI determination SHOULD be added to the Authentication-Results header.
 
-### BIMI-Location Header   {#bimi-location}
+### BIMI-Location   {#bimi-location}
 
 Upon a successful authentication check and indicator lookup, the MTA should add the appropriate indicator(s) to the BIMI-Location header so that the MUA can apply minimal logic to display the appropriate indicator.
-
 
 Policy {#policy}
 ===================
