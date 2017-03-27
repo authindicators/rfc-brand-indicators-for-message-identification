@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-03-18
+date: 2017-03-27
 category: info
 
 workgroup: Authindicators Working Group
@@ -148,7 +148,8 @@ Due to this need for [brand specific indicators](#brandauth), some mail-receivin
 2. Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.
 3. A lack of uniformity across different mail-receiving organizations - each organization will have its own indicator set, which may or may not agree with those maintained by other organizations for any given domain.
 4. Domain Owners have limited ability to influence the brand indicator for the domain(s) they own, and such ability they do have is likely to require coordination with many mail-receiving organizations.
-5. MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive indicators in a manner optimized for their user interfaces.
+5. Many Domain Owners have no ability to participate whatsoever as they do not have the appropriate relationships to coordinate with mail-receiving organizations.
+6. MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive indicators in a manner optimized for their user interfaces.
 
 This all speaks to the need for a standardized mechanism by which Domain Owners can publish and distribute brand indicators for use by any participating MUA.
 
@@ -167,8 +168,8 @@ High-Level Goals    {#goals}
 
 BIMI has the following high-level goals:
 
-* Enable the authors of MUAs to display meaningful imagery associated with the Domain Owner to recipients of authenticated email.
 * Allow Domain Owners to suggest appropriate images for display with authenticated messages originating from their domains.
+* Enable the authors of MUAs to display meaningful imagery associated with the Domain Owner to recipients of authenticated email.
 * Provide mechanisms to prevent attempts by malicious Domain Owners to fraudulently represent messages from their domains as originating with other entities.
 * Work at Internet Scale.
 
@@ -218,12 +219,17 @@ The BIMI preferences stored in DNS TXT records as defined in [Section 6.1](#asse
 BIMI Assertion
 -------------
 
-The mechanism through which a Protocol Client verifies the BIMI Assertion Record and constructs the URI to the requested indicator or indictaors.
+The mechanism through which a Protocol Client verifies the BIMI Assertion Record and constructs the URI to the requested indicator(s).
 
 Domain Owner
 -------------
 
 An entity or organization that owns a DNS domain.  The term "owns" here indicates that the entity or organization being referenced holds the registration of that DNS domain.  Domain Owners range from complex, globally distributed organizations, to service providers working on behalf of non-technical clients, to individuals responsible for maintaining personal domains.  This specification uses this term as analogous to an Administrative Management Domain as defined in [EMAIL-ARCH].
+
+Indicator
+-------------
+
+The icon, image, mark, or other graphical representation of the brand. The Indicator is in a common image format with restrictions detailed in [General Record Format](#general-record-format).
 
 Mail Receiver
 -------------
@@ -233,12 +239,12 @@ The entity or organization that receives and processes email.  Mail Receivers op
 Mark Asserting Entity (MAE)
 -------------
 
-A Domain Owner who publishes information via the protocol to facilitate distribution of its graphical icons or marks in association with messages for which the domain they "own" is the Author Domain.
+A Domain Owner who publishes information via the protocol to facilitate distribution of its indicators in association with messages for which the domain they "own" is the Author Domain.
 
 Mark Verifying Authority (MVA)
 -------------
 
-An entity of organization that can provide evidence of verification of marks asserted by an MAE to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain mark standards (ie. size, trademark, content, etc).
+An entity of organization that can provide evidence of verification of indicators asserted by an MAE to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain indicator standards (ie. size, trademark, content, etc).
 
 Mail User Agent (MUA)
 -------------
@@ -248,12 +254,12 @@ An endpoint client that a user (a real human being) uses to access their and rea
 Protocol Client
 -------------
 
-An entity that uses the protocol to discover and fetch published icons or marks.
+An entity that uses the BIMI protocol to discover and fetch published indictors.
 
 Verifying Protocol Client
 -------------
 
-A Protocol Client that uses the optional verification capability to inquire about the verification status of published marks.
+A Protocol Client that uses the optional verification capability to inquire about the verification status of published indicators.
 
 Overview   {#overview}
 ========================
@@ -405,7 +411,7 @@ a: Trust Authorities (plain-text; OPTIONAL).  A reserved value.
 
 f: Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is "png").  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).
 
-l: locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand logo files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.
+l: locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.
 
 v: Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of "BIMI1".  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
@@ -503,17 +509,17 @@ In this example, the sender specified a DNS record at selector._bimi.sub.example
 The BIMI-Location Header {#bimi-location}
 ----------------------------------
 
-BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI logo from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
+BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
 
 The syntax of the header is as following:
 
 v: BIMI version (plain-text; REQUIRED).  It MUST have the value of "BIMI1".  The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
 
-l: location of the BIMI logo (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand logo files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.
+l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.
 
 \[ABNF NEEDED HERE\]
 
-Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA MUST also stamp the lookup location of the BIMI logo in the RFC5322 BIMI-Location header.
+Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA MUST also stamp the lookup location of the BIMI indicator in the RFC5322 BIMI-Location header.
 
 ### BIMI-Location URI Construction
 
@@ -583,11 +589,11 @@ BIMI Record Parsing for indicator selection {#bimi-record-parsing}
 
 \[tzink\] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.\[/tzink\]
 
-A brand or Domain Owner may have multiple BIMI logos for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
+A brand or Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
 
 ### Indicator Selection
 
-Look up the DNS record for the l= tag which tells the location of the brand’s logo:
+Look up the DNS record for the l= tag which tells the location of the brand’s indicators:
 
     default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
 
@@ -644,12 +650,12 @@ The consistent use of brand indicators is valuable for Domain Owners, Mail Recei
 Lookalike Domains and Copycat Indicators
 ------------
 
-Publishing BIMI records is not sufficient for an MTA to signal to the MUA to load the BIMI indicator.  Instead, the Domain Owner should have a good reputation with the MTA. Thus, BIMI display requires passing BIMI, and passing email authentication checks, and having a good reputation at the receiver.  The receiver may use a manually maintained list of large brands, or it may import a list from a third party of good domains, or it may apply its own reputation heuristics before deciding whether or not to load the BIMI logo.
+Publishing BIMI records is not sufficient for an MTA to signal to the MUA to load the BIMI indicator.  Instead, the Domain Owner should have a good reputation with the MTA. Thus, BIMI display requires passing BIMI, and passing email authentication checks, and having a good reputation at the receiver.  The receiver may use a manually maintained list of large brands, or it may import a list from a third party of good domains, or it may apply its own reputation heuristics before deciding whether or not to load the BIMI indicator.
 
 Large files and buffer overflows
 ------------
 
-The MTA or MUA should perform some basic analysis and avoid loading logos that are too large or too small.  The Receiver may choose to maintain a manual list and do the inspection of its list offline so it doesn't have to do it at time-of-scan.
+The MTA or MUA should perform some basic analysis and avoid loading indicators that are too large or too small.  The Receiver may choose to maintain a manual list and do the inspection of its list offline so it doesn't have to do it at time-of-scan.
 
 Slow DNS queries
 ------------
