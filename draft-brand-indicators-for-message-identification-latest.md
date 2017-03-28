@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-03-18
+date: 2017-03-28
 category: info
 
 workgroup: Authindicators Working Group
@@ -93,6 +93,11 @@ author:
     name: Seth Blank
     organization: ValiMail
     email: seth@valimail.com
+ -
+    ins: T. Herkula
+    name: Tobias Herkula
+    organization: optivo GmbH
+    email: t.herkula@optivo.com
 
 --- abstract
 
