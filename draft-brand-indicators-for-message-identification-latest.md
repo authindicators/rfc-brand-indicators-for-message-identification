@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-03-18
+date: 2017-03-28
 category: info
 
 workgroup: Authindicators Working Group
@@ -93,6 +93,11 @@ author:
     name: Seth Blank
     organization: ValiMail
     email: seth@valimail.com
+ -
+    ins: T. Herkula
+    name: Tobias Herkula
+    organization: optivo GmbH
+    email: t.herkula@optivo.com
 
 --- abstract
 
@@ -543,10 +548,9 @@ The domain example.com publishes the following BIMI record:
 
 The sender now sends a message, DKIM signs it, and transmits to the receiver:
 
-    DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Location;Date;bh=...;b=...
+    DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
     From: sender@example.com
     BIMI-Selector: v=BIMI1; s=brand;
-    BIMI-Location: image.example.com/bimi/logo/128x128.gif
     Subject: Hi, this is a message from the good folks at Example Learning
 
 #### MTA does its authentication checks
@@ -555,7 +559,7 @@ The receiving MTA receives the message and performs an SPF verification (which f
 
 #### MTA performs BIMI Assertion
 
-Ihe MTA sees that the message has a BIMI-Location header, AND it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Location header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
+Ihe MTA sees that the message has a BIMI-Selector header, AND it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
 
 #### MTA Stemps Authentication-Results
 
@@ -568,11 +572,9 @@ It stamps the results of the BIMI to the Authentication-Results header:
 
 #### MTA Constructs BIMI-Location header
 
-Finally, the MTA removes the existing BIMI-Location header, and stamps a new one:
+Finally, the MTA stamps the BIMI-Location header:
 
     BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/64x64.png
-
-In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.
 
 #### The MUA displays the indicator
 
