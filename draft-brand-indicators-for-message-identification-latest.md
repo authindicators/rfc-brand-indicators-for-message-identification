@@ -377,7 +377,7 @@ The MTA would lookup default._bimi.example.com for the BIMI DNS record.
 The domain example.com sends with a BIMI-Selector header:
 
     From: sender@example.com
-    BIMI-Selector: v=bimi1; s=selector;
+    BIMI-Selector: v=BIMI1; s=selector;
 
 The MTA would lookup selector._bimi.example.com.
 
@@ -411,7 +411,7 @@ a: Trust Authorities (plain-text; OPTIONAL).  A reserved value.
 
 f: Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is "png").  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).
 
-l: locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.
+l: locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport is HTTPS only.
 
 v: Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of "BIMI1".  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
@@ -447,9 +447,9 @@ Indicator Discovery {#indicator-discovery}
 
 Through the [BIMI Assertion Record](#assertion-record-def), the BIMI mechanism uses DNS TXT records to advertise preferences.  Preference discovery is accomplished via a method similar to the method used for [DMARC] records.  This method, and the important differences between BIMI and [DMARC] mechanisms, are discussed below.
 
-Indicator Discovery is only attempted if the message authenticates per Receiver policy.
+Indicator Discovery MUST only be attempted if the message authenticates per Receiver policy.
 
-To balance the conflicting requirements of supporting wildcarding, allowing subdomain policy overrides, and limiting DNS query load, Protocol Clients should employ the following lookup scheme for the appropriate BIMI record for the message:
+To balance the conflicting requirements of supporting wildcarding, allowing subdomain policy overrides, and limiting DNS query load, Protocol Clients SHOULD employ the following lookup scheme for the appropriate BIMI record for the message:
 
 1. Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Author Domain.
 
@@ -457,13 +457,13 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 3. Clients MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string '_bimi', and the Author Domain.  A possibly empty set of records is returned.
 
-4. Records that do not start with a "v=" tag that identifies the current version of BIMI are discarded.
+4. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
 5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.\<organizationalDomain\>, and not \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
 
-6. Records that do not start with a "v=" tag that identifies the current version of BIMI are discarded.
+6. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
-7. If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing is not performed for this message.
+7. If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing MUST NOT be performed for this message.
 
 8. If the remaining set contains only a single record, this record is used for indicator discovery.
 
@@ -515,7 +515,7 @@ The syntax of the header is as following:
 
 v: BIMI version (plain-text; REQUIRED).  It MUST have the value of "BIMI1".  The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
 
-l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.
+l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.
 
 \[ABNF NEEDED HERE\]
 
@@ -525,7 +525,7 @@ Upon successful completion of the BIMI lookup, in addition to stamping the resul
 
 The l= value of the BIMI-Location header is a comma separated list of URIs the MTA believes are most applicable to its MUAs.
 
-The URIs in the list are created from the exact concatenation of the l= and appropriate z= and f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
+The URIs in the list are created from the exact concatenation of the l= and appropriate z= and then f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
 
 The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
 
@@ -549,7 +549,7 @@ The domain example.com publishes the following BIMI record:
 
 The sender now sends a message, DKIM signs it, and transmits to the receiver:
 
-    DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Location;Date;bh=...;b=...
+    DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
     From: sender@example.com
     BIMI-Selector: v=BIMI1; s=brand;
     BIMI-Location: image.example.com/bimi/logo/128x128.gif
@@ -561,7 +561,7 @@ The receiving MTA receives the message and performs an SPF verification (which f
 
 #### MTA performs BIMI Assertion
 
-Ihe MTA sees that the message has a BIMI-Location header, AND it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Location header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
+Ihe MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
 
 #### MTA Stemps Authentication-Results
 
@@ -665,7 +665,7 @@ All email Receivers already have to query for DNS records, and all of them have 
 Unaligned indicators and asserting domains
 ------------
 
-There is no guarantee that a group responsible for managing brand indicators will have access to put these indicators directly in any specific location of a domain, and requiring that indicators live on the asserted domain is too high a bar.  Additionally, letting a brand have indicator locations outside its domain may be desirable so that someone sending legitimate authenticated email on the Domain Owner's behalf can manage and set selectors as an authorized third party.
+There is no guarantee that a group responsible for managing brand indicators will have access to put these indicators directly in any specific location of a domain, and requiring that indicators live on the asserted domain is too high a bar.  Additionally, letting a brand have indicator locations outside its domain may be desirable so that someone sending legitimate authenticated email on the Domain Owner's behalf can manage and set selectors as an authorized third party without requiring access to the Domain Owner's DNS or web services.
 
 Unsigned BIMI-Selector Header
 ------------
