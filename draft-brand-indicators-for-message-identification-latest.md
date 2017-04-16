@@ -234,7 +234,7 @@ An entity or organization that owns a DNS domain.  The term "owns" here indicate
 Indicator
 -------------
 
-The icon, image, mark, or other graphical representation of the brand. The Indicator is in a common image format with restrictions detailed in [General Record Format](#general-record-format).
+The icon, image, mark, or other graphical representation of the brand. The Indicator is in a common image format with restrictions detailed in the [Assertion Record definition](#assertion-record-def).
 
 Mail Receiver
 -------------
@@ -269,6 +269,110 @@ A Protocol Client that uses the optional verification capability to inquire abou
 BIMI DNS Records   {#bimi-dns}
 =============
 
+BIMI policies are published by Domain Owners and applied by Protocol Clients.
+
+A Domain Owner advertises BIMI participation of one or more of its domains by adding a DNS TXT record to those domains.  In doing so, Domain Owners make specific requests of MUAs regarding the preferred set of indicators to be displayed with messages purporting to be from one of the Domain Owner's domains.
+
+A Domain Owner may choose not to participate in BIMI.  In this case, the Domain Owner simply declines to advertise participation by not publishing any BIMI assertion record.
+
+An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner's published BIMI policy.  But MUAs have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.
+
+BIMI's use of the DNS is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
+
+Per [DNS], a TXT record can comprise several "character-string" objects.  Where this is the case, the module performing BIMI Assertion MUST concatenate these strings by joining together the objects in order and parsing the result as a single string.
+
+Assertion Record   {#assertion-record-def}
+-----------------
+
+All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains named "_bimi".  BIMI allows the definition of multiple preferences associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI uses selectors. Senders advertise which selector to use by specifying it in a [BIMI-Selector header](#bimi-selector).
+
+For example, the Domain Owner of "example.com" would post BIMI preferences in a TXT record at "default._bimi.example.com".  Similarly, a Mail Receiver wishing to query for BIMI preferences regarding mail with an RFC5322.From Author Domain of "example.com" and a selector "default" would issue a TXT query to the DNS for the subdomain of "default._bimi.example.com".  The DNS-located BIMI preference data will hereafter be called the "BIMI Assertion Record".
+
+Assertion records are defined precisely, mail receivers MUST NOT attempt to fix syntactical or capitalization errors. If a required tag is missing, it is an error.
+
+BIMI assertion records follow the extensible "tag-value" syntax for DNS-based key records defined in [DKIM].
+
+This section creates a registry for known BIMI tags and registers the initial set defined in this document.  Only tags defined in this document or in later extensions, and thus added to that registry, are to be processed; unknown tags MUST be ignored.
+
+The following tags are introduced as the initial valid BIMI tags:
+
+v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
+
+  ABNF:
+
+  bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
+
+a= Trust Authorities (plain-text; OPTIONAL).  A reserved value.
+
+  ABNF:
+
+  bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
+
+f= Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is "png").  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).
+
+  ABNF:
+
+  bimi-format-ext = \[FWS\] 3*4(ALPHA / DIGIT) \[FWS\]
+
+  bimi-formats = %x66 *WSP "=" bimi-format-ext *("," bimi-format-ext) \[","\]
+
+l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport is HTTPS only.
+
+  ABNF:
+
+  bimi-location-uri = \[FWS\] URI \[FWS\]
+
+  ; "URI" is imported from [URI]
+
+  ; commas (ASCII ; 0x2C) MUST be encoded
+
+  bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+
+z= List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no brand indicator should be used.
+
+  ABNF:
+
+  bimi-dimension = \[FWS\] 2*4DIGIT \[FWS\]
+
+  ; min 32
+
+  ; max 1024
+
+  bimi-size = bimi-dimension "x" bimi-dimension
+
+  bimi-size-list = bimi-size *("," bimi-size) \[","\]
+
+  bimi-image-sizes = %x7a *WSP "=" \[bimi-size-list\]
+
+Therefore, the formal definition of the BIMI format, using [ABNF], is as follows:
+
+  bimi-sep = *WSP %x3b *WSP
+
+  bimi-record = bimi-version (bimi-sep bimi-locations) \[bimi-sep bimi-formats\] \[bimi-sep bimi-image-sizes\] \[bimi-sep\]
+ 
+  ; components other than bimi-version
+ 
+  ; may appear in any order
+
+Selectors   {#selectors}
+------------------------
+
+To support multiple brand indicators per domain, the brand indicator namespace is subdivided for the publishing of multiple Assertion Records using "selectors".  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.  BIMI selectors are modeled after [DKIM selectors](https://tools.ietf.org/html/rfc6376#section-3.1).
+
+The selector "default" is the default Assertion Record. Domain Owners can specifiy which other selector to use on a per-message basis by utilizing the [BIMI-Selector Header](#bimi-selector).
+
+Periods are allowed in selectors and are component separators.  When BIMI Assertion Records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
+
+  ABNF:
+
+  selector = sub-domain *( "." sub-domain )
+
+  ; from [SMTP] Domain,
+
+  ; excluding address-literal
+
+The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.  BIMI sets no maximum limit on the number of selectors.
+
 BIMI Header Fields   {#bimi-headers}
 =============
 
@@ -278,20 +382,6 @@ Receiver Actions   {#bimi-receiver}
 OLD - THIS SECTION WILL BE REMOVED   {#old}
 =============
 
-Records For Domain Owners   {#for-domain-owners}
--------------
-
-BIMI requires Domain Owners to publish several records to communicate indicators they wish MUAs to use.
-
-### Assertion Record   {#assertion-overview}
-
-An Assertion Record is a DNS TXT record that a Domain Owner publishes to advertise participation in BIMI.
-
-### Selectors    {#selector-overview}
-
-Selectors allows Domain Owners to support multiple indicators per domain.
-
-Domain Owners can specifiy which selector to use on a per-message basis by utilizing the [BIMI-Selector Header](#bimi-selector).
 
 Headers For Mail Receivers   {#for-mail-receivers}
 -------------
@@ -308,42 +398,6 @@ Upon a successful authentication check and indicator lookup, the MTA should add 
 
 Mechanism Elements {#mechanisms}
 ===================
-
-BIMI policies are published by Domain Owners and applied by Protocol Clients.
-
-A Domain Owner advertises BIMI participation of one or more of its domains by adding a DNS TXT record to those domains.  In doing so, Domain Owners make specific requests of MUAs regarding the preferred set of indicators to be displayed with messages purporting to be from one of the Domain Owner's domains.
-
-A Domain Owner may choose not to participate in BIMI.  In this case, the Domain Owner simply declines to advertise participation by not publishing any BIMI assertion record.
-
-An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner's published BIMI policy.  But MUAs have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.
-
-Assertion Record {#assertion-record-def}
------------------
-
-All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains named "_bimi".  BIMI allows the definition of multiple preferences associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI uses selectors. Senders advertise which selector to use by specifying it in a [BIMI-Selector header](#bimi-selector).
-
-For example, the Domain Owner of "example.com" would post BIMI preferences in a TXT record at "default._bimi.example.com".  Similarly, a Mail Receiver wishing to query for BIMI preferences regarding mail with an RFC5322.From Author Domain of "example.com" and a selector "default" would issue a TXT query to the DNS for the subdomain of "default._bimi.example.com".  The DNS-located BIMI preference data will hereafter be called the "BIMI Assertion Record".
-
-BIMI's use of the DNS is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
-
-Per [DNS], a TXT record can comprise several "character-string" objects.  Where this is the case, the module performing BIMI Assertion MUST concatenate these strings by joining together the objects in order and parsing the result as a single string.
-
-Selectors   {#selectors}
-------------------------
-
-To support multiple brand indicators per domain, the brand indicator namespace is subdivided using "selectors".  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.  BIMI selectors are modeled after [DKIM selectors](https://tools.ietf.org/html/rfc6376#section-3.1).
-
-Periods are allowed in selectors and are component separators.  When BIMI Assertion Records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
-
-[ABNF]:
-
-selector =   sub-domain *( "." sub-domain )
-             ; from [SMTP] Domain,
-             ; excluding address-literal
-
-The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.  BIMI sets no maximum limit on the number of selectors.
-
-BIMI supports the notion of a "default" selector.
 
 The BIMI Selector Header {#bimi-selector}
 ----------------------
@@ -394,49 +448,6 @@ The MTA would ignore this header, and lookup default._bimi.example.com.
 
 The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.
 
-General Record Format {#general-record-format}
-----------------------
-
-BIMI assertion records follow the extensible "tag-value" syntax for DNS-based key records defined in DKIM [DKIM].
-
-This section creates a registry for known BIMI tags and registers the initial set defined in this document.  Only tags defined in this document or in later extensions, and thus added to that registry, are to be processed; unknown tags MUST be ignored.
-
-The following tags are introduced as the initial valid BIMI tags:
-
-a: Trust Authorities (plain-text; OPTIONAL).  A reserved value.
-
-f: Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is "png").  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).
-
-l: locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport is HTTPS only.
-
-v: Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of "BIMI1".  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
-
-z: List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no brand indicator should be used.
-
-Formal Definition {#formal-defintion}
------------------------
-
-The formal definition of the BIMI format, using [ABNF], is as follows:
-
-location-uri       = URI
-                       ; "URI" is imported from [URI]; commas (ASCII
-                       ; 0x2C) MUST be encoded
-
-bimi-record    = bimi-version
-                       \[bimi-sep bimi-formats\]
-                       \[bimi-sep bimi-locations\]
-                       \[bimi-sep bimi-image-sizes\]
-                       \[bimi-sep\]
-                       ; components other than bimi-version
-                       ; may appear in any order
-
-bimi-version   = "v" *WSP "=" *WSP %x42 %x49 %x4d %x49 %x31
-
-bimi-sep       = *WSP %x3b *WSP
-
-bimi-size-list = bimi-size*( "," bimi-size) \[ "," \]
-bimi-size      = bimi-dimension ("x" / "X") bimi-dimension
-bimi-dimension = \[FWS\](2DIGIT / 3DIGIT / 4DIGIT)\[FWS\]
 
 Indicator Discovery {#indicator-discovery}
 ----------------------------------
