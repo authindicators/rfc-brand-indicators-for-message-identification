@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-03-27
+date: 2017-04-15
 category: info
 
 workgroup: Authindicators Working Group
@@ -121,28 +121,16 @@ The approach taken by BIMI is nearly identical to the approach taken by [DKIM](h
 
 This document covers the BIMI mechanism for Domain Owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP) should be extended to work with BIMI.  Other documents will cover these topics.
 
-Why BIMI        {#why-bimi}
+Overview        {#why-bimi}
 ============
 
-Email Authentication     {#emailauth}
--------------
+The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are or are not in fact authenticated.
 
-The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are in fact authenticated.
+It is currently possible for MUAs to indicate the validity of messages authenticated via these mechanisms through the use of generic visual indicators such as checkmarks if authenticated or questions marks otherwise.  But there is a belief that the effectiveness of such generic indicators is limited, and that end users are better served through the use of brand indicators associated with the authenticated sender of the message.
 
-Generic Indication of Authenticity     {#genericauth}
--------------
+To accomplish this, MUAs need to be able to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are believed to be a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific imagery for a very large number of brands.
 
-It is currently possible for MUAs to indicate the validity of messages authenticated via [these mechanisms](#emailauth) through the use of generic visual indicators such as checkmarks if authenticated or questions marks otherwise.  But there is a belief that the effectiveness of such generic indicators is limited, and that end users are better served through the use of brand indicators associated with the authenticated sender of the message.
-
-Brand Specific Indication of Authenticity      {#brandauth}
--------------
-
-To benefit their users, MUAs need to be able to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are believed to be a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific imagery for a very large number of brands.
-
-The Need for Standardization   {#need}
-----------------------------
-
-Due to this need for [brand specific indicators](#brandauth), some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
+Due to this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
 1. It puts a significant burden on each mail-receiving organization, because they must identify and manage a large database of brand indicators.
 2. Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.
@@ -151,12 +139,9 @@ Due to this need for [brand specific indicators](#brandauth), some mail-receivin
 5. Many Domain Owners have no ability to participate whatsoever as they do not have the appropriate relationships to coordinate with mail-receiving organizations.
 6. MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive indicators in a manner optimized for their user interfaces.
 
-This all speaks to the need for a standardized mechanism by which Domain Owners can publish and distribute brand indicators for use by any participating MUA.
+This all speaks to the need for a standardized mechanism by which Domain Owners interested in ensuring that their imagery is displayed correctly and appropriately can publish and distribute brand indicators for use by any participating MUA.
 
-Indicator Curation     {#curation}
--------------
-
-Domain Owners have an interest in ensuring that the imagery displayed in these situations is correct and appropriate, so it is desirable to provide a mechanism to allow these mail-originating organizations to provide imagery to MUAs.  This mechanism removes the substantial burden of curating and maintaining an image database from the MUAs, and allows each brand to manage its own imagery.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.
+BIMI removes the substantial burden of curating and maintaining an image database from the MUAs, and allows each brand to manage its own imagery.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.
 
 Requirements   {#requirements}
 ========================
