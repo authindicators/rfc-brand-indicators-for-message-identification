@@ -387,7 +387,7 @@ Once BIMI policies are published in DNS via Assertion Records, additional guidan
 
 BIMI header fields are case insensitive. If a required tag is missing, it is an error.
 
-BIMI Selector {#bimi-selector}
+BIMI-Selector {#bimi-selector}
 ----------------------
 
 BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
