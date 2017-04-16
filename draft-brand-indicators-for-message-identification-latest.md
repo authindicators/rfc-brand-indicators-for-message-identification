@@ -143,6 +143,20 @@ This all speaks to the need for a standardized mechanism by which Domain Owners 
 
 BIMI removes the substantial burden of curating and maintaining an image database from the MUAs, and allows each brand to manage its own imagery.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.
 
+The basic structure of BIMI is as follows:
+
+1. Domain Owners publish brand indicator assertions for domains via the [DNS].
+
+2. Then, for any message received by a Mail Receiver:
+
+    1. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
+    2. If the message authenticates and has sufficient reputation per receiver policy, the receiver queries the DNS for a corresponding BIMI record.
+    3. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner's preferred brand indicator.
+
+3. The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.
+
+The purpose of this structure is to reduce operational complexity at each step and to consolidate validation and image selection into the MTA, so that Domain Owners only need to publish simple rules and MUAs only need simple display logic.
+
 Requirements   {#requirements}
 ========================
 
@@ -247,26 +261,8 @@ Verifying Protocol Client
 
 A Protocol Client that uses the optional verification capability to inquire about the verification status of published indicators.
 
-Overview   {#overview}
-========================
-
-This section provides a general overview of the design and operation of the BIMI environment.
-
-Outline    {#outline}
--------------
-
-The basic structure of BIMI is as follows:
-
-1. Domain Owners publish brand indicator assertions for domains via the [DNS].
-
-2. Then, for any message received by a Mail Receiver:
-
-    1. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
-    2. If the message authenticates and has sufficient reputation per receiver policy, the receiver queries the DNS for a corresponding BIMI record.
-    3. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner's preferred brand indicator.
-    4. The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.
-
-The purpose of this structure is to reduce operational complexity at each step and to consolidate validation and image selection into the MTA, so that Domain Owners only need to publish simple rules and MUAs only need simple display logic.
+OLD - THIS SECTION WILL BE REMOVED   {#old}
+=============
 
 Records For Domain Owners   {#for-domain-owners}
 -------------
