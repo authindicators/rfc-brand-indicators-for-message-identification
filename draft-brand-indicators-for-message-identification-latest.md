@@ -278,8 +278,6 @@ BIMI's policy payload is intentionally only published via a DNS record and not a
 
 Per [DNS], a TXT record can comprise several "character-string" objects. BIMI TXT records with multiple strings must be treated in an identical manner to [SPF](https://tools.ietf.org/html/rfc7208#section-3.3).
 
-For Domain Owners with multiple domains that wish to share the same set of Indicators within a trust boundary and only manage those Indicators from a single DNS location, it is RECOMMENDED to use DNS CNAMEs.
-
 Assertion Record   {#assertion-record-def}
 -----------------
 
@@ -359,13 +357,7 @@ If the "z" tag is empty, it is an explicit refusal to participate in BIMI. This 
 
 ### The "z" tag for vector formats
 
-The "z" tag is defined as "WxH" which does not translate cleanly when using vector formats (SVG for this document). If a vector format is specified, and there are multiple z= values, then an MTA should treat the smallest z value as the "small" vector graphic (for example, for thumbnails or mobile), and the largest z value as the "large" vector graphic. Any other z values should be ignored in conjunction with vector formats.
-
-### Domain Owner Preference
-
-A Domain Owner's preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.
-
-This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.
+The "z" tag is defined as "WxH" which does not translate cleanly when using vector formats (SVG for this document). If a vector format is specified, and there are multiple z= values, then for each aspect ratio, an MTA SHOULD treat the smallest z value as the "small" vector graphic (for example, for thumbnails or mobile), and the largest z value as the "large" vector graphic. Any other z values should be ignored in conjunction with vector formats.
 
 Selectors   {#selectors}
 ------------------------
@@ -441,6 +433,52 @@ Header Signing
 The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.
 
 The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by definition, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.
+
+Domain Owner Actions    {#bimi-sender}
+=============
+
+This section includes a walk through of the actions a Domain Owner takes when setting up Assertion Records and sending email messages.
+
+Determine and publish Indicator(s) for use
+-------------
+
+Domain Owners should consider which Indicator file formats to choose when setting up their BIMI Assertion Records. Vector image formats (SVG for this document) have some advantages over raster formats, and vice versa. As a Sender, BIMI provides control over which Indicators are chosen for display, but not the ultimate manner in which the MUA will display the image.
+
+Therefore, for any given Indicator, it is RECOMMENDED to provide several different versions (sizes, aspect ratios, and file types) of each Indicator so that the MUA may choose the most appropriate one for its layout.
+
+Then publish these Indicator options somewhere world readable.
+
+If publishing both vector and raster Indicators in the same Assertion Record, for each aspect ratio, only the smallest and largest z= size values will be used for vector Indicator retrieval, and those will be considered small and large vector Indicators respectively.
+
+BIMI allows multiple comma separated l= values in the Assertion Record, so that a Domain Owner may publish the same Indicators in multiple world readable locations. This is so Indicators may still be available if there are service or DNS issues for a particular l= value.
+
+Specify Domain Owner Preference
+-------------
+
+A Domain Owner's preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.
+
+This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.
+
+Publish Assertion Records
+-------------
+
+For each set of Indicators and domains, publish the appropriate Assertion Record as either "default" or a named selector as a DNS TXT record within the appropriate "_bimi" namespace.
+
+Manage multiple uses of the same Indicator(s) within a trust boundary
+-------------
+
+For Domain Owners with multiple domains that wish to share the same set of Indicators within a trust boundary and only manage those Indicators from a single DNS location, it is RECOMMENDED to use DNS CNAMEs.
+
+Using a CNAME here is functionally similar to the SPF redirect modifier. Since BIMI does not require l= tags to be aligned to the Author Domain, CNAMEs present a cleaner solution than extending the protocol. 
+
+Set the headers on outgoing email as appropriate
+-------------
+
+Once a default Assertion Record has been published for an Author Domain, all emails from this domain should display the appropriate Indicator in participating MUAs.
+
+If a non-default Indicator is desired, the BIMI-Selector header should be set appropriately. If for some reason this selector cannot be accessed by the Protocol Client, the fallback is the default Assertion Record on the Organization domain.
+
+The BIMI-Location header MUST NOT be set by email senders, and Protocol Clients MUST ignore it.
 
 Receiver Actions   {#bimi-receiver}
 =============
