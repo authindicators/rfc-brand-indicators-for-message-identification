@@ -190,6 +190,7 @@ document are to be interpreted as described in {{KEYWORDS}}.
 
 Readers are encouraged to be familiar with the contents of [EMAIL-ARCH].  In particular, that document defines various roles in the messaging infrastructure that can appear the same or separate in various contexts.  For example, a Domain Owner could, via the messaging mechanisms on which BIMI is based, delegate control over defining preferred brand indicators as the Domain Owner to a third party with another role.  This document does not address the distinctions among such roles; the reader is encouraged to become familiar with that material before continuing.
 
+Syntax descriptions use Augmented BNF [ABNF]
 
 Author Domain
 -------------
