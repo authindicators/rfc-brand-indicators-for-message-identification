@@ -654,6 +654,56 @@ Subdomain has no record for selector, but organization domain has a default
 
 In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
 
+BIMI Record Parsing for indicator selection  {#record-parsing-example}
+================
+
+A brand or Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
+
+## Indicator Selection
+
+Look up the DNS record for the l= tag which tells the location of the brand’s indicators:
+
+    default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
+
+The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
+
+## Indicator preferences and precedence
+
+The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
+
+    default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
+
+This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:
+
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/256x256.tif
+    https://bimi.example.com/marks/256x256.jpg
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/512x512.tif
+    https://bimi.example.com/marks/512x512.jpg
+
+It is NOT done this way (interweaving the sizes):
+
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/256x256.tif
+    https://bimi.example.com/marks/512x512.tif
+    https://bimi.example.com/marks/256x256.jpg
+    https://bimi.example.com/marks/512x512.jpg
+
+## Indicator preference and precedence with vector formats
+
+For example, if the following record were published:
+
+    default._bimi.example.com IN TXT "v=1; f=png,svg; z=256x256,512x512,1024x1024; l=https://bimi.example.com/marks/"
+
+This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions, but only using the smallest and largest z= values for the vector format:
+
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/256x256.svg
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/1024x1024.png
+    https://bimi.example.com/marks/1024x1024.svg
 
 Example BIMI-Location construction flow   {#bimi-location-example}
 ===============
@@ -709,54 +759,3 @@ The MUA displays the indicator
 ---------------
 
 The mail is opened in an MUA and that MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.
-
-BIMI Record Parsing for indicator selection  {#record-parsing-example}
-================
-
-A brand or Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
-
-## Indicator Selection
-
-Look up the DNS record for the l= tag which tells the location of the brand’s indicators:
-
-    default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
-
-The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
-
-## Indicator preferences and precedence
-
-The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
-
-    default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
-
-This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:
-
-    https://bimi.example.com/marks/256x256.png
-    https://bimi.example.com/marks/256x256.tif
-    https://bimi.example.com/marks/256x256.jpg
-    https://bimi.example.com/marks/512x512.png
-    https://bimi.example.com/marks/512x512.tif
-    https://bimi.example.com/marks/512x512.jpg
-
-It is NOT done this way (interweaving the sizes):
-
-    https://bimi.example.com/marks/256x256.png
-    https://bimi.example.com/marks/512x512.png
-    https://bimi.example.com/marks/256x256.tif
-    https://bimi.example.com/marks/512x512.tif
-    https://bimi.example.com/marks/256x256.jpg
-    https://bimi.example.com/marks/512x512.jpg
-
-## Indicator preference and precedence with vector formats
-
-For example, if the following record were published:
-
-    default._bimi.example.com IN TXT "v=1; f=png,svg; z=256x256,512x512,1024x1024; l=https://bimi.example.com/marks/"
-
-This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions, but only using the smallest and largest z= values for the vector format:
-
-    https://bimi.example.com/marks/256x256.png
-    https://bimi.example.com/marks/256x256.svg
-    https://bimi.example.com/marks/512x512.png
-    https://bimi.example.com/marks/1024x1024.png
-    https://bimi.example.com/marks/1024x1024.svg
