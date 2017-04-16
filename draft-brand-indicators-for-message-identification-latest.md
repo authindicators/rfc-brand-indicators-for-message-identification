@@ -192,7 +192,7 @@ Out of Scope     {#out-of-scope}
 
 Several topics and issues are specifically out of scope for the initial version of this work.  These include the following:
 
-* Defining what consitutes authenticated email for the purposes of this standard.
+* Defining what constitutes authenticated email for the purposes of this standard.
 * Publishing policy other than via the DNS.
 * Specific requirements for indicator display on MUAs.
 * How receivers should use reputation to influence the display of BIMI indicators.
@@ -259,7 +259,7 @@ An endpoint client that a user (a real human being) uses to access their and rea
 Protocol Client
 -------------
 
-An entity that uses the BIMI protocol to discover and fetch published indictors.
+An entity that uses the BIMI protocol to discover and fetch published indicators.
 
 Verifying Protocol Client
 -------------
@@ -359,7 +359,7 @@ Selectors   {#selectors}
 
 To support multiple brand indicators per domain, the brand indicator namespace is subdivided for the publishing of multiple Assertion Records using "selectors".  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.  BIMI selectors are modeled after [DKIM selectors](https://tools.ietf.org/html/rfc6376#section-3.1).
 
-The selector "default" is the default Assertion Record. Domain Owners can specifiy which other selector to use on a per-message basis by utilizing the [BIMI-Selector Header](#bimi-selector).
+The selector "default" is the default Assertion Record. Domain Owners can specify which other selector to use on a per-message basis by utilizing the [BIMI-Selector Header](#bimi-selector).
 
 Periods are allowed in selectors and are component separators.  When BIMI Assertion Records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
 
@@ -427,7 +427,7 @@ Header Signing
 
 The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.
 
-The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by definiton, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.
+The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by definition, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.
 
 Receiver Actions   {#bimi-receiver}
 =============
@@ -543,7 +543,7 @@ If a Domain Owner relies on SPF but not DKIM for email authentication, then addi
 IANA Considerations   {#iana}
 ===================
 
-IANA will need to reserve two new entrries to the "Permanent Message Header Field Names" registry.
+IANA will need to reserve two new entries to the "Permanent Message Header Field Names" registry.
 
    Header field name: BIMI-Selector
 
@@ -626,13 +626,13 @@ No BIMI record
 
 In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com
 
-Subdomain has no default record, but organizataional domain does
+Subdomain has no default record, but organizational domain does
 ----------------
 
     From: sender@sub.example.com
     Authentication-Results: bimi=pass header.d=example.com selector=default;
 
-Subdomain has no record for selector, but organization domain has a deafult
+Subdomain has no record for selector, but organization domain has a default
 ---------------
 
     From: sender@sub.example.com
@@ -673,9 +673,9 @@ The receiving MTA receives the message and performs an SPF verification (which f
 MTA performs BIMI Assertion
 ------------------
 
-Ihe MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
+The MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
 
-MTA Stemps Authentication-Results
+MTA Stamps Authentication-Results
 -----------------
 
 It stamps the results of the BIMI to the Authentication-Results header:
