@@ -96,7 +96,7 @@ author:
 
 --- abstract
 
-Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired Indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired Indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
+Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
 
 --- middle
 
@@ -149,11 +149,11 @@ The basic structure of BIMI is as follows:
 
 2. Then, for any message received by a Mail Receiver:
 
-    1. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
+    a. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
 
-    2. If the message authenticates and has sufficient reputation per receiver policy, the receiver queries the DNS for a corresponding BIMI record.
+    b. If the message authenticates and has sufficient reputation per receiver policy, the receiver queries the DNS for a corresponding BIMI record.
 
-    3. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner's preferred brand indicator.
+    c. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner's preferred brand indicator.
 
 3. The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.
 
@@ -278,7 +278,7 @@ BIMI's policy payload is intentionally only published via a DNS record and not a
 
 Per [DNS], a TXT record can comprise several "character-string" objects. BIMI TXT records with multiple strings must be treated in an identical manner to [SPF](https://tools.ietf.org/html/rfc7208#section-3.3).
 
-For Domain Owners with multiple domains that wish to share the same set of Indicators within a trust boundary and only manage those Indicators from a single DNS location, similar to an SPF redirect modifier, it is RECOMMENDED to use DNS CNAMEs.
+For Domain Owners with multiple domains that wish to share the same set of Indicators within a trust boundary and only manage those Indicators from a single DNS location, it is RECOMMENDED to use DNS CNAMEs.
 
 Assertion Record   {#assertion-record-def}
 -----------------
@@ -361,6 +361,12 @@ If the "z" tag is empty, it is an explicit refusal to participate in BIMI. This 
 
 The "z" tag is defined as "WxH" which does not translate cleanly when using vector formats (SVG for this document). If a vector format is specified, and there are multiple z= values, then an MTA should treat the smallest z value as the "small" vector graphic (for example, for thumbnails or mobile), and the largest z value as the "large" vector graphic. Any other z values should be ignored in conjunction with vector formats.
 
+### Domain Owner Preference
+
+A Domain Owner's preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.
+
+This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.
+
 Selectors   {#selectors}
 ------------------------
 
@@ -392,7 +398,7 @@ BIMI-Selector {#bimi-selector}
 
 BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
 
-v= Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
+v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
   ABNF:
 
@@ -415,7 +421,7 @@ BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to 
 
 The syntax of the header is as following:
 
-v= BIMI version (plain-text; REQUIRED).  The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI. The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
+v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
   The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
@@ -439,7 +445,7 @@ The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by de
 Receiver Actions   {#bimi-receiver}
 =============
 
-This section includes a walk through of the actions an MTA takes when evaluating an email message for BIMI Assertion.
+This section includes a walk through of the actions a Protocol Client takes when evaluating an email message for BIMI Assertion.
 
 Indicator Discovery {#indicator-discovery}
 ----------------------------------
@@ -466,7 +472,7 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 8. If the remaining set contains only a single record, this record is used for BIMI Assertion.
 
-BIMI status in Authentication Results {#bimi-results}
+Stamp BIMI status in Authentication Results {#bimi-results}
 ----------------------------------
 
 Upon completion of Indicator Discovery, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
@@ -477,14 +483,7 @@ header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=
 
 selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
 
-Domain Owner Preference
-----------------
-
-A Domain Owner's preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.
-
-This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.
-
-Handling Existing BIMI-Location Headers
+Handle Existing BIMI-Location Headers
 ---------------
 
 Regardless of success of the BIMI lookup, if the BIMI-Location header already exists it MUST be either removed or renamed.
@@ -493,10 +492,10 @@ This is because the MTA doing BIMI Assertion is the only entity allowed to speci
 
 Additionally, at this point, if the original email message had a DKIM signature, it has already been evaluated. Removing the header at this point should not break DKIM, especially because this header should not be signed per this spec.
 
-BIMI-Location URI Construction
+Construct BIMI-Location URI(s)
 ---------------
 
-The l= value of the BIMI-Location header is a comma separated list of URIs the MTA believes are most applicable to its MUAs.
+The l= value of the BIMI-Location header is a comma separated list of URIs to Indicators the MTA believes are most applicable to its MUAs. MTAs SHOULD choose the Indicators to include based on Receiver policy for optimal performance and user experience for its MUAs.
 
 The URIs in the list are created from the exact concatenation of the l= and appropriate z= and then f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
 
@@ -620,7 +619,6 @@ The domain example.com sends with a BIMI-Selector header, but does not include t
 
 The MTA would ignore this header, and lookup default._bimi.example.com.
 
-
 Example Authentication-Results stamps   {#ar-examples}
 =============
 
@@ -663,7 +661,7 @@ A brand or Domain Owner may have multiple BIMI indicators for the MUA to select 
 
 Look up the DNS record for the l= tag which tells the location of the brand’s indicators:
 
-    default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
+    default._bimi.example.com IN TXT "v=bimi1; f=png; z=512x512; l=https://bimi.example.com/marks/"
 
 The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
 
@@ -671,7 +669,7 @@ The exact file to download from the location is the z= tag with the f= tag exten
 
 The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
 
-    default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
+    default._bimi.example.com IN TXT "v=bimi1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
 
 This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:
 
@@ -695,7 +693,7 @@ It is NOT done this way (interweaving the sizes):
 
 For example, if the following record were published:
 
-    default._bimi.example.com IN TXT "v=1; f=png,svg; z=256x256,512x512,1024x1024; l=https://bimi.example.com/marks/"
+    default._bimi.example.com IN TXT "v=bimi1; f=png,svg; z=256x256,512x512,1024x1024; l=https://bimi.example.com/marks/"
 
 This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions, but only using the smallest and largest z= values for the vector format:
 
