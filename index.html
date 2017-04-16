@@ -278,12 +278,7 @@ address {
 
   <link href="#rfc.toc" rel="Contents"/>
 <link href="#rfc.section.1" rel="Chapter" title="1 Introduction"/>
-<link href="#rfc.section.2" rel="Chapter" title="2 Why BIMI"/>
-<link href="#rfc.section.2.1" rel="Chapter" title="2.1 Email Authentication"/>
-<link href="#rfc.section.2.2" rel="Chapter" title="2.2 Generic Indication of Authenticity"/>
-<link href="#rfc.section.2.3" rel="Chapter" title="2.3 Brand Specific Indication of Authenticity"/>
-<link href="#rfc.section.2.4" rel="Chapter" title="2.4 The Need for Standardization"/>
-<link href="#rfc.section.2.5" rel="Chapter" title="2.5 Indicator Curation"/>
+<link href="#rfc.section.2" rel="Chapter" title="2 Overview"/>
 <link href="#rfc.section.3" rel="Chapter" title="3 Requirements"/>
 <link href="#rfc.section.3.1" rel="Chapter" title="3.1 High-Level Goals"/>
 <link href="#rfc.section.3.2" rel="Chapter" title="3.2 Security"/>
@@ -291,51 +286,67 @@ address {
 <link href="#rfc.section.3.4" rel="Chapter" title="3.4 Out of Scope"/>
 <link href="#rfc.section.4" rel="Chapter" title="4 Terminology and Definitions"/>
 <link href="#rfc.section.4.1" rel="Chapter" title="4.1 Author Domain"/>
-<link href="#rfc.section.4.2" rel="Chapter" title="4.2 Assertion Record"/>
-<link href="#rfc.section.4.3" rel="Chapter" title="4.3 BIMI Assertion"/>
-<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Domain Owner"/>
+<link href="#rfc.section.4.2" rel="Chapter" title="4.2 BIMI Assertion"/>
+<link href="#rfc.section.4.3" rel="Chapter" title="4.3 Domain Owner"/>
+<link href="#rfc.section.4.4" rel="Chapter" title="4.4 Indicator"/>
 <link href="#rfc.section.4.5" rel="Chapter" title="4.5 Mail Receiver"/>
 <link href="#rfc.section.4.6" rel="Chapter" title="4.6 Mark Asserting Entity (MAE)"/>
 <link href="#rfc.section.4.7" rel="Chapter" title="4.7 Mark Verifying Authority (MVA)"/>
 <link href="#rfc.section.4.8" rel="Chapter" title="4.8 Mail User Agent (MUA)"/>
 <link href="#rfc.section.4.9" rel="Chapter" title="4.9 Protocol Client"/>
 <link href="#rfc.section.4.10" rel="Chapter" title="4.10 Verifying Protocol Client"/>
-<link href="#rfc.section.5" rel="Chapter" title="5 Overview"/>
-<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Outline"/>
-<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Records For Domain Owners"/>
-<link href="#rfc.section.5.2.1" rel="Chapter" title="5.2.1 Assertion Record"/>
-<link href="#rfc.section.5.2.2" rel="Chapter" title="5.2.2 Selectors"/>
-<link href="#rfc.section.5.3" rel="Chapter" title="5.3 Headers For Mail Receivers"/>
-<link href="#rfc.section.5.3.1" rel="Chapter" title="5.3.1 Authentication-Results"/>
-<link href="#rfc.section.5.3.2" rel="Chapter" title="5.3.2 BIMI-Location"/>
-<link href="#rfc.section.6" rel="Chapter" title="6 Mechanism Elements"/>
-<link href="#rfc.section.6.1" rel="Chapter" title="6.1 Assertion Record"/>
-<link href="#rfc.section.6.2" rel="Chapter" title="6.2 Selectors"/>
-<link href="#rfc.section.6.3" rel="Chapter" title="6.3 The BIMI Selector Header"/>
-<link href="#rfc.section.6.3.1" rel="Chapter" title="6.3.1 Header Examples"/>
-<link href="#rfc.section.6.3.2" rel="Chapter" title="6.3.2 Header Signing"/>
-<link href="#rfc.section.6.4" rel="Chapter" title="6.4 General Record Format"/>
-<link href="#rfc.section.6.5" rel="Chapter" title="6.5 Formal Definition"/>
-<link href="#rfc.section.6.6" rel="Chapter" title="6.6 Indicator Discovery"/>
-<link href="#rfc.section.6.7" rel="Chapter" title="6.7 BIMI status in Authentication Results"/>
-<link href="#rfc.section.6.7.1" rel="Chapter" title="6.7.1 Example Authentication-Results stamps"/>
-<link href="#rfc.section.6.8" rel="Chapter" title="6.8 The BIMI-Location Header"/>
-<link href="#rfc.section.6.8.1" rel="Chapter" title="6.8.1 BIMI-Location URI Construction"/>
-<link href="#rfc.section.6.8.2" rel="Chapter" title="6.8.2 Handling Existing BIMI-Location Headers"/>
-<link href="#rfc.section.6.8.3" rel="Chapter" title="6.8.3 Example BIMI-Location construction flow"/>
-<link href="#rfc.section.6.9" rel="Chapter" title="6.9 BIMI Record Parsing for indicator selection"/>
-<link href="#rfc.section.6.9.1" rel="Chapter" title="6.9.1 Indicator Selection"/>
-<link href="#rfc.section.6.9.2" rel="Chapter" title="6.9.2 Indicator preferences and precedence"/>
-<link href="#rfc.section.6.9.3" rel="Chapter" title="6.9.3 Domain Owner Preference"/>
-<link href="#rfc.section.6.10" rel="Chapter" title="6.10 Set appropriate flags on the mail store"/>
-<link href="#rfc.section.7" rel="Chapter" title="7 Security Considerations"/>
-<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Lookalike Domains and Copycat Indicators"/>
-<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Large files and buffer overflows"/>
-<link href="#rfc.section.7.3" rel="Chapter" title="7.3 Slow DNS queries"/>
-<link href="#rfc.section.7.4" rel="Chapter" title="7.4 Unaligned indicators and asserting domains"/>
-<link href="#rfc.section.7.5" rel="Chapter" title="7.5 Unsigned BIMI-Selector Header"/>
-<link href="#rfc.section.8" rel="Chapter" title="8 IANA Considerations"/>
-<link href="#rfc.references" rel="Chapter" title="9 Normative References"/>
+<link href="#rfc.section.5" rel="Chapter" title="5 BIMI DNS Records"/>
+<link href="#rfc.section.5.1" rel="Chapter" title="5.1 Assertion Record"/>
+<link href="#rfc.section.5.1.1" rel="Chapter" title="5.1.1 An empty &#x201C;z&#x201D; tag"/>
+<link href="#rfc.section.5.1.2" rel="Chapter" title="5.1.2 The &#x201C;z&#x201D; tag for vector formats"/>
+<link href="#rfc.section.5.2" rel="Chapter" title="5.2 Selectors"/>
+<link href="#rfc.section.6" rel="Chapter" title="6 BIMI Header Fields"/>
+<link href="#rfc.section.6.1" rel="Chapter" title="6.1 BIMI-Selector"/>
+<link href="#rfc.section.6.2" rel="Chapter" title="6.2 BIMI-Location"/>
+<link href="#rfc.section.6.3" rel="Chapter" title="6.3 Header Signing"/>
+<link href="#rfc.section.7" rel="Chapter" title="7 Domain Owner Actions"/>
+<link href="#rfc.section.7.1" rel="Chapter" title="7.1 Determine and publish Indicator(s) for use"/>
+<link href="#rfc.section.7.2" rel="Chapter" title="7.2 Specify Domain Owner Preference"/>
+<link href="#rfc.section.7.3" rel="Chapter" title="7.3 Publish Assertion Records"/>
+<link href="#rfc.section.7.4" rel="Chapter" title="7.4 Manage multiple uses of the same Indicator(s) within a trust boundary"/>
+<link href="#rfc.section.7.5" rel="Chapter" title="7.5 Set the headers on outgoing email as appropriate"/>
+<link href="#rfc.section.8" rel="Chapter" title="8 Receiver Actions"/>
+<link href="#rfc.section.8.1" rel="Chapter" title="8.1 Indicator Discovery"/>
+<link href="#rfc.section.8.2" rel="Chapter" title="8.2 Stamp BIMI status in Authentication Results"/>
+<link href="#rfc.section.8.3" rel="Chapter" title="8.3 Handle Existing BIMI-Location Headers"/>
+<link href="#rfc.section.8.4" rel="Chapter" title="8.4 Construct BIMI-Location URI(s)"/>
+<link href="#rfc.section.8.5" rel="Chapter" title="8.5 Set appropriate flags on the mail store"/>
+<link href="#rfc.section.9" rel="Chapter" title="9 Security Considerations"/>
+<link href="#rfc.section.9.1" rel="Chapter" title="9.1 Lookalike Domains and Copycat Indicators"/>
+<link href="#rfc.section.9.2" rel="Chapter" title="9.2 Large files and buffer overflows"/>
+<link href="#rfc.section.9.3" rel="Chapter" title="9.3 Slow DNS queries"/>
+<link href="#rfc.section.9.4" rel="Chapter" title="9.4 Unaligned indicators and asserting domains"/>
+<link href="#rfc.section.9.5" rel="Chapter" title="9.5 Unsigned BIMI-Selector Header"/>
+<link href="#rfc.section.9.6" rel="Chapter" title="9.6 CGI scripts in Indicator payload"/>
+<link href="#rfc.section.9.7" rel="Chapter" title="9.7 Metadata in Indicators"/>
+<link href="#rfc.section.10" rel="Chapter" title="10 IANA Considerations"/>
+<link href="#rfc.references" rel="Chapter" title="11 Normative References"/>
+<link href="#rfc.appendix.A" rel="Chapter" title="A Example Selector Discovery (INFORMATIVE)"/>
+<link href="#rfc.appendix.A.1" rel="Chapter" title="A.1 No BIMI-Selector Header"/>
+<link href="#rfc.appendix.A.2" rel="Chapter" title="A.2 With BIMI-Selector Header"/>
+<link href="#rfc.appendix.A.3" rel="Chapter" title="A.3 MISSING EXAMPLE - TZINK WHAT WAS IT - Malformed header?"/>
+<link href="#rfc.appendix.A.4" rel="Chapter" title="A.4 Invalid BIMI-Selector Header"/>
+<link href="#rfc.appendix.B" rel="Chapter" title="B Example Authentication-Results stamps (INFORMATIONAL)"/>
+<link href="#rfc.appendix.B.1" rel="Chapter" title="B.1 Successful BIMI lookup"/>
+<link href="#rfc.appendix.B.2" rel="Chapter" title="B.2 No BIMI record"/>
+<link href="#rfc.appendix.B.3" rel="Chapter" title="B.3 Subdomain has no default record, but organizational domain does"/>
+<link href="#rfc.appendix.B.4" rel="Chapter" title="B.4 Subdomain has no record for selector, but organization domain has a default"/>
+<link href="#rfc.appendix.C" rel="Chapter" title="C Example Indicator Selection (INFORMATIONAL)"/>
+<link href="#rfc.appendix.C.1" rel="Chapter" title="C.1 Simple Indicator Selection"/>
+<link href="#rfc.appendix.C.2" rel="Chapter" title="C.2 Indicator preferences and precedence"/>
+<link href="#rfc.appendix.C.3" rel="Chapter" title="C.3 Indicator preference and precedence with vector formats"/>
+<link href="#rfc.appendix.D" rel="Chapter" title="D Example BIMI-Location Construction (INFORMATIONAL)"/>
+<link href="#rfc.appendix.D.1" rel="Chapter" title="D.1 MTA Receives an email"/>
+<link href="#rfc.appendix.D.2" rel="Chapter" title="D.2 MTA does its authentication checks"/>
+<link href="#rfc.appendix.D.3" rel="Chapter" title="D.3 MTA performs BIMI Assertion"/>
+<link href="#rfc.appendix.D.4" rel="Chapter" title="D.4 MTA Stamps Authentication-Results"/>
+<link href="#rfc.appendix.D.5" rel="Chapter" title="D.5 MTA Constructs BIMI-Location header"/>
+<link href="#rfc.appendix.D.6" rel="Chapter" title="D.6 The MUA displays the indicator"/>
 <link href="#rfc.authors" rel="Chapter"/>
 
 
@@ -344,9 +355,9 @@ address {
 
   <meta name="dct.creator" content="Loder, T., Zink, T., Goldstein, P., and S. Blank" />
   <meta name="dct.identifier" content="urn:ietf:id:draft-brand-indicators-for-message-identification-latest" />
-  <meta name="dct.issued" scheme="ISO8601" content="2017-3-18" />
-  <meta name="dct.abstract" content="Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in " />
-  <meta name="description" content="Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in " />
+  <meta name="dct.issued" scheme="ISO8601" content="2017-4-16" />
+  <meta name="dct.abstract" content="Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit." />
+  <meta name="description" content="Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit." />
 
 </head>
 
@@ -368,7 +379,7 @@ address {
   <td class="right">T. Zink</td>
 </tr>
 <tr>
-  <td class="left">Expires: September 19, 2017</td>
+  <td class="left">Expires: October 18, 2017</td>
   <td class="right">Microsoft</td>
 </tr>
 <tr>
@@ -385,7 +396,7 @@ address {
 </tr>
 <tr>
   <td class="left"></td>
-  <td class="right">March 18, 2017</td>
+  <td class="right">April 16, 2017</td>
 </tr>
 
     	
@@ -398,14 +409,14 @@ address {
   <h1 id="rfc.abstract">
   <a href="#rfc.abstract">Abstract</a>
 </h1>
-<p>Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in <a href="#DNS">[DNS]</a> and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.</p>
+<p>Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.</p>
 <h1 id="rfc.status">
   <a href="#rfc.status">Status of This Memo</a>
 </h1>
 <p>This Internet-Draft is submitted in full conformance with the provisions of BCP 78 and BCP 79.</p>
 <p>Internet-Drafts are working documents of the Internet Engineering Task Force (IETF).  Note that other groups may also distribute working documents as Internet-Drafts.  The list of current Internet-Drafts is at http://datatracker.ietf.org/drafts/current/.</p>
 <p>Internet-Drafts are draft documents valid for a maximum of six months and may be updated, replaced, or obsoleted by other documents at any time.  It is inappropriate to use Internet-Drafts as reference material or to cite them other than as "work in progress."</p>
-<p>This Internet-Draft will expire on September 19, 2017.</p>
+<p>This Internet-Draft will expire on October 18, 2017.</p>
 <h1 id="rfc.copyrightnotice">
   <a href="#rfc.copyrightnotice">Copyright Notice</a>
 </h1>
@@ -418,73 +429,84 @@ address {
   <ul class="toc">
 
   	<li>1.   <a href="#rfc.section.1">Introduction</a></li>
-<li>2.   <a href="#rfc.section.2">Why BIMI</a></li>
-<ul><li>2.1.   <a href="#rfc.section.2.1">Email Authentication</a></li>
-<li>2.2.   <a href="#rfc.section.2.2">Generic Indication of Authenticity</a></li>
-<li>2.3.   <a href="#rfc.section.2.3">Brand Specific Indication of Authenticity</a></li>
-<li>2.4.   <a href="#rfc.section.2.4">The Need for Standardization</a></li>
-<li>2.5.   <a href="#rfc.section.2.5">Indicator Curation</a></li>
-</ul><li>3.   <a href="#rfc.section.3">Requirements</a></li>
+<li>2.   <a href="#rfc.section.2">Overview</a></li>
+<li>3.   <a href="#rfc.section.3">Requirements</a></li>
 <ul><li>3.1.   <a href="#rfc.section.3.1">High-Level Goals</a></li>
 <li>3.2.   <a href="#rfc.section.3.2">Security</a></li>
 <li>3.3.   <a href="#rfc.section.3.3">Scalability</a></li>
 <li>3.4.   <a href="#rfc.section.3.4">Out of Scope</a></li>
 </ul><li>4.   <a href="#rfc.section.4">Terminology and Definitions</a></li>
 <ul><li>4.1.   <a href="#rfc.section.4.1">Author Domain</a></li>
-<li>4.2.   <a href="#rfc.section.4.2">Assertion Record</a></li>
-<li>4.3.   <a href="#rfc.section.4.3">BIMI Assertion</a></li>
-<li>4.4.   <a href="#rfc.section.4.4">Domain Owner</a></li>
+<li>4.2.   <a href="#rfc.section.4.2">BIMI Assertion</a></li>
+<li>4.3.   <a href="#rfc.section.4.3">Domain Owner</a></li>
+<li>4.4.   <a href="#rfc.section.4.4">Indicator</a></li>
 <li>4.5.   <a href="#rfc.section.4.5">Mail Receiver</a></li>
 <li>4.6.   <a href="#rfc.section.4.6">Mark Asserting Entity (MAE)</a></li>
 <li>4.7.   <a href="#rfc.section.4.7">Mark Verifying Authority (MVA)</a></li>
 <li>4.8.   <a href="#rfc.section.4.8">Mail User Agent (MUA)</a></li>
 <li>4.9.   <a href="#rfc.section.4.9">Protocol Client</a></li>
 <li>4.10.   <a href="#rfc.section.4.10">Verifying Protocol Client</a></li>
-</ul><li>5.   <a href="#rfc.section.5">Overview</a></li>
-<ul><li>5.1.   <a href="#rfc.section.5.1">Outline</a></li>
-<li>5.2.   <a href="#rfc.section.5.2">Records For Domain Owners</a></li>
-<ul><li>5.2.1.   <a href="#rfc.section.5.2.1">Assertion Record</a></li>
-<li>5.2.2.   <a href="#rfc.section.5.2.2">Selectors</a></li>
-</ul><li>5.3.   <a href="#rfc.section.5.3">Headers For Mail Receivers</a></li>
-<ul><li>5.3.1.   <a href="#rfc.section.5.3.1">Authentication-Results</a></li>
-<li>5.3.2.   <a href="#rfc.section.5.3.2">BIMI-Location</a></li>
-</ul></ul><li>6.   <a href="#rfc.section.6">Mechanism Elements</a></li>
-<ul><li>6.1.   <a href="#rfc.section.6.1">Assertion Record</a></li>
-<li>6.2.   <a href="#rfc.section.6.2">Selectors</a></li>
-<li>6.3.   <a href="#rfc.section.6.3">The BIMI Selector Header</a></li>
-<ul><li>6.3.1.   <a href="#rfc.section.6.3.1">Header Examples</a></li>
-<li>6.3.2.   <a href="#rfc.section.6.3.2">Header Signing</a></li>
-</ul><li>6.4.   <a href="#rfc.section.6.4">General Record Format</a></li>
-<li>6.5.   <a href="#rfc.section.6.5">Formal Definition</a></li>
-<li>6.6.   <a href="#rfc.section.6.6">Indicator Discovery</a></li>
-<li>6.7.   <a href="#rfc.section.6.7">BIMI status in Authentication Results</a></li>
-<ul><li>6.7.1.   <a href="#rfc.section.6.7.1">Example Authentication-Results stamps</a></li>
-</ul><li>6.8.   <a href="#rfc.section.6.8">The BIMI-Location Header</a></li>
-<ul><li>6.8.1.   <a href="#rfc.section.6.8.1">BIMI-Location URI Construction</a></li>
-<li>6.8.2.   <a href="#rfc.section.6.8.2">Handling Existing BIMI-Location Headers</a></li>
-<li>6.8.3.   <a href="#rfc.section.6.8.3">Example BIMI-Location construction flow</a></li>
-</ul><li>6.9.   <a href="#rfc.section.6.9">BIMI Record Parsing for indicator selection</a></li>
-<ul><li>6.9.1.   <a href="#rfc.section.6.9.1">Indicator Selection</a></li>
-<li>6.9.2.   <a href="#rfc.section.6.9.2">Indicator preferences and precedence</a></li>
-<li>6.9.3.   <a href="#rfc.section.6.9.3">Domain Owner Preference</a></li>
-</ul><li>6.10.   <a href="#rfc.section.6.10">Set appropriate flags on the mail store</a></li>
-</ul><li>7.   <a href="#rfc.section.7">Security Considerations</a></li>
-<ul><li>7.1.   <a href="#rfc.section.7.1">Lookalike Domains and Copycat Indicators</a></li>
-<li>7.2.   <a href="#rfc.section.7.2">Large files and buffer overflows</a></li>
-<li>7.3.   <a href="#rfc.section.7.3">Slow DNS queries</a></li>
-<li>7.4.   <a href="#rfc.section.7.4">Unaligned indicators and asserting domains</a></li>
-<li>7.5.   <a href="#rfc.section.7.5">Unsigned BIMI-Selector Header</a></li>
-</ul><li>8.   <a href="#rfc.section.8">IANA Considerations</a></li>
-<li>9.   <a href="#rfc.references">Normative References</a></li>
-<li><a href="#rfc.authors">Authors' Addresses</a></li>
+</ul><li>5.   <a href="#rfc.section.5">BIMI DNS Records</a></li>
+<ul><li>5.1.   <a href="#rfc.section.5.1">Assertion Record</a></li>
+<ul><li>5.1.1.   <a href="#rfc.section.5.1.1">An empty &#8220;z&#8221; tag</a></li>
+<li>5.1.2.   <a href="#rfc.section.5.1.2">The &#8220;z&#8221; tag for vector formats</a></li>
+</ul><li>5.2.   <a href="#rfc.section.5.2">Selectors</a></li>
+</ul><li>6.   <a href="#rfc.section.6">BIMI Header Fields</a></li>
+<ul><li>6.1.   <a href="#rfc.section.6.1">BIMI-Selector</a></li>
+<li>6.2.   <a href="#rfc.section.6.2">BIMI-Location</a></li>
+<li>6.3.   <a href="#rfc.section.6.3">Header Signing</a></li>
+</ul><li>7.   <a href="#rfc.section.7">Domain Owner Actions</a></li>
+<ul><li>7.1.   <a href="#rfc.section.7.1">Determine and publish Indicator(s) for use</a></li>
+<li>7.2.   <a href="#rfc.section.7.2">Specify Domain Owner Preference</a></li>
+<li>7.3.   <a href="#rfc.section.7.3">Publish Assertion Records</a></li>
+<li>7.4.   <a href="#rfc.section.7.4">Manage multiple uses of the same Indicator(s) within a trust boundary</a></li>
+<li>7.5.   <a href="#rfc.section.7.5">Set the headers on outgoing email as appropriate</a></li>
+</ul><li>8.   <a href="#rfc.section.8">Receiver Actions</a></li>
+<ul><li>8.1.   <a href="#rfc.section.8.1">Indicator Discovery</a></li>
+<li>8.2.   <a href="#rfc.section.8.2">Stamp BIMI status in Authentication Results</a></li>
+<li>8.3.   <a href="#rfc.section.8.3">Handle Existing BIMI-Location Headers</a></li>
+<li>8.4.   <a href="#rfc.section.8.4">Construct BIMI-Location URI(s)</a></li>
+<li>8.5.   <a href="#rfc.section.8.5">Set appropriate flags on the mail store</a></li>
+</ul><li>9.   <a href="#rfc.section.9">Security Considerations</a></li>
+<ul><li>9.1.   <a href="#rfc.section.9.1">Lookalike Domains and Copycat Indicators</a></li>
+<li>9.2.   <a href="#rfc.section.9.2">Large files and buffer overflows</a></li>
+<li>9.3.   <a href="#rfc.section.9.3">Slow DNS queries</a></li>
+<li>9.4.   <a href="#rfc.section.9.4">Unaligned indicators and asserting domains</a></li>
+<li>9.5.   <a href="#rfc.section.9.5">Unsigned BIMI-Selector Header</a></li>
+<li>9.6.   <a href="#rfc.section.9.6">CGI scripts in Indicator payload</a></li>
+<li>9.7.   <a href="#rfc.section.9.7">Metadata in Indicators</a></li>
+</ul><li>10.   <a href="#rfc.section.10">IANA Considerations</a></li>
+<li>11.   <a href="#rfc.references">Normative References</a></li>
+<li>Appendix A.   <a href="#rfc.appendix.A">Example Selector Discovery (INFORMATIVE)</a></li>
+<ul><li>A.1.   <a href="#rfc.appendix.A.1">No BIMI-Selector Header</a></li>
+<li>A.2.   <a href="#rfc.appendix.A.2">With BIMI-Selector Header</a></li>
+<li>A.3.   <a href="#rfc.appendix.A.3">MISSING EXAMPLE - TZINK WHAT WAS IT - Malformed header?</a></li>
+<li>A.4.   <a href="#rfc.appendix.A.4">Invalid BIMI-Selector Header</a></li>
+</ul><li>Appendix B.   <a href="#rfc.appendix.B">Example Authentication-Results stamps (INFORMATIONAL)</a></li>
+<ul><li>B.1.   <a href="#rfc.appendix.B.1">Successful BIMI lookup</a></li>
+<li>B.2.   <a href="#rfc.appendix.B.2">No BIMI record</a></li>
+<li>B.3.   <a href="#rfc.appendix.B.3">Subdomain has no default record, but organizational domain does</a></li>
+<li>B.4.   <a href="#rfc.appendix.B.4">Subdomain has no record for selector, but organization domain has a default</a></li>
+</ul><li>Appendix C.   <a href="#rfc.appendix.C">Example Indicator Selection (INFORMATIONAL)</a></li>
+<ul><li>C.1.   <a href="#rfc.appendix.C.1">Simple Indicator Selection</a></li>
+<li>C.2.   <a href="#rfc.appendix.C.2">Indicator preferences and precedence</a></li>
+<li>C.3.   <a href="#rfc.appendix.C.3">Indicator preference and precedence with vector formats</a></li>
+</ul><li>Appendix D.   <a href="#rfc.appendix.D">Example BIMI-Location Construction (INFORMATIONAL)</a></li>
+<ul><li>D.1.   <a href="#rfc.appendix.D.1">MTA Receives an email</a></li>
+<li>D.2.   <a href="#rfc.appendix.D.2">MTA does its authentication checks</a></li>
+<li>D.3.   <a href="#rfc.appendix.D.3">MTA performs BIMI Assertion</a></li>
+<li>D.4.   <a href="#rfc.appendix.D.4">MTA Stamps Authentication-Results</a></li>
+<li>D.5.   <a href="#rfc.appendix.D.5">MTA Constructs BIMI-Location header</a></li>
+<li>D.6.   <a href="#rfc.appendix.D.6">The MUA displays the indicator</a></li>
+</ul><li><a href="#rfc.authors">Authors' Addresses</a></li>
 
 
   </ul>
 
   <h1 id="rfc.section.1"><a href="#rfc.section.1">1.</a> <a href="#problems" id="problems">Introduction</a></h1>
-<p id="rfc.section.1.p.1">This document defines Brand Indicators for Message Identification (BIMI), which permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific indicators next to properly authenticated messages.</p>
+<p id="rfc.section.1.p.1">This document defines Brand Indicators for Message Identification (BIMI), which permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.</p>
 <p id="rfc.section.1.p.2">Due to the amount of spam and forged email on the internet today, many mail receivers wish to benefit their users by clearly identifying authenticated email.  For email-sending organizations, the belief is that clear indicators of their brand is the most effective way to accomplish this.  This has in turn led receivers to build closed systems to manage brand indicators.</p>
-<p id="rfc.section.1.p.3">BIMI is an open system that works at internet scale, so that Domain Owners can coordinate with MUAs to display appropriate indicators.  BIMI has the added benefit of incentivizing Domain Owners to authenticate their email.</p>
+<p id="rfc.section.1.p.3">BIMI is an open system that works at internet scale, so that Domain Owners can coordinate with MUAs to display appropriate Indicators.  BIMI has the added benefit of incentivizing Domain Owners to authenticate their email.</p>
 <p id="rfc.section.1.p.4">The approach taken by BIMI is nearly identical to the approach taken by <a href="https://tools.ietf.org/html/rfc6376#section-1">DKIM</a>, in that BIMI:</p>
 <p/>
 
@@ -498,15 +520,11 @@ address {
   <li>allows delegation of indicator hosting to third parties.</li>
 </ul>
 <p id="rfc.section.1.p.6">This document covers the BIMI mechanism for Domain Owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP) should be extended to work with BIMI.  Other documents will cover these topics.</p>
-<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#why-bimi" id="why-bimi">Why BIMI</a></h1>
-<h1 id="rfc.section.2.1"><a href="#rfc.section.2.1">2.1.</a> <a href="#emailauth" id="emailauth">Email Authentication</a></h1>
-<p id="rfc.section.2.1.p.1">The Sender Policy Framework (<a href="#SPF">[SPF]</a>), DomainKeys Identified Mail (<a href="#DKIM">[DKIM]</a>), and Domain-based Message Authentication, Reporting, and Conformance (<a href="#DMARC">[DMARC]</a>) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are in fact authenticated.</p>
-<h1 id="rfc.section.2.2"><a href="#rfc.section.2.2">2.2.</a> <a href="#genericauth" id="genericauth">Generic Indication of Authenticity</a></h1>
-<p id="rfc.section.2.2.p.1">It is currently possible for MUAs to indicate the validity of messages authenticated via <a href="#emailauth">these mechanisms</a> <cite title="NONE">[emailauth]</cite> through the use of generic visual indicators such as checkmarks if authenticated or questions marks otherwise.  But there is a belief that the effectiveness of such generic indicators is limited, and that end users are better served through the use of brand indicators associated with the authenticated sender of the message.</p>
-<h1 id="rfc.section.2.3"><a href="#rfc.section.2.3">2.3.</a> <a href="#brandauth" id="brandauth">Brand Specific Indication of Authenticity</a></h1>
-<p id="rfc.section.2.3.p.1">To benefit their users, MUAs need to be able to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are believed to be a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific imagery for a very large number of brands.</p>
-<h1 id="rfc.section.2.4"><a href="#rfc.section.2.4">2.4.</a> <a href="#need" id="need">The Need for Standardization</a></h1>
-<p id="rfc.section.2.4.p.1">Due to this need for <a href="#brandauth">brand specific indicators</a> <cite title="NONE">[brandauth]</cite>, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:</p>
+<h1 id="rfc.section.2"><a href="#rfc.section.2">2.</a> <a href="#why-bimi" id="why-bimi">Overview</a></h1>
+<p id="rfc.section.2.p.1">The Sender Policy Framework (<a href="#SPF">[SPF]</a>), DomainKeys Identified Mail (<a href="#DKIM">[DKIM]</a>), and Domain-based Message Authentication, Reporting, and Conformance (<a href="#DMARC">[DMARC]</a>) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are or are not in fact authenticated.</p>
+<p id="rfc.section.2.p.2">It is currently possible for MUAs to indicate the validity of messages authenticated via these mechanisms through the use of generic visual indicators such as checkmarks if authenticated or questions marks otherwise.  But there is a belief that the effectiveness of such generic indicators is limited, and that end users are better served through the use of brand indicators associated with the authenticated sender of the message.</p>
+<p id="rfc.section.2.p.3">To accomplish this, MUAs need to be able to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are believed to be a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a very large number of brands.</p>
+<p id="rfc.section.2.p.4">Due to this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:</p>
 <p/>
 
 <ol>
@@ -514,11 +532,20 @@ address {
   <li>Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.</li>
   <li>A lack of uniformity across different mail-receiving organizations - each organization will have its own indicator set, which may or may not agree with those maintained by other organizations for any given domain.</li>
   <li>Domain Owners have limited ability to influence the brand indicator for the domain(s) they own, and such ability they do have is likely to require coordination with many mail-receiving organizations.</li>
+  <li>Many Domain Owners have no ability to participate whatsoever as they do not have the appropriate relationships to coordinate with mail-receiving organizations.</li>
   <li>MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive indicators in a manner optimized for their user interfaces.</li>
 </ol>
-<p id="rfc.section.2.4.p.3">This all speaks to the need for a standardized mechanism by which Domain Owners can publish and distribute brand indicators for use by any participating MUA.</p>
-<h1 id="rfc.section.2.5"><a href="#rfc.section.2.5">2.5.</a> <a href="#curation" id="curation">Indicator Curation</a></h1>
-<p id="rfc.section.2.5.p.1">Domain Owners have an interest in ensuring that the imagery displayed in these situations is correct and appropriate, so it is desirable to provide a mechanism to allow these mail-originating organizations to provide imagery to MUAs.  This mechanism removes the substantial burden of curating and maintaining an image database from the MUAs, and allows each brand to manage its own imagery.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.</p>
+<p id="rfc.section.2.p.6">This all speaks to the need for a standardized mechanism by which Domain Owners interested in ensuring that their indicators are displayed correctly and appropriately can publish and distribute brand indicators for use by any participating MUA.</p>
+<p id="rfc.section.2.p.7">BIMI removes the substantial burden of curating and maintaining an indicator database from the MUAs, and allows each brand to manage its own indicators.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.</p>
+<p id="rfc.section.2.p.8">The basic structure of BIMI is as follows:</p>
+<p/>
+
+<ol>
+  <li>Domain Owners publish brand indicator assertions for domains via the <a href="#DNS">[DNS]</a>.</li>
+  <li>Then, for any message received by a Mail Receiver:  <br/><br/> a. Receivers authenticate the messages using <a href="#DMARC">[DMARC]</a> and/or whatever other authentication mechanisms they wish to apply.  <br/><br/> b. If the message authenticates and has sufficient reputation per receiver policy, the receiver queries the DNS for a corresponding BIMI record.  <br/><br/> c. If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner&#8217;s preferred brand indicator.</li>
+  <li>The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.</li>
+</ol>
+<p id="rfc.section.2.p.10">The purpose of this structure is to reduce operational complexity at each step and to consolidate validation and indicator selection into the MTA, so that Domain Owners only need to publish simple rules and MUAs only need simple display logic.</p>
 <h1 id="rfc.section.3"><a href="#rfc.section.3">3.</a> <a href="#requirements" id="requirements">Requirements</a></h1>
 <p id="rfc.section.3.p.1">Specification of BIMI in this document is guided by the following high-level goals, security dependencies, detailed requirements, and items that are documented as out of scope.</p>
 <h1 id="rfc.section.3.1"><a href="#rfc.section.3.1">3.1.</a> <a href="#goals" id="goals">High-Level Goals</a></h1>
@@ -526,8 +553,8 @@ address {
 <p/>
 
 <ul>
-  <li>Enable the authors of MUAs to display meaningful imagery associated with the Domain Owner to recipients of authenticated email.</li>
-  <li>Allow Domain Owners to suggest appropriate images for display with authenticated messages originating from their domains.</li>
+  <li>Allow Domain Owners to suggest appropriate indicators for display with authenticated messages originating from their domains.</li>
+  <li>Enable the authors of MUAs to display meaningful indicators associated with the Domain Owner to recipients of authenticated email.</li>
   <li>Provide mechanisms to prevent attempts by malicious Domain Owners to fraudulently represent messages from their domains as originating with other entities.</li>
   <li>Work at Internet Scale.</li>
 </ul>
@@ -540,7 +567,7 @@ address {
 <p/>
 
 <ul>
-  <li>Defining what consitutes authenticated email for the purposes of this standard.</li>
+  <li>Defining what constitutes authenticated email for the purposes of this standard.</li>
   <li>Publishing policy other than via the DNS.</li>
   <li>Specific requirements for indicator display on MUAs.</li>
   <li>How receivers should use reputation to influence the display of BIMI indicators.</li>
@@ -550,278 +577,204 @@ address {
 <p id="rfc.section.4.p.1">This section defines terms used in the rest of the document.</p>
 <p id="rfc.section.4.p.2">The key words &#8220;MUST&#8221;, &#8220;MUST NOT&#8221;, &#8220;REQUIRED&#8221;, &#8220;SHALL&#8221;, &#8220;SHALL NOT&#8221;, &#8220;SHOULD&#8221;, &#8220;SHOULD NOT&#8221;, &#8220;RECOMMENDED&#8221;, &#8220;MAY&#8221;, and &#8220;OPTIONAL&#8221; in this document are to be interpreted as described in <a href="#KEYWORDS">[KEYWORDS]</a>.</p>
 <p id="rfc.section.4.p.3">Readers are encouraged to be familiar with the contents of <a href="#EMAIL-ARCH">[EMAIL-ARCH]</a>.  In particular, that document defines various roles in the messaging infrastructure that can appear the same or separate in various contexts.  For example, a Domain Owner could, via the messaging mechanisms on which BIMI is based, delegate control over defining preferred brand indicators as the Domain Owner to a third party with another role.  This document does not address the distinctions among such roles; the reader is encouraged to become familiar with that material before continuing.</p>
+<p id="rfc.section.4.p.4">Syntax descriptions use Augmented BNF <a href="#ABNF">[ABNF]</a>.</p>
 <h1 id="rfc.section.4.1"><a href="#rfc.section.4.1">4.1.</a> <a href="#author-domain" id="author-domain">Author Domain</a></h1>
 <p id="rfc.section.4.1.p.1">The domain name of the apparent author, as extracted from the RFC5322.From field.</p>
-<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#assertion-record" id="assertion-record">Assertion Record</a></h1>
-<p id="rfc.section.4.2.p.1">The BIMI preferences stored in DNS TXT records as defined in <a href="#assertion-record-def">Section 6.1</a> <cite title="NONE">[assertion-record-def]</cite>.</p>
-<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#bimi-assertion" id="bimi-assertion">BIMI Assertion</a></h1>
-<p id="rfc.section.4.3.p.1">The mechanism through which a Protocol Client verifies the BIMI Assertion Record and constructs the URI to the requested indicator or indictaors.</p>
-<h1 id="rfc.section.4.4"><a href="#rfc.section.4.4">4.4.</a> <a href="#domain-owner" id="domain-owner">Domain Owner</a></h1>
-<p id="rfc.section.4.4.p.1">An entity or organization that owns a DNS domain.  The term &#8220;owns&#8221; here indicates that the entity or organization being referenced holds the registration of that DNS domain.  Domain Owners range from complex, globally distributed organizations, to service providers working on behalf of non-technical clients, to individuals responsible for maintaining personal domains.  This specification uses this term as analogous to an Administrative Management Domain as defined in <a href="#EMAIL-ARCH">[EMAIL-ARCH]</a>.</p>
+<h1 id="rfc.section.4.2"><a href="#rfc.section.4.2">4.2.</a> <a href="#bimi-assertion" id="bimi-assertion">BIMI Assertion</a></h1>
+<p id="rfc.section.4.2.p.1">The mechanism through which a Protocol Client verifies the BIMI Assertion Record and constructs the URI(s) to the requested indicator(s) to be placed in the BIMI-Location header.</p>
+<h1 id="rfc.section.4.3"><a href="#rfc.section.4.3">4.3.</a> <a href="#domain-owner" id="domain-owner">Domain Owner</a></h1>
+<p id="rfc.section.4.3.p.1">An entity or organization that owns a DNS domain.  The term &#8220;owns&#8221; here indicates that the entity or organization being referenced holds the registration of that DNS domain.  Domain Owners range from complex, globally distributed organizations, to service providers working on behalf of non-technical clients, to individuals responsible for maintaining personal domains.  This specification uses this term as analogous to an Administrative Management Domain as defined in <a href="#EMAIL-ARCH">[EMAIL-ARCH]</a>.</p>
+<h1 id="rfc.section.4.4"><a href="#rfc.section.4.4">4.4.</a> <a href="#indicator" id="indicator">Indicator</a></h1>
+<p id="rfc.section.4.4.p.1">The icon, image, mark, or other graphical representation of the brand. The Indicator is in a common image format with restrictions detailed in the <a href="#assertion-record-def">Assertion Record definition</a> <cite title="NONE">[assertion-record-def]</cite>.</p>
 <h1 id="rfc.section.4.5"><a href="#rfc.section.4.5">4.5.</a> <a href="#mail-receiver" id="mail-receiver">Mail Receiver</a></h1>
 <p id="rfc.section.4.5.p.1">The entity or organization that receives and processes email.  Mail Receivers operate one or more Internet-facing Mail Transport Agents (MTAs).</p>
 <h1 id="rfc.section.4.6"><a href="#rfc.section.4.6">4.6.</a> <a href="#mark-asserting-entity-mae" id="mark-asserting-entity-mae">Mark Asserting Entity (MAE)</a></h1>
-<p id="rfc.section.4.6.p.1">A Domain Owner who publishes information via the protocol to facilitate distribution of its graphical icons or marks in association with messages for which the domain they &#8220;own&#8221; is the Author Domain.</p>
+<p id="rfc.section.4.6.p.1">A Domain Owner who publishes information via the protocol to facilitate distribution of its indicators in association with messages for which the domain they &#8220;own&#8221; is the Author Domain.</p>
 <h1 id="rfc.section.4.7"><a href="#rfc.section.4.7">4.7.</a> <a href="#mark-verifying-authority-mva" id="mark-verifying-authority-mva">Mark Verifying Authority (MVA)</a></h1>
-<p id="rfc.section.4.7.p.1">An entity of organization that can provide evidence of verification of marks asserted by an MAE to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain mark standards (ie. size, trademark, content, etc).</p>
+<p id="rfc.section.4.7.p.1">An entity of organization that can provide evidence of verification of indicators asserted by an MAE to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain indicator standards (ie. size, trademark, content, etc).</p>
 <h1 id="rfc.section.4.8"><a href="#rfc.section.4.8">4.8.</a> <a href="#mail-user-agent-mua" id="mail-user-agent-mua">Mail User Agent (MUA)</a></h1>
 <p id="rfc.section.4.8.p.1">An endpoint client that a user (a real human being) uses to access their and read their email.</p>
 <h1 id="rfc.section.4.9"><a href="#rfc.section.4.9">4.9.</a> <a href="#protocol-client" id="protocol-client">Protocol Client</a></h1>
-<p id="rfc.section.4.9.p.1">An entity that uses the protocol to discover and fetch published icons or marks.</p>
+<p id="rfc.section.4.9.p.1">An entity that uses the BIMI protocol to discover and fetch published indicators.</p>
 <h1 id="rfc.section.4.10"><a href="#rfc.section.4.10">4.10.</a> <a href="#verifying-protocol-client" id="verifying-protocol-client">Verifying Protocol Client</a></h1>
-<p id="rfc.section.4.10.p.1">A Protocol Client that uses the optional verification capability to inquire about the verification status of published marks.</p>
-<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#overview" id="overview">Overview</a></h1>
-<p id="rfc.section.5.p.1">This section provides a general overview of the design and operation of the BIMI environment.</p>
-<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#outline" id="outline">Outline</a></h1>
-<p id="rfc.section.5.1.p.1">The basic structure of BIMI is as follows:</p>
+<p id="rfc.section.4.10.p.1">A Protocol Client that uses the optional verification capability to inquire about the verification status of published indicators.</p>
+<h1 id="rfc.section.5"><a href="#rfc.section.5">5.</a> <a href="#bimi-dns" id="bimi-dns">BIMI DNS Records</a></h1>
+<p id="rfc.section.5.p.1">BIMI policies are published by Domain Owners and applied by Protocol Clients.</p>
+<p id="rfc.section.5.p.2">A Domain Owner advertises BIMI participation of one or more of its domains by adding a DNS TXT record to those domains.  In doing so, Domain Owners make specific requests of MUAs regarding the preferred set of indicators to be displayed with messages purporting to be from one of the Domain Owner&#8217;s domains.</p>
+<p id="rfc.section.5.p.3">A Domain Owner may choose not to participate in BIMI.  In this case, the Domain Owner simply declines to advertise participation by not publishing any BIMI assertion record.</p>
+<p id="rfc.section.5.p.4">An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner&#8217;s published BIMI policy.  But MUAs have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.</p>
+<p id="rfc.section.5.p.5">BIMI&#8217;s use of the DNS is driven by BIMI&#8217;s use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.</p>
+<p id="rfc.section.5.p.6">BIMI&#8217;s policy payload is intentionally only published via a DNS record and not an email header. This serves four purposes:</p>
 <p/>
 
 <ol>
-  <li>Domain Owners publish brand indicator assertions for domains via the <a href="#DNS">[DNS]</a>.</li>
-  <li>Then, for any message received by a Mail Receiver:  <ol><li>Receivers authenticate the messages using <a href="#DMARC">[DMARC]</a> and/or whatever other authentication mechanisms they wish to apply.</li><li>If the message authenticates and has sufficient reputation per receiver policy, the receiver queries the DNS for a corresponding BIMI record.</li><li>If a BIMI record is present, then the receiver adds a header to the message, which can be used by the MUA to determine the Domain Owner&#8217;s preferred brand indicator.</li><li>The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.</li></ol></li>
+  <li>There is one and only one mechanism for both simple and complex policies to be published.</li>
+  <li>Operational complexity is reduced, and MTAs only need to check a single record in a consistent manner to enforce policy.</li>
+  <li>MTAs that understand their MUAs have more control over which Indicators they choose for those MUAs.</li>
+  <li>Indicators can be verified and/or cached in advance, so that malicious headers cannot be used as an attack vector.</li>
 </ol>
-<p id="rfc.section.5.1.p.3">The purpose of this structure is to reduce operational complexity at each step and to consolidate validation and image selection into the MTA, so that Domain Owners only need to publish simple rules and MUAs only need simple display logic.</p>
-<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#for-domain-owners" id="for-domain-owners">Records For Domain Owners</a></h1>
-<p id="rfc.section.5.2.p.1">BIMI requires Domain Owners to publish several records to communicate indicators they wish MUAs to use.</p>
-<h1 id="rfc.section.5.2.1"><a href="#rfc.section.5.2.1">5.2.1.</a> <a href="#assertion-overview" id="assertion-overview">Assertion Record</a></h1>
-<p id="rfc.section.5.2.1.p.1">An Assertion Record is a DNS TXT record that a Domain Owner publishes to advertise participation in BIMI.</p>
-<h1 id="rfc.section.5.2.2"><a href="#rfc.section.5.2.2">5.2.2.</a> <a href="#selector-overview" id="selector-overview">Selectors</a></h1>
-<p id="rfc.section.5.2.2.p.1">Selectors allows Domain Owners to support multiple indicators per domain.</p>
-<p id="rfc.section.5.2.2.p.2">Domain Owners can specifiy which selector to use on a per-message basis by utilizing the <a href="#bimi-selector">BIMI-Selector Header</a> <cite title="NONE">[bimi-selector]</cite>.</p>
-<h1 id="rfc.section.5.3"><a href="#rfc.section.5.3">5.3.</a> <a href="#for-mail-receivers" id="for-mail-receivers">Headers For Mail Receivers</a></h1>
-<p id="rfc.section.5.3.p.1">BIMI suggests that Mail Receivers and their MTAs add or modify several headers.</p>
-<h1 id="rfc.section.5.3.1"><a href="#rfc.section.5.3.1">5.3.1.</a> <a href="#bimi-ar" id="bimi-ar">Authentication-Results</a></h1>
-<p id="rfc.section.5.3.1.p.1">The status of a BIMI determination SHOULD be added to the Authentication-Results header.</p>
-<h1 id="rfc.section.5.3.2"><a href="#rfc.section.5.3.2">5.3.2.</a> <a href="#bimi-loc" id="bimi-loc">BIMI-Location</a></h1>
-<p id="rfc.section.5.3.2.p.1">Upon a successful authentication check and indicator lookup, the MTA should add the appropriate indicator(s) to the BIMI-Location header so that the MUA can apply minimal logic to display the appropriate indicator.</p>
-<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#mechanisms" id="mechanisms">Mechanism Elements</a></h1>
-<p id="rfc.section.6.p.1">BIMI policies are published by Domain Owners and applied by Protocol Clients.</p>
-<p id="rfc.section.6.p.2">A Domain Owner advertises BIMI participation of one or more of its domains by adding a DNS TXT record to those domains.  In doing so, Domain Owners make specific requests of MUAs regarding the preferred set of indicators to be displayed with messages purporting to be from one of the Domain Owner&#8217;s domains.</p>
-<p id="rfc.section.6.p.3">A Domain Owner may choose not to participate in BIMI.  In this case, the Domain Owner simply declines to advertise participation by not publishing any BIMI assertion record.</p>
-<p id="rfc.section.6.p.4">An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner&#8217;s published BIMI policy.  But MUAs have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.</p>
-<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#assertion-record-def" id="assertion-record-def">Assertion Record</a></h1>
-<p id="rfc.section.6.1.p.1">All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains named &#8220;_bimi&#8221;.  BIMI allows the definition of multiple preferences associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI uses selectors. Senders advertise which selector to use by specifying it in a <a href="#bimi-selector">BIMI-Selector header</a> <cite title="NONE">[bimi-selector]</cite>.</p>
-<p id="rfc.section.6.1.p.2">For example, the Domain Owner of &#8220;example.com&#8221; would post BIMI preferences in a TXT record at &#8220;default._bimi.example.com&#8221;.  Similarly, a Mail Receiver wishing to query for BIMI preferences regarding mail with an RFC5322.From Author Domain of &#8220;example.com&#8221; and a selector &#8220;default&#8221; would issue a TXT query to the DNS for the subdomain of &#8220;default._bimi.example.com&#8221;.  The DNS-located BIMI preference data will hereafter be called the &#8220;BIMI Assertion Record&#8221;.</p>
-<p id="rfc.section.6.1.p.3">BIMI&#8217;s use of the DNS is driven by BIMI&#8217;s use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.</p>
-<p id="rfc.section.6.1.p.4">Per <a href="#DNS">[DNS]</a>, a TXT record can comprise several &#8220;character-string&#8221; objects.  Where this is the case, the module performing BIMI Assertion MUST concatenate these strings by joining together the objects in order and parsing the result as a single string.</p>
-<h1 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> <a href="#selectors" id="selectors">Selectors</a></h1>
-<p id="rfc.section.6.2.p.1">To support multiple brand indicators per domain, the brand indicator namespace is subdivided using &#8220;selectors&#8221;.  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.  BIMI selectors are modeled after <a href="https://tools.ietf.org/html/rfc6376#section-3.1">DKIM selectors</a>.</p>
-<p id="rfc.section.6.2.p.2">Periods are allowed in selectors and are component separators.  When BIMI Assertion Records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.</p>
-<p><a href="#ABNF">[ABNF]</a>:</p>
-<p id="rfc.section.6.2.p.4">selector =   sub-domain *( &#8220;.&#8221; sub-domain ) ; from <a href="#SMTP">[SMTP]</a> Domain, ; excluding address-literal</p>
-<p id="rfc.section.6.2.p.5">The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.  BIMI sets no maximum limit on the number of selectors.</p>
-<p id="rfc.section.6.2.p.6">BIMI supports the notion of a &#8220;default&#8221; selector.</p>
-<h1 id="rfc.section.6.3"><a href="#rfc.section.6.3">6.3.</a> <a href="#bimi-selector" id="bimi-selector">The BIMI Selector Header</a></h1>
-<p id="rfc.section.6.3.p.1">BIMI DNS records are placed in &lt;selector&gt;._bimi.&lt;domain&gt;, and by default they are placed in default._bimi.&lt;domain&gt;. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header &#8216;BIMI-Selector&#8217;. The BIMI-Selector header consists of key value pairs:</p>
-<p id="rfc.section.6.3.p.2">v: Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where &#8216;x&#8217; is a digit ranging from 0-9. This field is not case-sensitive.</p>
-<p id="rfc.section.6.3.p.3">s: Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the &#8216;d&#8217; key value pair.</p>
-<p id="rfc.section.6.3.p.4">The BIMI-Selector header SHOULD be DKIM-signed.</p>
-<p id="rfc.section.6.3.p.5">The following are brief examples on BIMI record discovery, see <a href="#indicator-discovery">Indicator Discovery</a> <cite title="NONE">[indicator-discovery]</cite> for full description.</p>
-<h1 id="rfc.section.6.3.1"><a href="#rfc.section.6.3.1">6.3.1.</a> <a href="#header-examples" id="header-examples">Header Examples</a></h1>
-<h1 id="rfc.section.6.3.1.1"><a href="#rfc.section.6.3.1.1">6.3.1.1.</a> <a href="#no-bimi-selector-header" id="no-bimi-selector-header">No BIMI-Selector Header</a></h1>
-<p id="rfc.section.6.3.1.1.p.1">The domain example.com does not send with a BIMI-Selector header.</p>
-<pre>
-From: sender@example.com
-</pre>
-<p id="rfc.section.6.3.1.1.p.2">The MTA would lookup default._bimi.example.com for the BIMI DNS record.</p>
-<h1 id="rfc.section.6.3.1.2"><a href="#rfc.section.6.3.1.2">6.3.1.2.</a> <a href="#with-bimi-selector-header" id="with-bimi-selector-header">With BIMI-Selector Header</a></h1>
-<p id="rfc.section.6.3.1.2.p.1">The domain example.com sends with a BIMI-Selector header:</p>
-<pre>
-From: sender@example.com
-BIMI-Selector: v=bimi1; s=selector;
-</pre>
-<p id="rfc.section.6.3.1.2.p.2">The MTA would lookup selector._bimi.example.com.</p>
-<h1 id="rfc.section.6.3.1.3"><a href="#rfc.section.6.3.1.3">6.3.1.3.</a> <a href="#missing-example-tzink-what-was-it-malformed-header" id="missing-example-tzink-what-was-it-malformed-header">MISSING EXAMPLE - TZINK WHAT WAS IT - Malformed header?</a></h1>
-<p id="rfc.section.6.3.1.3.p.1">THIS EXAMPLE IS MISSING AND WE WOULD LIKE IT BACK PLEASE</p>
-<h1 id="rfc.section.6.3.1.4"><a href="#rfc.section.6.3.1.4">6.3.1.4.</a> <a href="#invalid-bimi-selector-header" id="invalid-bimi-selector-header">Invalid BIMI-Selector Header</a></h1>
-<p id="rfc.section.6.3.1.4.p.1">The domain example.com sends with a BIMI-Selector header, but does not include the required field &#8216;v=&#8217;:</p>
-<pre>
-From: sender@example.com
-BIMI-Selector: s=selector;
-</pre>
-<p id="rfc.section.6.3.1.4.p.2">The MTA would ignore this header, and lookup default._bimi.example.com.</p>
-<h1 id="rfc.section.6.3.2"><a href="#rfc.section.6.3.2">6.3.2.</a> <a href="#header-signing" id="header-signing">Header Signing</a></h1>
-<p id="rfc.section.6.3.2.p.1">The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.</p>
-<h1 id="rfc.section.6.4"><a href="#rfc.section.6.4">6.4.</a> <a href="#general-record-format" id="general-record-format">General Record Format</a></h1>
-<p id="rfc.section.6.4.p.1">BIMI assertion records follow the extensible &#8220;tag-value&#8221; syntax for DNS-based key records defined in DKIM <a href="#DKIM">[DKIM]</a>.</p>
-<p id="rfc.section.6.4.p.2">This section creates a registry for known BIMI tags and registers the initial set defined in this document.  Only tags defined in this document or in later extensions, and thus added to that registry, are to be processed; unknown tags MUST be ignored.</p>
-<p id="rfc.section.6.4.p.3">The following tags are introduced as the initial valid BIMI tags:</p>
-<p id="rfc.section.6.4.p.4">a: Trust Authorities (plain-text; OPTIONAL).  A reserved value.</p>
-<p id="rfc.section.6.4.p.5">f: Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is &#8220;png&#8221;).  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).</p>
-<p id="rfc.section.6.4.p.6">l: locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand logo files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.</p>
-<p id="rfc.section.6.4.p.7">v: Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of &#8220;BIMI1&#8221;.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.</p>
-<p id="rfc.section.6.4.p.8">z: List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form &#8220;WxH&#8221;, with width W and height H specified in pixels.  Example: a image dimension listed as &#8220;512x512&#8221; implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no brand indicator should be used.</p>
-<h1 id="rfc.section.6.5"><a href="#rfc.section.6.5">6.5.</a> <a href="#formal-defintion" id="formal-defintion">Formal Definition</a></h1>
-<p id="rfc.section.6.5.p.1">The formal definition of the BIMI format, using <a href="#ABNF">[ABNF]</a>, is as follows:</p>
-<p id="rfc.section.6.5.p.2">location-uri       = URI ; &#8220;URI&#8221; is imported from <a href="#URI">[URI]</a>; commas (ASCII ; 0x2C) MUST be encoded</p>
-<p id="rfc.section.6.5.p.3">bimi-record    = bimi-version [bimi-sep bimi-formats] [bimi-sep bimi-locations] [bimi-sep bimi-image-sizes] [bimi-sep] ; components other than bimi-version ; may appear in any order</p>
-<p id="rfc.section.6.5.p.4">bimi-version   = &#8220;v&#8221; *WSP &#8220;=&#8221; *WSP %x42 %x49 %x4d %x49 %x31</p>
-<p id="rfc.section.6.5.p.5">bimi-sep       = *WSP %x3b *WSP</p>
-<p id="rfc.section.6.5.p.6">bimi-size-list = bimi-size*( &#8220;,&#8221; bimi-size) [ &#8220;,&#8221; ] bimi-size      = bimi-dimension (&#8220;x&#8221; / &#8220;X&#8221;) bimi-dimension bimi-dimension = [FWS](2DIGIT / 3DIGIT / 4DIGIT)[FWS]</p>
-<h1 id="rfc.section.6.6"><a href="#rfc.section.6.6">6.6.</a> <a href="#indicator-discovery" id="indicator-discovery">Indicator Discovery</a></h1>
-<p id="rfc.section.6.6.p.1">Through the <a href="#assertion-record-def">BIMI Assertion Record</a> <cite title="NONE">[assertion-record-def]</cite>, the BIMI mechanism uses DNS TXT records to advertise preferences.  Preference discovery is accomplished via a method similar to the method used for <a href="#DMARC">[DMARC]</a> records.  This method, and the important differences between BIMI and <a href="#DMARC">[DMARC]</a> mechanisms, are discussed below.</p>
-<p id="rfc.section.6.6.p.2">Indicator Discovery is only attempted if the message authenticates per Receiver policy.</p>
-<p id="rfc.section.6.6.p.3">To balance the conflicting requirements of supporting wildcarding, allowing subdomain policy overrides, and limiting DNS query load, Protocol Clients should employ the following lookup scheme for the appropriate BIMI record for the message:</p>
+<p id="rfc.section.5.p.8">Per <a href="#DNS">[DNS]</a>, a TXT record can comprise several &#8220;character-string&#8221; objects. BIMI TXT records with multiple strings must be treated in an identical manner to <a href="https://tools.ietf.org/html/rfc7208#section-3.3">SPF</a>.</p>
+<h1 id="rfc.section.5.1"><a href="#rfc.section.5.1">5.1.</a> <a href="#assertion-record-def" id="assertion-record-def">Assertion Record</a></h1>
+<p id="rfc.section.5.1.p.1">All Domain Owner BIMI preferences are stored as DNS TXT records in subdomains named &#8220;_bimi&#8221;.  BIMI allows the definition of multiple preferences associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI uses <a href="#selectors">Section 5.2</a>. Senders advertise which selector to use by specifying it in a <a href="#bimi-selector">BIMI-Selector header</a> <cite title="NONE">[bimi-selector]</cite>.</p>
+<p id="rfc.section.5.1.p.2">For example, the Domain Owner of &#8220;example.com&#8221; would post BIMI preferences in a TXT record at &#8220;default._bimi.example.com&#8221;.  Similarly, a Mail Receiver wishing to query for BIMI preferences regarding mail with an RFC5322.From Author Domain of &#8220;example.com&#8221; and a selector &#8220;default&#8221; would issue a TXT query to the DNS for the subdomain of &#8220;default._bimi.example.com&#8221;.  The DNS-located BIMI preference data will hereafter be called the &#8220;BIMI Assertion Record&#8221;.</p>
+<p id="rfc.section.5.1.p.3">Assertion records are defined precisely, mail receivers MUST NOT attempt to fix syntactical or capitalization errors. If a required tag is missing, it is an error.</p>
+<p id="rfc.section.5.1.p.4">BIMI assertion records follow the extensible &#8220;tag-value&#8221; syntax for DNS-based key records defined in <a href="#DKIM">[DKIM]</a>.</p>
+<p id="rfc.section.5.1.p.5">This section creates a registry for known BIMI tags and registers the initial set defined in this document.  Only tags defined in this document or in later extensions, and thus added to that registry, are to be processed; unknown tags MUST be ignored.</p>
+<p id="rfc.section.5.1.p.6">The following tags are introduced as the initial valid BIMI tags:</p>
+<p id="rfc.section.5.1.p.7">v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of &#8220;BIMI1&#8221; for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.</p>
+<p id="rfc.section.5.1.p.8">&#8230;.ABNF:</p>
+<p id="rfc.section.5.1.p.9">&#8230;.bimi-version = %x76 *WSP &#8220;=&#8221; *WSP %x42.49.4d.49 1DIGIT</p>
+<p id="rfc.section.5.1.p.10">a= Trust Authorities (plain-text; OPTIONAL).  A reserved value.</p>
+<p id="rfc.section.5.1.p.11">&#8230;.ABNF:</p>
+<p id="rfc.section.5.1.p.12">&#8230;.bimi-authorities = %x61 *WSP &#8220;=&#8221; [bimi-location-uri]</p>
+<p id="rfc.section.5.1.p.13">f= Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is &#8220;png&#8221;).  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).</p>
+<p id="rfc.section.5.1.p.14">&#8230;.ABNF:</p>
+<p id="rfc.section.5.1.p.15">&#8230;.bimi-format-ext = [FWS] 3*4(ALPHA / DIGIT) [FWS]</p>
+<p id="rfc.section.5.1.p.16">&#8230;.bimi-formats = %x66 *WSP &#8220;=&#8221; bimi-format-ext *(&#8220;,&#8221; bimi-format-ext) [&#8221;,&#8221;]</p>
+<p id="rfc.section.5.1.p.17">l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport is HTTPS only.</p>
+<p id="rfc.section.5.1.p.18">&#8230;.ABNF:</p>
+<p id="rfc.section.5.1.p.19">&#8230;.bimi-location-uri = [FWS] URI [FWS]</p>
+<p id="rfc.section.5.1.p.20">&#8230;.; &#8220;URI&#8221; is imported from <a href="#URI">[URI]</a></p>
+<p id="rfc.section.5.1.p.21">&#8230;.; commas (ASCII ; 0x2C) MUST be encoded</p>
+<p id="rfc.section.5.1.p.22">&#8230;.bimi-locations = %x6c *WSP &#8220;=&#8221; bimi-location-uri *(&#8220;,&#8221; bimi-location-uri) [&#8221;,&#8221;]</p>
+<p id="rfc.section.5.1.p.23">z= List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form &#8220;WxH&#8221;, with width W and height H specified in pixels.  Example: a image dimension listed as &#8220;512x512&#8221; implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no Indicator should be used. (See below.)</p>
+<p id="rfc.section.5.1.p.24">&#8230;.ABNF:</p>
+<p id="rfc.section.5.1.p.25">&#8230;.bimi-dimension = [FWS] 2*4DIGIT [FWS]</p>
+<p id="rfc.section.5.1.p.26">&#8230;.; min 32</p>
+<p id="rfc.section.5.1.p.27">&#8230;.; max 1024</p>
+<p id="rfc.section.5.1.p.28">&#8230;.bimi-size = bimi-dimension &#8220;x&#8221; bimi-dimension</p>
+<p id="rfc.section.5.1.p.29">&#8230;.bimi-size-list = bimi-size *(&#8220;,&#8221; bimi-size) [&#8221;,&#8221;]</p>
+<p id="rfc.section.5.1.p.30">&#8230;.bimi-image-sizes = %x7a *WSP &#8220;=&#8221; [bimi-size-list]</p>
+<p id="rfc.section.5.1.p.31">Therefore, the formal definition of the BIMI Assertion Record, using <a href="#ABNF">[ABNF]</a>, is as follows:</p>
+<p id="rfc.section.5.1.p.32">&#8230;.bimi-sep = *WSP %x3b *WSP</p>
+<p id="rfc.section.5.1.p.33">&#8230;.bimi-record = bimi-version (bimi-sep bimi-locations) [bimi-sep bimi-formats] [bimi-sep bimi-image-sizes] [bimi-sep]</p>
+<p id="rfc.section.5.1.p.34">&#8230;.; components other than bimi-version</p>
+<p id="rfc.section.5.1.p.35">&#8230;.; may appear in any order</p>
+<h1 id="rfc.section.5.1.1"><a href="#rfc.section.5.1.1">5.1.1.</a> <a href="#an-empty-z-tag" id="an-empty-z-tag">An empty &#8220;z&#8221; tag</a></h1>
+<p id="rfc.section.5.1.1.p.1">If the &#8220;z&#8221; tag is empty, it is an explicit refusal to participate in BIMI. This is critically different than not publishing a BIMI record in the first place. For example, an empty z= tag allows a subdomain to decline participation when its organizational domain has default Indicators available. Also, an empty z= tag in a selector would allow messages sent with this selector to decline the use of Indicators while messages with other selectors would display normally.</p>
+<h1 id="rfc.section.5.1.2"><a href="#rfc.section.5.1.2">5.1.2.</a> <a href="#the-z-tag-for-vector-formats" id="the-z-tag-for-vector-formats">The &#8220;z&#8221; tag for vector formats</a></h1>
+<p id="rfc.section.5.1.2.p.1">The &#8220;z&#8221; tag is defined as &#8220;WxH&#8221; which does not translate cleanly when using vector formats (SVG for this document). If a vector format is specified, and there are multiple z= values, then for each aspect ratio, an MTA SHOULD treat the smallest z value as the &#8220;small&#8221; vector graphic (for example, for thumbnails or mobile), and the largest z value as the &#8220;large&#8221; vector graphic. Any other z values should be ignored in conjunction with vector formats.</p>
+<h1 id="rfc.section.5.2"><a href="#rfc.section.5.2">5.2.</a> <a href="#selectors" id="selectors">Selectors</a></h1>
+<p id="rfc.section.5.2.p.1">To support multiple brand indicators per domain, the brand indicator namespace is subdivided for the publishing of multiple Assertion Records using &#8220;selectors&#8221;.  Selectors allow the Domain Owner to better target the brand indicator by type of recipient, message source, or other considerations like seasonal branding.  BIMI selectors are modeled after <a href="https://tools.ietf.org/html/rfc6376#section-3.1">DKIM selectors</a>.</p>
+<p id="rfc.section.5.2.p.2">The selector &#8220;default&#8221; is the default Assertion Record. Domain Owners can specify which other selector to use on a per-message basis by utilizing the <a href="#bimi-selector">BIMI-Selector Header</a> <cite title="NONE">[bimi-selector]</cite>.</p>
+<p id="rfc.section.5.2.p.3">Periods are allowed in selectors and are component separators.  When BIMI Assertion Records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.</p>
+<p id="rfc.section.5.2.p.4">&#8230;.ABNF:</p>
+<p id="rfc.section.5.2.p.5">&#8230;.selector = sub-domain *( &#8220;.&#8221; sub-domain )</p>
+<p id="rfc.section.5.2.p.6">&#8230;.; from <a href="#SMTP">[SMTP]</a> Domain,</p>
+<p id="rfc.section.5.2.p.7">&#8230;.; excluding address-literal</p>
+<p id="rfc.section.5.2.p.8">The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.  BIMI sets no maximum limit on the number of selectors.</p>
+<h1 id="rfc.section.6"><a href="#rfc.section.6">6.</a> <a href="#bimi-headers" id="bimi-headers">BIMI Header Fields</a></h1>
+<p id="rfc.section.6.p.1">Once BIMI policies are published in DNS via Assertion Records, additional guidance can be provided from Domain Owners to Mail Receivers, and Mail Receivers to their MUAs through the use of additional BIMI header fields.</p>
+<p id="rfc.section.6.p.2">BIMI header fields are case insensitive. If a required tag is missing, it is an error.</p>
+<h1 id="rfc.section.6.1"><a href="#rfc.section.6.1">6.1.</a> <a href="#bimi-selector" id="bimi-selector">BIMI-Selector</a></h1>
+<p id="rfc.section.6.1.p.1">BIMI DNS records are placed in &lt;selector&gt;._bimi.&lt;domain&gt;, and by default they are placed in default._bimi.&lt;domain&gt;. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header &#8216;BIMI-Selector&#8217;. The BIMI-Selector header consists of key value pairs:</p>
+<p id="rfc.section.6.1.p.2">v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of &#8220;BIMI1&#8221; for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.</p>
+<p id="rfc.section.6.1.p.3">&#8230;.ABNF:</p>
+<p id="rfc.section.6.1.p.4">&#8230;.bimi-header-version = &#8220;v&#8221; *WSP &#8220;=&#8221; *WSP &#8220;BIMI&#8221; 1DIGIT</p>
+<p id="rfc.section.6.1.p.5">s= Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the RFC5322.From domain.</p>
+<p id="rfc.section.6.1.p.6">&#8230;.ABNF:</p>
+<p id="rfc.section.6.1.p.7">&#8230;.bimi-selector = &#8220;s&#8221; *WSP &#8220;=&#8221; *WSP selector</p>
+<p id="rfc.section.6.1.p.8">And the formal definition of the BIMI Selector Header, using ABNF, is as follows:</p>
+<p id="rfc.section.6.1.p.9">&#8230;.bimi-selector-header = bimi-header-version bimi-sep bimi-selector [bimi-sep]</p>
+<h1 id="rfc.section.6.2"><a href="#rfc.section.6.2">6.2.</a> <a href="#bimi-location" id="bimi-location">BIMI-Location</a></h1>
+<p id="rfc.section.6.2.p.1">BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from. This is formed by combining the &#8216;l&#8217; and &#8216;z&#8217; values from the BIMI DNS record.</p>
+<p id="rfc.section.6.2.p.2">The syntax of the header is as following:</p>
+<p id="rfc.section.6.2.p.3">v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of &#8220;BIMI1&#8221; for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.</p>
+<p id="rfc.section.6.2.p.4">&#8230;.The ABNF for bimi-header-version is imported exactly from the <a href="#bimi-selector">BIMI Selector Header</a> <cite title="NONE">[bimi-selector]</cite>.</p>
+<p id="rfc.section.6.2.p.5">l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.</p>
+<p id="rfc.section.6.2.p.6">&#8230;.ABNF:</p>
+<p id="rfc.section.6.2.p.7">&#8230;.bimi-header-locations = &#8220;l&#8221; *WSP &#8220;=&#8221; bimi-location-uri *(&#8220;,&#8221; bimi-location-uri) [&#8221;,&#8221;]</p>
+<p id="rfc.section.6.2.p.8">And the formal definition of the BIMI Location Header, using ABNF, is as follows:</p>
+<p id="rfc.section.6.2.p.9">&#8230;.bimi-location-header = bimi-header-version bimi-sep bimi-header-locations [bimi-sep]</p>
+<h1 id="rfc.section.6.3"><a href="#rfc.section.6.3">6.3.</a> <a href="#header-signing" id="header-signing">Header Signing</a></h1>
+<p id="rfc.section.6.3.p.1">The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.</p>
+<p id="rfc.section.6.3.p.2">The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by definition, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.</p>
+<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#bimi-sender" id="bimi-sender">Domain Owner Actions</a></h1>
+<p id="rfc.section.7.p.1">This section includes a walk through of the actions a Domain Owner takes when setting up Assertion Records and sending email messages.</p>
+<h1 id="rfc.section.7.1"><a href="#rfc.section.7.1">7.1.</a> <a href="#determine-and-publish-indicators-for-use" id="determine-and-publish-indicators-for-use">Determine and publish Indicator(s) for use</a></h1>
+<p id="rfc.section.7.1.p.1">Domain Owners should consider which Indicator file formats to choose when setting up their BIMI Assertion Records. Vector image formats (SVG for this document) have some advantages over raster formats, and vice versa. As a Sender, BIMI provides control over which Indicators are chosen for display, but not the ultimate manner in which the MUA will display the image.</p>
+<p id="rfc.section.7.1.p.2">Therefore, for any given Indicator, it is RECOMMENDED to provide several different versions (sizes, aspect ratios, and file types) of each Indicator so that the MUA may choose the most appropriate one for its layout.</p>
+<p id="rfc.section.7.1.p.3">Then publish these Indicator options somewhere world readable.</p>
+<p id="rfc.section.7.1.p.4">If publishing both vector and raster Indicators in the same Assertion Record, for each aspect ratio, only the smallest and largest z= size values will be used for vector Indicator retrieval, and those will be considered small and large vector Indicators respectively.</p>
+<p id="rfc.section.7.1.p.5">BIMI allows multiple comma separated l= values in the Assertion Record, so that a Domain Owner may publish the same Indicators in multiple world readable locations. This is so Indicators may still be available if there are service or DNS issues for a particular l= value.</p>
+<h1 id="rfc.section.7.2"><a href="#rfc.section.7.2">7.2.</a> <a href="#specify-domain-owner-preference" id="specify-domain-owner-preference">Specify Domain Owner Preference</a></h1>
+<p id="rfc.section.7.2.p.1">A Domain Owner&#8217;s preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.</p>
+<p id="rfc.section.7.2.p.2">This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.</p>
+<h1 id="rfc.section.7.3"><a href="#rfc.section.7.3">7.3.</a> <a href="#publish-assertion-records" id="publish-assertion-records">Publish Assertion Records</a></h1>
+<p id="rfc.section.7.3.p.1">For each set of Indicators and domains, publish the appropriate Assertion Record as either &#8220;default&#8221; or a named selector as a DNS TXT record within the appropriate &#8220;_bimi&#8221; namespace.</p>
+<h1 id="rfc.section.7.4"><a href="#rfc.section.7.4">7.4.</a> <a href="#manage-multiple-uses-of-the-same-indicators-within-a-trust-boundary" id="manage-multiple-uses-of-the-same-indicators-within-a-trust-boundary">Manage multiple uses of the same Indicator(s) within a trust boundary</a></h1>
+<p id="rfc.section.7.4.p.1">For Domain Owners with multiple domains that wish to share the same set of Indicators within a trust boundary and only manage those Indicators from a single DNS location, it is RECOMMENDED to use DNS CNAMEs.</p>
+<p id="rfc.section.7.4.p.2">Using a CNAME here is functionally similar to the SPF redirect modifier. Since BIMI does not require l= tags to be aligned to the Author Domain, CNAMEs present a cleaner solution than extending the protocol.</p>
+<h1 id="rfc.section.7.5"><a href="#rfc.section.7.5">7.5.</a> <a href="#set-the-headers-on-outgoing-email-as-appropriate" id="set-the-headers-on-outgoing-email-as-appropriate">Set the headers on outgoing email as appropriate</a></h1>
+<p id="rfc.section.7.5.p.1">Once a default Assertion Record has been published for an Author Domain, all emails from this domain should display the appropriate Indicator in participating MUAs.</p>
+<p id="rfc.section.7.5.p.2">If a non-default Indicator is desired, the BIMI-Selector header should be set appropriately. If for some reason this selector cannot be accessed by the Protocol Client, the fallback is the default Assertion Record on the Organization domain.</p>
+<p id="rfc.section.7.5.p.3">The BIMI-Location header MUST NOT be set by email senders, and Protocol Clients MUST ignore it.</p>
+<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#bimi-receiver" id="bimi-receiver">Receiver Actions</a></h1>
+<p id="rfc.section.8.p.1">This section includes a walk through of the actions a Protocol Client takes when evaluating an email message for BIMI Assertion.</p>
+<h1 id="rfc.section.8.1"><a href="#rfc.section.8.1">8.1.</a> <a href="#indicator-discovery" id="indicator-discovery">Indicator Discovery</a></h1>
+<p id="rfc.section.8.1.p.1">Through the <a href="#assertion-record-def">BIMI Assertion Record</a> <cite title="NONE">[assertion-record-def]</cite>, the BIMI mechanism uses DNS TXT records to advertise preferences.  Preference discovery is accomplished via a method similar to the method used for <a href="#DMARC">[DMARC]</a> records.  This method, and the important differences between BIMI and <a href="#DMARC">[DMARC]</a> mechanisms, are discussed below.</p>
+<p id="rfc.section.8.1.p.2">Indicator Discovery MUST only be attempted if the message authenticates per Receiver policy.</p>
+<p id="rfc.section.8.1.p.3">To balance the conflicting requirements of supporting wildcarding, allowing subdomain policy overrides, and limiting DNS query load, Protocol Clients SHOULD employ the following lookup scheme for the appropriate BIMI record for the message:</p>
 <p/>
 
 <ol>
   <li>Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Author Domain.</li>
   <li>If the message for which the indicator is being determined specifies a selector value in the <a href="#bimi-selector">BIMI Selector Header</a> <cite title="NONE">[bimi-selector]</cite>, use this value for the selector.  Otherwise the value &#8216;default&#8217; MUST be used for the selector.</li>
   <li>Clients MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string &#8216;_bimi&#8217;, and the Author Domain.  A possibly empty set of records is returned.</li>
-  <li>Records that do not start with a &#8220;v=&#8221; tag that identifies the current version of BIMI are discarded.</li>
-  <li>If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector &#8216;default&#8217;, the string &#8216;_bimi&#8217;, and the Organizational Domain (as defined in <a href="#DMARC">[DMARC]</a>) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.&lt;organizationalDomain&gt;, and not &lt;selector&gt;._bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records is returned.</li>
-  <li>Records that do not start with a &#8220;v=&#8221; tag that identifies the current version of BIMI are discarded.</li>
-  <li>If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing is not performed for this message.</li>
-  <li>If the remaining set contains only a single record, this record is used for indicator discovery.</li>
+  <li>Records that do not start with a &#8220;v=&#8221; tag that identifies the current version of BIMI MUST be discarded.</li>
+  <li>If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector &#8216;default&#8217;, the string &#8216;_bimi&#8217;, and the Organizational Domain (as defined in <a href="#DMARC">[DMARC]</a>) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.&lt;organizationalDomain&gt;, and NOT &lt;selector&gt;._bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records is returned.</li>
+  <li>Records that do not start with a &#8220;v=&#8221; tag that identifies the current version of BIMI MUST be discarded.</li>
+  <li>If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing MUST NOT be performed for this message.</li>
+  <li>If the remaining set contains only a single record, this record is used for BIMI Assertion.</li>
 </ol>
-<h1 id="rfc.section.6.7"><a href="#rfc.section.6.7">6.7.</a> <a href="#bimi-results" id="bimi-results">BIMI status in Authentication Results</a></h1>
-<p id="rfc.section.6.7.p.1">Upon completion of BIMI Assertion, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with the following key=value pairs:</p>
-<p id="rfc.section.6.7.p.2">bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are &#8216;pass&#8217; (BIMI successfully validated), &#8216;none&#8217; (no BIMI record present), &#8216;fail&#8217; (syntax error in the BIMI record, or some other error), &#8216;temperror&#8217; (DNS lookup problem), or &#8216;skipped&#8217; (BIMI check did not perform, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., bimi=skipped (sender not trusted) or bimi=skipped (message failed DMARC).</p>
-<p id="rfc.section.6.7.p.3">header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.</p>
-<p id="rfc.section.6.7.p.4">selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED). Range of values include the value in the BIMI-Location header, and &#8216;default&#8217;. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.</p>
-<h1 id="rfc.section.6.7.1"><a href="#rfc.section.6.7.1">6.7.1.</a> <a href="#example-authentication-results-stamps" id="example-authentication-results-stamps">Example Authentication-Results stamps</a></h1>
-<h1 id="rfc.section.6.7.1.1"><a href="#rfc.section.6.7.1.1">6.7.1.1.</a> <a href="#successful-bimi-lookup" id="successful-bimi-lookup">Successful BIMI lookup</a></h1>
-<pre>
-From: sender@example.com
-BIMI-Selector: v=BIMI1; s=selector;
-Authentication-Results: bimi=pass header.d=example.com selector=selector;
-</pre>
-<h1 id="rfc.section.6.7.1.2"><a href="#rfc.section.6.7.1.2">6.7.1.2.</a> <a href="#no-bimi-record" id="no-bimi-record">No BIMI record</a></h1>
-<pre>
-From: sender@sub.example.com
-Authentication-Results: bimi=none header.d=sub.example.com selector=default;
-</pre>
-<p id="rfc.section.6.7.1.2.p.1">In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com</p>
-<h1 id="rfc.section.6.7.1.3"><a href="#rfc.section.6.7.1.3">6.7.1.3.</a> <a href="#subdomain-has-no-default-record-but-organizataional-domain-does" id="subdomain-has-no-default-record-but-organizataional-domain-does">Subdomain has no default record, but organizataional domain does</a></h1>
-<pre>
-From: sender@sub.example.com
-Authentication-Results: bimi=pass header.d=example.com selector=default;
-</pre>
-<h1 id="rfc.section.6.7.1.4"><a href="#rfc.section.6.7.1.4">6.7.1.4.</a> <a href="#subdomain-has-no-record-for-selector-but-organization-domain-has-a-deafult" id="subdomain-has-no-record-for-selector-but-organization-domain-has-a-deafult">Subdomain has no record for selector, but organization domain has a deafult</a></h1>
-<pre>
-From: sender@sub.example.com
-BIMI-Selector: v=BIMI1; s=selector;
-Authentication-Results: bimi=pass header.d=example.com selector=default;
-</pre>
-<p id="rfc.section.6.7.1.4.p.1">In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.</p>
-<h1 id="rfc.section.6.8"><a href="#rfc.section.6.8">6.8.</a> <a href="#bimi-location" id="bimi-location">The BIMI-Location Header</a></h1>
-<p id="rfc.section.6.8.p.1">BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI logo from. This is formed by combining the &#8216;l&#8217; and &#8216;z&#8217; values from the BIMI DNS record.</p>
-<p id="rfc.section.6.8.p.2">The syntax of the header is as following:</p>
-<p id="rfc.section.6.8.p.3">v: BIMI version (plain-text; REQUIRED).  It MUST have the value of &#8220;BIMI1&#8221;.  The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.</p>
-<p id="rfc.section.6.8.p.4">l: location of the BIMI logo (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand logo files.   All clients are expected to support use of at least 2 location URIs, used in order.  Clients may optionally attempt to use more.  Initially the supported transport supported is HTTPS only.</p>
-<p id="rfc.section.6.8.p.5">[ABNF NEEDED HERE]</p>
-<p id="rfc.section.6.8.p.6">Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA MUST also stamp the lookup location of the BIMI logo in the RFC5322 BIMI-Location header.</p>
-<h1 id="rfc.section.6.8.1"><a href="#rfc.section.6.8.1">6.8.1.</a> <a href="#bimi-location-uri-construction" id="bimi-location-uri-construction">BIMI-Location URI Construction</a></h1>
-<p id="rfc.section.6.8.1.p.1">The l= value of the BIMI-Location header is a comma separated list of URIs the MTA believes are most applicable to its MUAs.</p>
-<p id="rfc.section.6.8.1.p.2">The URIs in the list are created from the exact concatenation of the l= and appropriate z= and f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.</p>
-<p id="rfc.section.6.8.1.p.3">The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.</p>
-<p id="rfc.section.6.8.1.p.4">MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.</p>
-<h1 id="rfc.section.6.8.2"><a href="#rfc.section.6.8.2">6.8.2.</a> <a href="#handling-existing-bimi-location-headers" id="handling-existing-bimi-location-headers">Handling Existing BIMI-Location Headers</a></h1>
-<p id="rfc.section.6.8.2.p.1">Regardless of success of the BIMI lookup, if the BIMI-Location header already exists it MUST be either removed or renamed.</p>
-<p id="rfc.section.6.8.2.p.2">This is because the MTA doing BIMI Assertion is the only entity allowed to specify the BIMI-Location header, and allowing any existing header through is a security risk.</p>
-<h1 id="rfc.section.6.8.3"><a href="#rfc.section.6.8.3">6.8.3.</a> <a href="#example-bimi-location-construction-flow" id="example-bimi-location-construction-flow">Example BIMI-Location construction flow</a></h1>
-<h1 id="rfc.section.6.8.3.1"><a href="#rfc.section.6.8.3.1">6.8.3.1.</a> <a href="#bimi-selector-record-published" id="bimi-selector-record-published">BIMI Selector Record Published</a></h1>
-<p id="rfc.section.6.8.3.1.p.1">The domain example.com publishes the following BIMI record:</p>
-<pre>
-brand._bimi.example.com IN TXT "v=BIMI1; z=64x64; f=png; l=https://image.example.com/bimi/logo/"
-</pre>
-<h1 id="rfc.section.6.8.3.2"><a href="#rfc.section.6.8.3.2">6.8.3.2.</a> <a href="#sender-constructs-a-message" id="sender-constructs-a-message">Sender constructs a message</a></h1>
-<p id="rfc.section.6.8.3.2.p.1">The sender now sends a message, DKIM signs it, and transmits to the receiver:</p>
-<pre>
-DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Location;Date;bh=...;b=...
-From: sender@example.com
-BIMI-Selector: v=BIMI1; s=brand;
-BIMI-Location: image.example.com/bimi/logo/128x128.gif
-Subject: Hi, this is a message from the good folks at Example Learning
-</pre>
-<h1 id="rfc.section.6.8.3.3"><a href="#rfc.section.6.8.3.3">6.8.3.3.</a> <a href="#mta-does-its-authentication-checks" id="mta-does-its-authentication-checks">MTA does its authentication checks</a></h1>
-<p id="rfc.section.6.8.3.3.p.1">The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). The domain is verified and has good reputation. The Receiver proceeds to perform a BIMI lookup.</p>
-<h1 id="rfc.section.6.8.3.4"><a href="#rfc.section.6.8.3.4">6.8.3.4.</a> <a href="#mta-performs-bimi-assertion" id="mta-performs-bimi-assertion">MTA performs BIMI Assertion</a></h1>
-<p id="rfc.section.6.8.3.4.p.1">Ihe MTA sees that the message has a BIMI-Location header, AND it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Location header. The MTA sees the header contains &#8216;v=BIMI1&#8217;, and &#8216;s=brand&#8217;. Since there is no &#8216;d=&#8217; value in the header, it uses &#8216;d=example.com&#8217;. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.</p>
-<h1 id="rfc.section.6.8.3.5"><a href="#rfc.section.6.8.3.5">6.8.3.5.</a> <a href="#mta-stemps-authentication-results" id="mta-stemps-authentication-results">MTA Stemps Authentication-Results</a></h1>
-<p id="rfc.section.6.8.3.5.p.1">It stamps the results of the BIMI to the Authentication-Results header:</p>
-<pre>
-Authentication-Results: spf=fail smtp.mailfrom=example.com;
-  dkim=pass (signature was verified) header.d=example.com;
-  dmarc=pass action=none header.from=example.com;
-  bimi=pass header.d=example.com selector=brand;
-</pre>
-<h1 id="rfc.section.6.8.3.6"><a href="#rfc.section.6.8.3.6">6.8.3.6.</a> <a href="#mta-constructs-bimi-location-header" id="mta-constructs-bimi-location-header">MTA Constructs BIMI-Location header</a></h1>
-<p id="rfc.section.6.8.3.6.p.1">Finally, the MTA removes the existing BIMI-Location header, and stamps a new one:</p>
-<pre>
-BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/64x64.png
-</pre>
-<p id="rfc.section.6.8.3.6.p.2">In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.</p>
-<h1 id="rfc.section.6.8.3.7"><a href="#rfc.section.6.8.3.7">6.8.3.7.</a> <a href="#the-mua-displays-the-indicator" id="the-mua-displays-the-indicator">The MUA displays the indicator</a></h1>
-<p id="rfc.section.6.8.3.7.p.1">The mail is opened in an MUA and that MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.</p>
-<h1 id="rfc.section.6.9"><a href="#rfc.section.6.9">6.9.</a> <a href="#bimi-record-parsing" id="bimi-record-parsing">BIMI Record Parsing for indicator selection</a></h1>
-<p id="rfc.section.6.9.p.1">[tzink] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it <em>should</em> be in the MUA/mailstore section since the MTA doesn&#8217;t know which image the MUA would prefer.[/tzink]</p>
-<p id="rfc.section.6.9.p.2">A brand or Domain Owner may have multiple BIMI logos for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:</p>
-<h1 id="rfc.section.6.9.1"><a href="#rfc.section.6.9.1">6.9.1.</a> <a href="#indicator-selection" id="indicator-selection">Indicator Selection</a></h1>
-<p id="rfc.section.6.9.1.p.1">Look up the DNS record for the l= tag which tells the location of the brand&#8217;s logo:</p>
-<pre>
-default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
-</pre>
-<p id="rfc.section.6.9.1.p.2">The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.</p>
-<h1 id="rfc.section.6.9.2"><a href="#rfc.section.6.9.2">6.9.2.</a> <a href="#indicator-preferences-and-precedence" id="indicator-preferences-and-precedence">Indicator preferences and precedence</a></h1>
-<p id="rfc.section.6.9.2.p.1">The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:</p>
-<pre>
-default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
-</pre>
-<p id="rfc.section.6.9.2.p.2">This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:</p>
-<pre>
-https://bimi.example.com/marks/256x256.png
-https://bimi.example.com/marks/256x256.tif
-https://bimi.example.com/marks/256x256.jpg
-https://bimi.example.com/marks/512x512.png
-https://bimi.example.com/marks/512x512.tif
-https://bimi.example.com/marks/512x512.jpg
-</pre>
-<p id="rfc.section.6.9.2.p.3">It is NOT done this way (interweaving the sizes):</p>
-<pre>
-https://bimi.example.com/marks/256x256.png
-https://bimi.example.com/marks/512x512.png
-https://bimi.example.com/marks/256x256.tif
-https://bimi.example.com/marks/512x512.tif
-https://bimi.example.com/marks/256x256.jpg
-https://bimi.example.com/marks/512x512.jpg
-</pre>
-<h1 id="rfc.section.6.9.3"><a href="#rfc.section.6.9.3">6.9.3.</a> <a href="#domain-owner-preference" id="domain-owner-preference">Domain Owner Preference</a></h1>
-<p id="rfc.section.6.9.3.p.1">If a brand owner wants the largest images to show first, they should ensure the 512x512 appears first in the BIMI DNS record. If they want the jpg to take priority, they should publish it first in the DNS record.</p>
-<p id="rfc.section.6.9.3.p.2">This does not guarantee that the first one will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first image SHOULD be the one that is used.</p>
-<h1 id="rfc.section.6.10"><a href="#rfc.section.6.10">6.10.</a> <a href="#mail-stores" id="mail-stores">Set appropriate flags on the mail store</a></h1>
-<p id="rfc.section.6.10.p.1">Once an MTA has finished filtering, it needs to deposit the email somewhere where the user can eventually access it with an MUA. Users typically access their email on mail stores through either POP3, IMAP, and MAPI. The following example is for IMAP; separate documents will define protocol-specific BIMI extensions for mail stores.</p>
-<p id="rfc.section.6.10.p.2">If a mail store is BIMI-compliant, it sets an IMAP flag on the message when depositing it into the mail store:</p>
-<p id="rfc.section.6.10.p.3">$BIMI_display</p>
-<p id="rfc.section.6.10.p.4">This tells an accessing MUA that the message passed BIMI.</p>
-<p id="rfc.section.6.10.p.5">If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the $BIMI_display when it pulls down from the other mail store and copies onto itself. If it trusts the other mail store, it may simply set the same flag. Or, it may revalidate BIMI upon ingesting it. Or, it may simply choose not to set the $BIMI_display flag at all.</p>
-<h1 id="rfc.section.7"><a href="#rfc.section.7">7.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
-<p id="rfc.section.7.p.1">The consistent use of brand indicators is valuable for Domain Owners, Mail Receivers, and End Users. However, this also creates room for abuse.</p>
-<h1 id="rfc.section.7.1"><a href="#rfc.section.7.1">7.1.</a> <a href="#lookalike-domains-and-copycat-indicators" id="lookalike-domains-and-copycat-indicators">Lookalike Domains and Copycat Indicators</a></h1>
-<p id="rfc.section.7.1.p.1">Publishing BIMI records is not sufficient for an MTA to signal to the MUA to load the BIMI indicator.  Instead, the Domain Owner should have a good reputation with the MTA. Thus, BIMI display requires passing BIMI, and passing email authentication checks, and having a good reputation at the receiver.  The receiver may use a manually maintained list of large brands, or it may import a list from a third party of good domains, or it may apply its own reputation heuristics before deciding whether or not to load the BIMI logo.</p>
-<h1 id="rfc.section.7.2"><a href="#rfc.section.7.2">7.2.</a> <a href="#large-files-and-buffer-overflows" id="large-files-and-buffer-overflows">Large files and buffer overflows</a></h1>
-<p id="rfc.section.7.2.p.1">The MTA or MUA should perform some basic analysis and avoid loading logos that are too large or too small.  The Receiver may choose to maintain a manual list and do the inspection of its list offline so it doesn&#8217;t have to do it at time-of-scan.</p>
-<h1 id="rfc.section.7.3"><a href="#rfc.section.7.3">7.3.</a> <a href="#slow-dns-queries" id="slow-dns-queries">Slow DNS queries</a></h1>
-<p id="rfc.section.7.3.p.1">All email Receivers already have to query for DNS records, and all of them have built-in timeouts when performing DNS queries.  Furthermore, the use of caching when loading images can help cut down on load time.  Virtually all email clients have some sort of image-downloading built-in and make decisions when to load or not load images.</p>
-<h1 id="rfc.section.7.4"><a href="#rfc.section.7.4">7.4.</a> <a href="#unaligned-indicators-and-asserting-domains" id="unaligned-indicators-and-asserting-domains">Unaligned indicators and asserting domains</a></h1>
-<p id="rfc.section.7.4.p.1">There is no guarantee that a group responsible for managing brand indicators will have access to put these indicators directly in any specific location of a domain, and requiring that indicators live on the asserted domain is too high a bar.  Additionally, letting a brand have indicator locations outside its domain may be desirable so that someone sending legitimate authenticated email on the Domain Owner&#8217;s behalf can manage and set selectors as an authorized third party.</p>
-<h1 id="rfc.section.7.5"><a href="#rfc.section.7.5">7.5.</a> <a href="#unsigned-bimi-selector-header" id="unsigned-bimi-selector-header">Unsigned BIMI-Selector Header</a></h1>
-<p id="rfc.section.7.5.p.1">If a Domain Owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender.  On the other hand, Receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.</p>
-<h1 id="rfc.section.8"><a href="#rfc.section.8">8.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
-<p id="rfc.section.8.p.1">IANA will need to reserve two new entrries to the &#8220;Permanent Message Header Field Names&#8221; registry.</p>
-<p id="rfc.section.8.p.2">Header field name: BIMI-Selector</p>
-<p id="rfc.section.8.p.3">Applicable protocol: mail</p>
-<p id="rfc.section.8.p.4">Status: standard</p>
-<p id="rfc.section.8.p.5">Author/Change controller: IETF</p>
-<p id="rfc.section.8.p.6">Specification document: This one</p>
-<pre>
-Header field name: BIMI-Location
-</pre>
-<p id="rfc.section.8.p.7">Applicable protocol: mail</p>
-<p id="rfc.section.8.p.8">Status: standard</p>
-<p id="rfc.section.8.p.9">Author/Change controller: IETF</p>
-<p id="rfc.section.8.p.10">Specification document: This one</p>
-<h1 id="rfc.references"><a href="#rfc.references">9.</a> Normative References</h1>
+<h1 id="rfc.section.8.2"><a href="#rfc.section.8.2">8.2.</a> <a href="#bimi-results" id="bimi-results">Stamp BIMI status in Authentication Results</a></h1>
+<p id="rfc.section.8.2.p.1">Upon completion of Indicator Discovery, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with the following key=value pairs:</p>
+<p id="rfc.section.8.2.p.2">bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are &#8216;pass&#8217; (BIMI successfully validated), &#8216;none&#8217; (no BIMI record present), &#8216;fail&#8217; (syntax error in the BIMI record, or some other error), &#8216;temperror&#8217; (DNS lookup problem), or &#8216;skipped&#8217; (BIMI check did not perform, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., bimi=skipped (sender not trusted) or bimi=skipped (message failed DMARC).</p>
+<p id="rfc.section.8.2.p.3">header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.</p>
+<p id="rfc.section.8.2.p.4">selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and &#8216;default&#8217;. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.</p>
+<h1 id="rfc.section.8.3"><a href="#rfc.section.8.3">8.3.</a> <a href="#handle-existing-bimi-location-headers" id="handle-existing-bimi-location-headers">Handle Existing BIMI-Location Headers</a></h1>
+<p id="rfc.section.8.3.p.1">Regardless of success of the BIMI lookup, if the BIMI-Location header already exists it MUST be either removed or renamed.</p>
+<p id="rfc.section.8.3.p.2">This is because the MTA doing BIMI Assertion is the only entity allowed to specify the BIMI-Location header, and allowing any existing header through is a security risk.</p>
+<p id="rfc.section.8.3.p.3">Additionally, at this point, if the original email message had a DKIM signature, it has already been evaluated. Removing the header at this point should not break DKIM, especially because this header should not be signed per this spec.</p>
+<h1 id="rfc.section.8.4"><a href="#rfc.section.8.4">8.4.</a> <a href="#construct-bimi-location-uris" id="construct-bimi-location-uris">Construct BIMI-Location URI(s)</a></h1>
+<p id="rfc.section.8.4.p.1">The l= value of the BIMI-Location header is a comma separated list of URIs to Indicators the MTA believes are most applicable to its MUAs. From the options provided by the Assertion Record, MTAs SHOULD choose the Indicators to include based on Receiver policy for optimal performance and user experience for its MUAs from the.</p>
+<p id="rfc.section.8.4.p.2">The URIs in the list are created from the exact concatenation of the l= and appropriate z= and then f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.</p>
+<p id="rfc.section.8.4.p.3">&#8230;.INFORMATIONAL: The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.</p>
+<p id="rfc.section.8.4.p.4">MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.</p>
+<h1 id="rfc.section.8.5"><a href="#rfc.section.8.5">8.5.</a> <a href="#mail-stores" id="mail-stores">Set appropriate flags on the mail store</a></h1>
+<p id="rfc.section.8.5.p.1">Once an MTA has finished BIMI Assertion, it needs to deposit the email somewhere where the user can eventually access it with an MUA. Users typically access their email on mail stores through either POP3, IMAP, and MAPI. Separate documents will define protocol-specific BIMI extensions for mail stores.</p>
+<p id="rfc.section.8.5.p.2">If a mail store is BIMI-compliant, the MTA SHOULD set a flag on the message when depositing in the mail store. This is to communicate between the MTA and its MUA that the BIMI-Location header was set locally and can be trusted.</p>
+<p id="rfc.section.8.5.p.3">If an MUA has a BIMI-compliant mail store, and no appropriate flag is set, the MUA SHOULD ignore the BIMI-Location header.</p>
+<p id="rfc.section.8.5.p.4">If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the protocol-specific BIMI flag when it pulls down the relayed message. If it trusts the other mail store, it may simply set the same flag. Or, it may perform BIMI Assertion from scratch, create or replace the BIMI-Location header, and set its own flag appropriately. Or, it may simply choose not to set the flag at all.</p>
+<h1 id="rfc.section.9"><a href="#rfc.section.9">9.</a> <a href="#security-considerations" id="security-considerations">Security Considerations</a></h1>
+<p id="rfc.section.9.p.1">The consistent use of brand indicators is valuable for Domain Owners, Mail Receivers, and End Users. However, this also creates room for abuse, especially for determined malicious actors.</p>
+<h1 id="rfc.section.9.1"><a href="#rfc.section.9.1">9.1.</a> <a href="#lookalike-domains-and-copycat-indicators" id="lookalike-domains-and-copycat-indicators">Lookalike Domains and Copycat Indicators</a></h1>
+<p id="rfc.section.9.1.p.1">Publishing BIMI records is not sufficient for an MTA to signal to the MUA to load the BIMI indicator.  Instead, the Domain Owner should have a good reputation with the MTA. Thus, BIMI display requires passing BIMI, and passing email authentication checks, and having a good reputation at the receiver.  The receiver may use a manually maintained list of large brands, or it may import a list from a third party of good domains, or it may apply its own reputation heuristics before deciding whether or not to load the BIMI indicator.</p>
+<h1 id="rfc.section.9.2"><a href="#rfc.section.9.2">9.2.</a> <a href="#large-files-and-buffer-overflows" id="large-files-and-buffer-overflows">Large files and buffer overflows</a></h1>
+<p id="rfc.section.9.2.p.1">The MTA or MUA should perform some basic analysis and avoid loading indicators that are too large or too small.  The Receiver may choose to maintain a manual list and do the inspection of its list offline so it doesn&#8217;t have to do it at time-of-scan.</p>
+<h1 id="rfc.section.9.3"><a href="#rfc.section.9.3">9.3.</a> <a href="#slow-dns-queries" id="slow-dns-queries">Slow DNS queries</a></h1>
+<p id="rfc.section.9.3.p.1">All email Receivers already have to query for DNS records, and all of them have built-in timeouts when performing DNS queries.  Furthermore, the use of caching when loading images can help cut down on load time.  Virtually all email clients have some sort of image-downloading built-in and make decisions when to load or not load images.</p>
+<h1 id="rfc.section.9.4"><a href="#rfc.section.9.4">9.4.</a> <a href="#unaligned-indicators-and-asserting-domains" id="unaligned-indicators-and-asserting-domains">Unaligned indicators and asserting domains</a></h1>
+<p id="rfc.section.9.4.p.1">There is no guarantee that a group responsible for managing brand indicators will have access to put these indicators directly in any specific location of a domain, and requiring that indicators live on the asserted domain is too high a bar.  Additionally, letting a brand have indicator locations outside its domain may be desirable so that someone sending legitimate authenticated email on the Domain Owner&#8217;s behalf can manage and set selectors as an authorized third party without requiring access to the Domain Owner&#8217;s DNS or web services.</p>
+<h1 id="rfc.section.9.5"><a href="#rfc.section.9.5">9.5.</a> <a href="#unsigned-bimi-selector-header" id="unsigned-bimi-selector-header">Unsigned BIMI-Selector Header</a></h1>
+<p id="rfc.section.9.5.p.1">If a Domain Owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender.  On the other hand, Receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.</p>
+<h1 id="rfc.section.9.6"><a href="#rfc.section.9.6">9.6.</a> <a href="#cgi-scripts-in-indicator-payload" id="cgi-scripts-in-indicator-payload">CGI scripts in Indicator payload</a></h1>
+<p id="rfc.section.9.6.p.1">MTAs and MVAs should aggressively police Indicators to ensure they are the Indicators they claim to be, are within appropriate size limits, and pass other sanity checks. Additionally, MTAs might cache good Indicators and serve them directly to their MUAs, which would in practice bypass any malicious dynamic payload set to trigger against an end user but not an MTA.</p>
+<h1 id="rfc.section.9.7"><a href="#rfc.section.9.7">9.7.</a> <a href="#metadata-in-indicators" id="metadata-in-indicators">Metadata in Indicators</a></h1>
+<p id="rfc.section.9.7.p.1">Domain Owners should be careful to strip any metadata out of published Indicators that they don&#8217;t want to expose or which might bloat file size. MTAs and MVAs might wish to inspect and remove such data from Indicators before exposing them to end users.</p>
+<h1 id="rfc.section.10"><a href="#rfc.section.10">10.</a> <a href="#iana" id="iana">IANA Considerations</a></h1>
+<p id="rfc.section.10.p.1">IANA will need to reserve two new entries to the &#8220;Permanent Message Header Field Names&#8221; registry.</p>
+<p id="rfc.section.10.p.2">Header field name: BIMI-Selector</p>
+<p id="rfc.section.10.p.3">Applicable protocol: mail</p>
+<p id="rfc.section.10.p.4">Status: standard</p>
+<p id="rfc.section.10.p.5">Author/Change controller: IETF</p>
+<p id="rfc.section.10.p.6">Specification document: This one</p>
+<p id="rfc.section.10.p.7">Header field name: BIMI-Location</p>
+<p id="rfc.section.10.p.8">Applicable protocol: mail</p>
+<p id="rfc.section.10.p.9">Status: standard</p>
+<p id="rfc.section.10.p.10">Author/Change controller: IETF</p>
+<p id="rfc.section.10.p.11">Specification document: This one</p>
+<h1 id="rfc.references"><a href="#rfc.references">11.</a> Normative References</h1>
 <table>
   <tbody>
     <tr>
@@ -886,6 +839,137 @@ Header field name: BIMI-Location
     </tr>
   </tbody>
 </table>
+<h1 id="rfc.appendix.A"><a href="#rfc.appendix.A">Appendix A.</a> <a href="#bimi-header-examples" id="bimi-header-examples">Example Selector Discovery (INFORMATIVE)</a></h1>
+<p id="rfc.section.A.p.1">This section shows several examples of how a receiving MTA should determine which Assertion Record to use depending on the BIMI-Selector header.</p>
+<h1 id="rfc.appendix.A.1"><a href="#rfc.appendix.A.1">A.1.</a> <a href="#no-bimi-selector-header" id="no-bimi-selector-header">No BIMI-Selector Header</a></h1>
+<p id="rfc.section.A.1.p.1">The domain example.com does not send with a BIMI-Selector header.</p>
+<pre>
+From: sender@example.com
+</pre>
+<p id="rfc.section.A.1.p.2">The MTA would lookup default._bimi.example.com for the BIMI DNS record.</p>
+<h1 id="rfc.appendix.A.2"><a href="#rfc.appendix.A.2">A.2.</a> <a href="#with-bimi-selector-header" id="with-bimi-selector-header">With BIMI-Selector Header</a></h1>
+<p id="rfc.section.A.2.p.1">The domain example.com sends with a BIMI-Selector header:</p>
+<pre>
+From: sender@example.com
+BIMI-Selector: v=BIMI1; s=selector;
+</pre>
+<p id="rfc.section.A.2.p.2">The MTA would lookup selector._bimi.example.com.</p>
+<h1 id="rfc.appendix.A.3"><a href="#rfc.appendix.A.3">A.3.</a> <a href="#missing-example-tzink-what-was-it-malformed-header" id="missing-example-tzink-what-was-it-malformed-header">MISSING EXAMPLE - TZINK WHAT WAS IT - Malformed header?</a></h1>
+<p id="rfc.section.A.3.p.1">THIS EXAMPLE IS MISSING AND WE WOULD LIKE IT BACK PLEASE</p>
+<h1 id="rfc.appendix.A.4"><a href="#rfc.appendix.A.4">A.4.</a> <a href="#invalid-bimi-selector-header" id="invalid-bimi-selector-header">Invalid BIMI-Selector Header</a></h1>
+<p id="rfc.section.A.4.p.1">The domain example.com sends with a BIMI-Selector header, but does not include the required field &#8216;v=&#8217;:</p>
+<pre>
+From: sender@example.com
+BIMI-Selector: s=selector;
+</pre>
+<p id="rfc.section.A.4.p.2">The MTA would ignore this header, and lookup default._bimi.example.com.</p>
+<h1 id="rfc.appendix.B"><a href="#rfc.appendix.B">Appendix B.</a> <a href="#ar-examples" id="ar-examples">Example Authentication-Results stamps (INFORMATIONAL)</a></h1>
+<p id="rfc.section.B.p.1">This section shows example Authentication-Results stamps based on different BIMI lookup statuses.</p>
+<h1 id="rfc.appendix.B.1"><a href="#rfc.appendix.B.1">B.1.</a> <a href="#successful-bimi-lookup" id="successful-bimi-lookup">Successful BIMI lookup</a></h1>
+<pre>
+From: sender@example.com
+BIMI-Selector: v=BIMI1; s=selector;
+Authentication-Results: bimi=pass header.d=example.com selector=selector;
+</pre>
+<h1 id="rfc.appendix.B.2"><a href="#rfc.appendix.B.2">B.2.</a> <a href="#no-bimi-record" id="no-bimi-record">No BIMI record</a></h1>
+<pre>
+From: sender@sub.example.com
+Authentication-Results: bimi=none;
+</pre>
+<p id="rfc.section.B.2.p.1">In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com</p>
+<h1 id="rfc.appendix.B.3"><a href="#rfc.appendix.B.3">B.3.</a> <a href="#subdomain-has-no-default-record-but-organizational-domain-does" id="subdomain-has-no-default-record-but-organizational-domain-does">Subdomain has no default record, but organizational domain does</a></h1>
+<pre>
+From: sender@sub.example.com
+Authentication-Results: bimi=pass header.d=example.com selector=default;
+</pre>
+<h1 id="rfc.appendix.B.4"><a href="#rfc.appendix.B.4">B.4.</a> <a href="#subdomain-has-no-record-for-selector-but-organization-domain-has-a-default" id="subdomain-has-no-record-for-selector-but-organization-domain-has-a-default">Subdomain has no record for selector, but organization domain has a default</a></h1>
+<pre>
+From: sender@sub.example.com
+BIMI-Selector: v=BIMI1; s=selector;
+Authentication-Results: bimi=pass header.d=example.com selector=default;
+</pre>
+<p id="rfc.section.B.4.p.1">In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.</p>
+<h1 id="rfc.appendix.C"><a href="#rfc.appendix.C">Appendix C.</a> <a href="#indicator-selection-example" id="indicator-selection-example">Example Indicator Selection (INFORMATIONAL)</a></h1>
+<p id="rfc.section.C.p.1">A Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:</p>
+<h1 id="rfc.appendix.C.1"><a href="#rfc.appendix.C.1">C.1.</a> <a href="#simple-indicator-selection" id="simple-indicator-selection">Simple Indicator Selection</a></h1>
+<p id="rfc.section.C.1.p.1">Look up the Assertion Record for the Author Domain and selector which tells the location of the suggested Indicators:</p>
+<pre>
+default._bimi.example.com IN TXT "v=bimi1; f=png; z=512x512; l=https://bimi.example.com/marks/"
+</pre>
+<p id="rfc.section.C.1.p.2">Here, the Domain Owner has only published a single Indicator. The location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.</p>
+<h1 id="rfc.appendix.C.2"><a href="#rfc.appendix.C.2">C.2.</a> <a href="#indicator-preferences-and-precedence" id="indicator-preferences-and-precedence">Indicator preferences and precedence</a></h1>
+<p id="rfc.section.C.2.p.1">The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:</p>
+<pre>
+default._bimi.example.com IN TXT "v=bimi1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
+</pre>
+<p id="rfc.section.C.2.p.2">This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:</p>
+<pre>
+https://bimi.example.com/marks/256x256.png
+https://bimi.example.com/marks/256x256.tif
+https://bimi.example.com/marks/256x256.jpg
+https://bimi.example.com/marks/512x512.png
+https://bimi.example.com/marks/512x512.tif
+https://bimi.example.com/marks/512x512.jpg
+</pre>
+<p id="rfc.section.C.2.p.3">It is NOT done this way (interweaving the sizes):</p>
+<pre>
+https://bimi.example.com/marks/256x256.png
+https://bimi.example.com/marks/512x512.png
+https://bimi.example.com/marks/256x256.tif
+https://bimi.example.com/marks/512x512.tif
+https://bimi.example.com/marks/256x256.jpg
+https://bimi.example.com/marks/512x512.jpg
+</pre>
+<h1 id="rfc.appendix.C.3"><a href="#rfc.appendix.C.3">C.3.</a> <a href="#indicator-preference-and-precedence-with-vector-formats" id="indicator-preference-and-precedence-with-vector-formats">Indicator preference and precedence with vector formats</a></h1>
+<p id="rfc.section.C.3.p.1">For example, if the following record were published:</p>
+<pre>
+default._bimi.example.com IN TXT "v=bimi1; f=png,svg; z=256x256,512x512,1024x1024; l=https://bimi.example.com/marks/"
+</pre>
+<p id="rfc.section.C.3.p.2">This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions, but only using the smallest and largest z= values for the vector format:</p>
+<pre>
+https://bimi.example.com/marks/256x256.png
+https://bimi.example.com/marks/256x256.svg
+https://bimi.example.com/marks/512x512.png
+https://bimi.example.com/marks/1024x1024.png
+https://bimi.example.com/marks/1024x1024.svg
+</pre>
+<h1 id="rfc.appendix.D"><a href="#rfc.appendix.D">Appendix D.</a> <a href="#bimi-location-example" id="bimi-location-example">Example BIMI-Location Construction (INFORMATIONAL)</a></h1>
+<p id="rfc.section.D.p.1">This section shows how an example MTA might evaluate an incoming email for BIMI participation, and how it could share that determination with its MUA(s).</p>
+<h1 id="rfc.appendix.D.1"><a href="#rfc.appendix.D.1">D.1.</a> <a href="#mta-receives-an-email" id="mta-receives-an-email">MTA Receives an email</a></h1>
+<p id="rfc.section.D.1.p.1">The MTA receives the following DKIM signed message:</p>
+<pre>
+DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
+From: sender@example.com
+BIMI-Selector: v=BIMI1; s=brand;
+BIMI-Location: image.example.com/bimi/logo/128x128.gif
+Subject: Hi, this is a message from the good folks at Example Learning
+</pre>
+<h1 id="rfc.appendix.D.2"><a href="#rfc.appendix.D.2">D.2.</a> <a href="#mta-does-its-authentication-checks" id="mta-does-its-authentication-checks">MTA does its authentication checks</a></h1>
+<p id="rfc.section.D.2.p.1">The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). The domain is verified and has good reputation. The Receiver proceeds to perform a BIMI lookup.</p>
+<h1 id="rfc.appendix.D.3"><a href="#rfc.appendix.D.3">D.3.</a> <a href="#mta-performs-bimi-assertion" id="mta-performs-bimi-assertion">MTA performs BIMI Assertion</a></h1>
+<p id="rfc.section.D.3.p.1">The MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header validates and contains &#8216;v=BIMI1&#8217;, and &#8216;s=brand&#8217;. It performs a DNS query for brand._bimi.example.com and retrieves:</p>
+<pre>
+brand._bimi.example.com IN TXT "v=BIMI1; z=64x64,512x512; f=png,jpg; l=https://image.example.com/bimi/logo/"
+</pre>
+<p id="rfc.section.D.3.p.2">The MTA verifies the syntax of the BIMI DNS record, and it, too passes.</p>
+<h1 id="rfc.appendix.D.4"><a href="#rfc.appendix.D.4">D.4.</a> <a href="#mta-stamps-authentication-results" id="mta-stamps-authentication-results">MTA Stamps Authentication-Results</a></h1>
+<p id="rfc.section.D.4.p.1">It stamps the results of the BIMI to the Authentication-Results header:</p>
+<pre>
+Authentication-Results: spf=fail smtp.mailfrom=example.com;
+  dkim=pass (signature was verified) header.d=example.com;
+  dmarc=pass action=none header.from=example.com;
+  bimi=pass header.d=example.com selector=brand;
+</pre>
+<h1 id="rfc.appendix.D.5"><a href="#rfc.appendix.D.5">D.5.</a> <a href="#mta-constructs-bimi-location-header" id="mta-constructs-bimi-location-header">MTA Constructs BIMI-Location header</a></h1>
+<p id="rfc.section.D.5.p.1">The MTA knows its MUAs are optimized for pngs, and prefer images of 128x128 or larger. It decides to use the first suggested Indicator it finds which matches these requirements first, and the Domain Owner&#8217;s first preference second.</p>
+<p id="rfc.section.D.5.p.2">Finally, the MTA removes the existing BIMI-Location header, and stamps the new one:</p>
+<pre>
+BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/512x512.png,https://image.example.com/bimi/logo/64x64.png
+</pre>
+<p id="rfc.section.D.5.p.3">That the original sender signed a BIMI-Location header is irrelevant. It was used for DKIM validation and then thrown out by the MTA.</p>
+<p id="rfc.section.D.5.p.4">The MTA then sets any relevant BIMI flags on the mail store when it deposits it.</p>
+<h1 id="rfc.appendix.D.6"><a href="#rfc.appendix.D.6">D.6.</a> <a href="#the-mua-displays-the-indicator" id="the-mua-displays-the-indicator">The MUA displays the indicator</a></h1>
+<p id="rfc.section.D.6.p.1">The mail is opened from the mail store in an MUA. The MUA checks to make sure the appropriate BIMI mail store flag has been set, so that it knows it can trust the BIMI-Location header. Finally, the MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.</p>
 <h1 id="rfc.authors">
   <a href="#rfc.authors">Authors' Addresses</a>
 </h1>
