@@ -380,12 +380,12 @@ Once BIMI policies are published in DNS via Assertion Records, additional guidan
 
 Unlike the Assertion Record, BIMI header fields are case insensitive.
 
-The BIMI Selector Header {#bimi-selector}
+BIMI Selector {#bimi-selector}
 ----------------------
 
 BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
 
-v= Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. This field is not case-sensitive.
+v= Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
 
   ABNF:
 
@@ -401,10 +401,33 @@ And the formal definition of the BIMI Selector Header, using ABNF, is as follows
 
   bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
 
-The BIMI-Selector header SHOULD be DKIM-signed.
+BIMI-Location {#bimi-location}
+----------------------------------
 
-See [Appendix A](#appendix-a) for informational examples on selector discovery.
+BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
 
+The syntax of the header is as following:
+
+v= BIMI version (plain-text; REQUIRED).  The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
+
+  The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
+
+l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.
+
+  ABNF:
+
+  bimi-header-locations = "l" *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+
+And the formal definition of the BIMI Location Header, using ABNF, is as follows:
+
+  bimi-location-header = bimi-header-version bimi-sep bimi-header-locations \[bimi-sep\]
+
+Header Signing
+---------------
+
+The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.
+
+The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by definiton, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.
 
 Receiver Actions   {#bimi-receiver}
 =============
@@ -428,11 +451,6 @@ Upon a successful authentication check and indicator lookup, the MTA should add 
 
 Mechanism Elements {#mechanisms}
 ===================
-
-## Header Signing
-
-The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.
-
 
 Indicator Discovery {#indicator-discovery}
 ----------------------------------
@@ -498,22 +516,9 @@ In this example, sub.example.com does not have a BIMI record at default._bimi.su
 
 In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
 
-The BIMI-Location Header {#bimi-location}
-----------------------------------
 
-BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
-
-The syntax of the header is as following:
-
-v: BIMI version (plain-text; REQUIRED).  It MUST have the value of "BIMI1".  The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
-
-l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.
-
-\[ABNF NEEDED HERE\]
-
-Upon successful completion of the BIMI lookup, in addition to stamping the results in the Authentication-Results header, the MTA MUST also stamp the lookup location of the BIMI indicator in the RFC5322 BIMI-Location header.
-
-### BIMI-Location URI Construction
+BIMI-Location URI Construction
+---------------
 
 The l= value of the BIMI-Location header is a comma separated list of URIs the MTA believes are most applicable to its MUAs.
 
