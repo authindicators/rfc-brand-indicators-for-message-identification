@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-04-15
+date: 2017-04-16
 category: info
 
 workgroup: Authindicators Working Group
@@ -271,10 +271,15 @@ An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhe
 
 BIMI's use of the DNS is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
-BIMI's policy payload is intentionally only published via a DNS record and not an email header. This serves three purposes:
+BIMI's policy payload is intentionally only published via a DNS record and not an email header. This serves four purposes:
+
 1. There is one and only one mechanism for both simple and complex policies to be published.
+
 2. Operational complexity is reduced, and MTAs only need to check a single record in a consistent manner to enforce policy.
+
 3. MTAs that understand their MUAs have more control over which Indicators they choose for those MUAs.
+
+4. Indicators can be verified and/or cached in advance, so that malicious headers cannot be used as an attack vector.
 
 Per [DNS], a TXT record can comprise several "character-string" objects. BIMI TXT records with multiple strings must be treated in an identical manner to [SPF](https://tools.ietf.org/html/rfc7208#section-3.3).
 
@@ -295,61 +300,61 @@ The following tags are introduced as the initial valid BIMI tags:
 
 v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
-  ABNF:
+....ABNF:
 
-  bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
+....bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
 a= Trust Authorities (plain-text; OPTIONAL).  A reserved value.
 
-  ABNF:
+....ABNF:
 
-  bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
+....bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
 
 f= Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is "png").  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).
 
-  ABNF:
+....ABNF:
 
-  bimi-format-ext = \[FWS\] 3*4(ALPHA / DIGIT) \[FWS\]
+....bimi-format-ext = \[FWS\] 3*4(ALPHA / DIGIT) \[FWS\]
 
-  bimi-formats = %x66 *WSP "=" bimi-format-ext *("," bimi-format-ext) \[","\]
+....bimi-formats = %x66 *WSP "=" bimi-format-ext *("," bimi-format-ext) \[","\]
 
 l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport is HTTPS only.
 
-  ABNF:
+....ABNF:
 
-  bimi-location-uri = \[FWS\] URI \[FWS\]
+....bimi-location-uri = \[FWS\] URI \[FWS\]
 
-  ; "URI" is imported from [URI]
+....; "URI" is imported from [URI]
 
-  ; commas (ASCII ; 0x2C) MUST be encoded
+....; commas (ASCII ; 0x2C) MUST be encoded
 
-  bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+....bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
 
 z= List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no Indicator should be used. (See below.)
 
-  ABNF:
+....ABNF:
 
-  bimi-dimension = \[FWS\] 2*4DIGIT \[FWS\]
+....bimi-dimension = \[FWS\] 2*4DIGIT \[FWS\]
 
-  ; min 32
+....; min 32
 
-  ; max 1024
+....; max 1024
 
-  bimi-size = bimi-dimension "x" bimi-dimension
+....bimi-size = bimi-dimension "x" bimi-dimension
 
-  bimi-size-list = bimi-size *("," bimi-size) \[","\]
+....bimi-size-list = bimi-size *("," bimi-size) \[","\]
 
-  bimi-image-sizes = %x7a *WSP "=" \[bimi-size-list\]
+....bimi-image-sizes = %x7a *WSP "=" \[bimi-size-list\]
 
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
-  bimi-sep = *WSP %x3b *WSP
+....bimi-sep = *WSP %x3b *WSP
 
-  bimi-record = bimi-version (bimi-sep bimi-locations) \[bimi-sep bimi-formats\] \[bimi-sep bimi-image-sizes\] \[bimi-sep\]
+....bimi-record = bimi-version (bimi-sep bimi-locations) \[bimi-sep bimi-formats\] \[bimi-sep bimi-image-sizes\] \[bimi-sep\]
  
-  ; components other than bimi-version
+....; components other than bimi-version
  
-  ; may appear in any order
+....; may appear in any order
 
 ### An empty "z" tag
 
@@ -368,13 +373,13 @@ The selector "default" is the default Assertion Record. Domain Owners can specif
 
 Periods are allowed in selectors and are component separators.  When BIMI Assertion Records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
 
-  ABNF:
+....ABNF:
 
-  selector = sub-domain *( "." sub-domain )
+....selector = sub-domain *( "." sub-domain )
 
-  ; from [SMTP] Domain,
+....; from [SMTP] Domain,
 
-  ; excluding address-literal
+....; excluding address-literal
 
 The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.  BIMI sets no maximum limit on the number of selectors.
 
@@ -392,19 +397,19 @@ BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default the
 
 v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
-  ABNF:
+....ABNF:
 
-  bimi-header-version = "v" *WSP "=" *WSP "BIMI" 1DIGIT
+....bimi-header-version = "v" *WSP "=" *WSP "BIMI" 1DIGIT
 
 s= Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the RFC5322.From domain.
 
-  ABNF:
+....ABNF:
 
-  bimi-selector = "s" *WSP "=" *WSP selector
+....bimi-selector = "s" *WSP "=" *WSP selector
 
 And the formal definition of the BIMI Selector Header, using ABNF, is as follows:
 
-  bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
+....bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
 
 BIMI-Location {#bimi-location}
 ----------------------------------
@@ -415,17 +420,17 @@ The syntax of the header is as following:
 
 v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
-  The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
+....The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
 l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.
 
-  ABNF:
+....ABNF:
 
-  bimi-header-locations = "l" *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+....bimi-header-locations = "l" *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
 
 And the formal definition of the BIMI Location Header, using ABNF, is as follows:
 
-  bimi-location-header = bimi-header-version bimi-sep bimi-header-locations \[bimi-sep\]
+....bimi-location-header = bimi-header-version bimi-sep bimi-header-locations \[bimi-sep\]
 
 Header Signing
 ---------------
@@ -533,11 +538,11 @@ Additionally, at this point, if the original email message had a DKIM signature,
 Construct BIMI-Location URI(s)
 ---------------
 
-The l= value of the BIMI-Location header is a comma separated list of URIs to Indicators the MTA believes are most applicable to its MUAs. MTAs SHOULD choose the Indicators to include based on Receiver policy for optimal performance and user experience for its MUAs.
+The l= value of the BIMI-Location header is a comma separated list of URIs to Indicators the MTA believes are most applicable to its MUAs. From the options provided by the Assertion Record, MTAs SHOULD choose the Indicators to include based on Receiver policy for optimal performance and user experience for its MUAs from the.
 
 The URIs in the list are created from the exact concatenation of the l= and appropriate z= and then f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
 
-  INFORMATIONAL: The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
+  ....INFORMATIONAL: The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
 
 MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.
 
@@ -608,7 +613,7 @@ IANA will need to reserve two new entries to the "Permanent Message Header Field
    Specification document: This one
 
 
-    Header field name: BIMI-Location
+   Header field name: BIMI-Location
 
    Applicable protocol: mail
 
@@ -620,8 +625,10 @@ IANA will need to reserve two new entries to the "Permanent Message Header Field
 
 --- back
 
-BIMI Selector Header Examples {#bimi-header-examples}
+Example Selector Discovery (INFORMATIVE) {#bimi-header-examples}
 ===================
+
+This section shows several examples of how a receiving MTA should determine which Assertion Record to use depending on the BIMI-Selector header.
 
 No BIMI-Selector Header
 ----------
@@ -657,8 +664,10 @@ The domain example.com sends with a BIMI-Selector header, but does not include t
 
 The MTA would ignore this header, and lookup default._bimi.example.com.
 
-Example Authentication-Results stamps   {#ar-examples}
+Example Authentication-Results stamps (INFORMATIONAL)   {#ar-examples}
 =============
+
+This section shows example Authentication-Results stamps based on different BIMI lookup statuses.
 
 Successful BIMI lookup
 -------------
@@ -671,7 +680,7 @@ No BIMI record
 --------------
 
     From: sender@sub.example.com
-    Authentication-Results: bimi=none header.d=sub.example.com selector=default;
+    Authentication-Results: bimi=none;
 
 In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com
 
@@ -690,18 +699,18 @@ Subdomain has no record for selector, but organization domain has a default
 
 In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
 
-BIMI Record Parsing for indicator selection  {#record-parsing-example}
+Example Indicator Selection (INFORMATIONAL)  {#indicator-selection-example}
 ================
 
-A brand or Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
+A Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
 
-## Indicator Selection
+## Simple Indicator Selection
 
-Look up the DNS record for the l= tag which tells the location of the brand’s indicators:
+Look up the Assertion Record for the Author Domain and selector which tells the location of the suggested Indicators:
 
     default._bimi.example.com IN TXT "v=bimi1; f=png; z=512x512; l=https://bimi.example.com/marks/"
 
-The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
+Here, the Domain Owner has only published a single Indicator. The location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
 
 ## Indicator preferences and precedence
 
@@ -741,20 +750,15 @@ This means that there are at least six different files. They will be prioritized
     https://bimi.example.com/marks/1024x1024.png
     https://bimi.example.com/marks/1024x1024.svg
 
-Example BIMI-Location construction flow   {#bimi-location-example}
+Example BIMI-Location Construction (INFORMATIONAL)   {#bimi-location-example}
 ===============
 
-BIMI Selector Record Published
----------------
+This section shows how an example MTA might evaluate an incoming email for BIMI participation, and how it could share that determination with its MUA(s).
 
-The domain example.com publishes the following BIMI record:
-
-    brand._bimi.example.com IN TXT "v=BIMI1; z=64x64; f=png; l=https://image.example.com/bimi/logo/"
-
-Sender constructs a message
+MTA Receives an email
 -----------------
 
-The sender now sends a message, DKIM signs it, and transmits to the receiver:
+The MTA receives the following DKIM signed message:
 
     DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
     From: sender@example.com
@@ -770,7 +774,11 @@ The receiving MTA receives the message and performs an SPF verification (which f
 MTA performs BIMI Assertion
 ------------------
 
-The MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
+The MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header validates and contains 'v=BIMI1', and 's=brand'. It performs a DNS query for brand._bimi.example.com and retrieves:
+
+    brand._bimi.example.com IN TXT "v=BIMI1; z=64x64,512x512; f=png,jpg; l=https://image.example.com/bimi/logo/"
+
+The MTA verifies the syntax of the BIMI DNS record, and it, too passes.
 
 MTA Stamps Authentication-Results
 -----------------
@@ -785,13 +793,17 @@ It stamps the results of the BIMI to the Authentication-Results header:
 MTA Constructs BIMI-Location header
 -----------------
 
-Finally, the MTA removes the existing BIMI-Location header, and stamps a new one:
+The MTA knows its MUAs are optimized for pngs, and prefer images of 128x128 or larger. It decides to use the first suggested Indicator it finds which matches these requirements first, and the Domain Owner's first preference second.
 
-    BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/64x64.png
+Finally, the MTA removes the existing BIMI-Location header, and stamps the new one:
 
-In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.
+    BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/512x512.png,https://image.example.com/bimi/logo/64x64.png
+
+That the original sender signed a BIMI-Location header is irrelevant. It was used for DKIM validation and then thrown out by the MTA.
+
+The MTA then sets any relevant BIMI flags on the mail store when it deposits it.
 
 The MUA displays the indicator
 ---------------
 
-The mail is opened in an MUA and that MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.
+The mail is opened from the mail store in an MUA. The MUA checks to make sure the appropriate BIMI mail store flag has been set, so that it knows it can trust the BIMI-Location header. Finally, the MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.
