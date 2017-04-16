@@ -327,7 +327,7 @@ l= locations (URI; REQUIRED).  The value of this tag is a comma separated list o
 
   bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
 
-z= List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no brand indicator should be used.
+z= List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no Indicator should be used. (See below.)
 
   ABNF:
 
@@ -352,6 +352,14 @@ Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is 
   ; components other than bimi-version
  
   ; may appear in any order
+
+### An empty "z" tag
+
+If the "z" tag is empty, it is an explicit refusal to participate in BIMI. This is critically different than not publishing a BIMI record in the first place. For example, an empty z= tag allows a subdomain to decline participation when its organizational domain has default Indicators available. Also, an empty z= tag in a selector would allow messages sent with this selector to decline the use of Indicators while messages with other selectors would display normally.
+
+### The "z" tag for vector formats
+
+The "z" tag is defined as "WxH" which does not translate cleanly when using vector formats (SVG for this document). If a vector format is specified, and there are multiple z= values, then an MTA should treat the smallest z value as the "small" vector graphic (for example, for thumbnails or mobile), and the largest z value as the "large" vector graphic. Any other z values should be ignored in conjunction with vector formats.
 
 Selectors   {#selectors}
 ------------------------
@@ -499,20 +507,18 @@ MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location hea
 Set appropriate flags on the mail store {#mail-stores}
 ----------------------------------
 
-Once an MTA has finished filtering, it needs to deposit the email somewhere where the user can eventually access it with an MUA. Users typically access their email on mail stores through either POP3, IMAP, and MAPI. The following example is for IMAP; separate documents will define protocol-specific BIMI extensions for mail stores.
+Once an MTA has finished BIMI Assertion, it needs to deposit the email somewhere where the user can eventually access it with an MUA. Users typically access their email on mail stores through either POP3, IMAP, and MAPI. Separate documents will define protocol-specific BIMI extensions for mail stores.
 
-If a mail store is BIMI-compliant, it sets an IMAP flag on the message when depositing it into the mail store:
+If a mail store is BIMI-compliant, the MTA SHOULD set a flag on the message when depositing in the mail store. This is to communicate between the MTA and its MUA that the BIMI-Location header was set locally and can be trusted.
 
-$BIMI_display
+If an MUA has a BIMI-compliant mail store, and no appropriate flag is set, the MUA SHOULD ignore the BIMI-Location header.
 
-This tells an accessing MUA that the message passed BIMI.
-
-If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the $BIMI_display when it pulls down from the other mail store and copies onto itself. If it trusts the other mail store, it may simply set the same flag. Or, it may revalidate BIMI upon ingesting it. Or, it may simply choose not to set the $BIMI_display flag at all.
+If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the protocol-specific BIMI flag when it pulls down the relayed message. If it trusts the other mail store, it may simply set the same flag. Or, it may perform BIMI Assertion from scratch, create or replace the BIMI-Location header, and set its own flag appropriately. Or, it may simply choose not to set the flag at all.
 
 Security Considerations   {#security-considerations}
 ===================
 
-The consistent use of brand indicators is valuable for Domain Owners, Mail Receivers, and End Users. However, this also creates room for abuse.
+The consistent use of brand indicators is valuable for Domain Owners, Mail Receivers, and End Users. However, this also creates room for abuse, especially for determined malicious actors.
 
 Lookalike Domains and Copycat Indicators
 ------------
@@ -538,6 +544,16 @@ Unsigned BIMI-Selector Header
 ------------
 
 If a Domain Owner relies on SPF but not DKIM for email authentication, then adding a requirement of DKIM may create too high of a bar for that sender.  On the other hand, Receivers doing BIMI assertion may factor in the lack of DKIM signing when deciding whether to add a BIMI-Location header.
+
+CGI scripts in Indicator payload
+------------
+
+MTAs and MVAs should aggressively police Indicators to ensure they are the Indicators they claim to be, are within appropriate size limits, and pass other sanity checks. Additionally, MTAs might cache good Indicators and serve them directly to their MUAs, which would in practice bypass any malicious dynamic payload set to trigger against an end user but not an MTA.
+
+Metadata in Indicators
+------------
+
+Domain Owners should be careful to strip any metadata out of published Indicators that they don't want to expose or which might bloat file size. MTAs and MVAs might wish to inspect and remove such data from Indicators before exposing them to end users.
 
 IANA Considerations   {#iana}
 ===================
@@ -697,8 +713,6 @@ The mail is opened in an MUA and that MUA makes a simple determination of which 
 BIMI Record Parsing for indicator selection  {#record-parsing-example}
 ================
 
-\[tzink\] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.\[/tzink\]
-
 A brand or Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
 
 ## Indicator Selection
@@ -733,3 +747,16 @@ It is NOT done this way (interweaving the sizes):
     https://bimi.example.com/marks/256x256.jpg
     https://bimi.example.com/marks/512x512.jpg
 
+## Indicator preference and precedence with vector formats
+
+For example, if the following record were published:
+
+    default._bimi.example.com IN TXT "v=1; f=png,svg; z=256x256,512x512,1024x1024; l=https://bimi.example.com/marks/"
+
+This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions, but only using the smallest and largest z= values for the vector format:
+
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/256x256.svg
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/1024x1024.png
+    https://bimi.example.com/marks/1024x1024.svg
