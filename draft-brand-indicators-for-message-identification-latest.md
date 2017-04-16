@@ -344,7 +344,7 @@ z= List of supported image sizes  (comma-separated plain-text list of values; OP
 
   bimi-image-sizes = %x7a *WSP "=" \[bimi-size-list\]
 
-Therefore, the formal definition of the BIMI format, using [ABNF], is as follows:
+Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
   bimi-sep = *WSP %x3b *WSP
 
@@ -376,6 +376,36 @@ The number of selectors for each domain is determined by the Domain Owner.  Many
 BIMI Header Fields   {#bimi-headers}
 =============
 
+Once BIMI policies are published in DNS via Assertion Records, additional guidance can be provided from Domain Owners to Mail Receivers, and Mail Receivers to their MUAs through the use of additional BIMI header fields.
+
+Unlike the Assertion Record, BIMI header fields are case insensitive.
+
+The BIMI Selector Header {#bimi-selector}
+----------------------
+
+BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
+
+v= Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. This field is not case-sensitive.
+
+  ABNF:
+
+  bimi-header-version = "v" *WSP "=" *WSP "BIMI" 1DIGIT
+
+s= Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the RFC5322.From domain.
+
+  ABNF:
+
+  bimi-selector = "s" *WSP "=" *WSP selector
+
+And the formal definition of the BIMI Selector Header, using ABNF, is as follows:
+
+  bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
+
+The BIMI-Selector header SHOULD be DKIM-signed.
+
+See [Appendix A](#appendix-a) for informational examples on selector discovery.
+
+
 Receiver Actions   {#bimi-receiver}
 =============
 
@@ -399,52 +429,7 @@ Upon a successful authentication check and indicator lookup, the MTA should add 
 Mechanism Elements {#mechanisms}
 ===================
 
-The BIMI Selector Header {#bimi-selector}
-----------------------
-
-BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
-
-v: Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. This field is not case-sensitive.
-
-s: Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the 'd' key value pair.
-
-The BIMI-Selector header SHOULD be DKIM-signed.
-
-The following are brief examples on BIMI record discovery, see [Indicator Discovery](#indicator-discovery) for full description.
-
-### Header Examples
-
-#### No BIMI-Selector Header
-
-The domain example.com does not send with a BIMI-Selector header.
-
-    From: sender@example.com
-
-The MTA would lookup default._bimi.example.com for the BIMI DNS record.
-
-#### With BIMI-Selector Header
-
-The domain example.com sends with a BIMI-Selector header:
-
-    From: sender@example.com
-    BIMI-Selector: v=BIMI1; s=selector;
-
-The MTA would lookup selector._bimi.example.com.
-
-#### MISSING EXAMPLE - TZINK WHAT WAS IT - Malformed header?
-
-THIS EXAMPLE IS MISSING AND WE WOULD LIKE IT BACK PLEASE
-
-#### Invalid BIMI-Selector Header
-
-The domain example.com sends with a BIMI-Selector header, but does not include the required field 'v=':
-
-    From: sender@example.com
-    BIMI-Selector: s=selector;
-
-The MTA would ignore this header, and lookup default._bimi.example.com.
-
-### Header Signing
+## Header Signing
 
 The BIMI-Selector SHOULD be signed by DKIM, or it MAY be sufficient if the message passes SPF/DMARC alignment or some other email authentication mechanism that does not rely on DKIM but satisfies Receiver policy. Some MTAs will require DKIM/DMARC alignment, while others will only require SPF/DMARC alignment. Some receivers will require the domain to publish a DMARC record of p=quarantine or p=reject, while some receivers may only require alignment, absent a strong DMARC policy. BIMI leaves these decisions up to the mail receivers.
 
@@ -705,3 +690,41 @@ IANA will need to reserve two new entrries to the "Permanent Message Header Fiel
 
    Specification document: This one
 
+Appendix A {#appendix-a}
+===================
+
+BIMI Selector Header Examples
+
+No BIMI-Selector Header
+----------
+
+The domain example.com does not send with a BIMI-Selector header.
+
+    From: sender@example.com
+
+The MTA would lookup default._bimi.example.com for the BIMI DNS record.
+
+With BIMI-Selector Header
+------------
+
+The domain example.com sends with a BIMI-Selector header:
+
+    From: sender@example.com
+    BIMI-Selector: v=BIMI1; s=selector;
+
+The MTA would lookup selector._bimi.example.com.
+
+MISSING EXAMPLE - TZINK WHAT WAS IT - Malformed header?
+--------
+
+THIS EXAMPLE IS MISSING AND WE WOULD LIKE IT BACK PLEASE
+
+Invalid BIMI-Selector Header
+---------
+
+The domain example.com sends with a BIMI-Selector header, but does not include the required field 'v=':
+
+    From: sender@example.com
+    BIMI-Selector: s=selector;
+
+The MTA would ignore this header, and lookup default._bimi.example.com.
