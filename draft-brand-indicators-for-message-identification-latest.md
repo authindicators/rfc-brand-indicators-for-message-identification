@@ -279,7 +279,7 @@ An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhe
 
 BIMI's use of the DNS is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
-Per [DNS], a TXT record can comprise several "character-string" objects.  Where this is the case, the module performing BIMI Assertion MUST concatenate these strings by joining together the objects in order and parsing the result as a single string.
+Per [DNS], a TXT record can comprise several "character-string" objects. BIMI TXT records with multiple strings must be treated in an identical manner to [SPF](https://tools.ietf.org/html/rfc7208#section-3.3).
 
 Assertion Record   {#assertion-record-def}
 -----------------
@@ -378,14 +378,14 @@ BIMI Header Fields   {#bimi-headers}
 
 Once BIMI policies are published in DNS via Assertion Records, additional guidance can be provided from Domain Owners to Mail Receivers, and Mail Receivers to their MUAs through the use of additional BIMI header fields.
 
-Unlike the Assertion Record, BIMI header fields are case insensitive.
+BIMI header fields are case insensitive. If a required tag is missing, it is an error.
 
 BIMI Selector {#bimi-selector}
 ----------------------
 
 BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default they are placed in default._bimi.\<domain\>. That is, for example.com, the default location for all BIMI lookups is default._bimi.example.com. However, a Domain Owner may specify the selector using the RFC 5322 header 'BIMI-Selector'. The BIMI-Selector header consists of key value pairs:
 
-v= Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
+v= Version (plain-text; REQUIRED). The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
 
   ABNF:
 
@@ -408,7 +408,7 @@ BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to 
 
 The syntax of the header is as following:
 
-v= BIMI version (plain-text; REQUIRED).  The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
+v= BIMI version (plain-text; REQUIRED).  The version of BIMI, acceptable value is BIMIx, where 'x' is a digit ranging from 0-9. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI. The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
 
   The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
@@ -432,25 +432,7 @@ The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by de
 Receiver Actions   {#bimi-receiver}
 =============
 
-OLD - THIS SECTION WILL BE REMOVED   {#old}
-=============
-
-
-Headers For Mail Receivers   {#for-mail-receivers}
--------------
-
-BIMI suggests that Mail Receivers and their MTAs add or modify several headers.
-
-### Authentication-Results    {#bimi-ar}
-
-The status of a BIMI determination SHOULD be added to the Authentication-Results header.
-
-### BIMI-Location   {#bimi-loc}
-
-Upon a successful authentication check and indicator lookup, the MTA should add the appropriate indicator(s) to the BIMI-Location header so that the MUA can apply minimal logic to display the appropriate indicator.
-
-Mechanism Elements {#mechanisms}
-===================
+This section includes a walk through of the actions an MTA takes when evaluating an email message for BIMI Assertion.
 
 Indicator Discovery {#indicator-discovery}
 ----------------------------------
@@ -469,53 +451,40 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 4. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
-5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.\<organizationalDomain\>, and not \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
+5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.\<organizationalDomain\>, and NOT \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
 
 6. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
 7. If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing MUST NOT be performed for this message.
 
-8. If the remaining set contains only a single record, this record is used for indicator discovery.
+8. If the remaining set contains only a single record, this record is used for BIMI Assertion.
 
 BIMI status in Authentication Results {#bimi-results}
 ----------------------------------
 
-Upon completion of BIMI Assertion, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
+Upon completion of Indicator Discovery, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
 
 bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check did not perform, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., bimi=skipped (sender not trusted) or bimi=skipped (message failed DMARC).
 
-header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.
+header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.
 
-selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED). Range of values include the value in the BIMI-Location header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
+selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
 
-### Example Authentication-Results stamps
+Domain Owner Preference
+----------------
 
-#### Successful BIMI lookup
+A Domain Owner's preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.
 
-    From: sender@example.com
-    BIMI-Selector: v=BIMI1; s=selector;
-    Authentication-Results: bimi=pass header.d=example.com selector=selector;
+This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.
 
-#### No BIMI record
+Handling Existing BIMI-Location Headers
+---------------
 
-    From: sender@sub.example.com
-    Authentication-Results: bimi=none header.d=sub.example.com selector=default;
+Regardless of success of the BIMI lookup, if the BIMI-Location header already exists it MUST be either removed or renamed.
 
-In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com
+This is because the MTA doing BIMI Assertion is the only entity allowed to specify the BIMI-Location header, and allowing any existing header through is a security risk.
 
-#### Subdomain has no default record, but organizataional domain does
-
-    From: sender@sub.example.com
-    Authentication-Results: bimi=pass header.d=example.com selector=default;
-
-#### Subdomain has no record for selector, but organization domain has a deafult
-
-    From: sender@sub.example.com
-    BIMI-Selector: v=BIMI1; s=selector;
-    Authentication-Results: bimi=pass header.d=example.com selector=default;
-
-In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
-
+Additionally, at this point, if the original email message had a DKIM signature, it has already been evaluated. Removing the header at this point should not break DKIM, especially because this header should not be signed per this spec.
 
 BIMI-Location URI Construction
 ---------------
@@ -524,107 +493,9 @@ The l= value of the BIMI-Location header is a comma separated list of URIs the M
 
 The URIs in the list are created from the exact concatenation of the l= and appropriate z= and then f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
 
-The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
+  INFORMATIONAL: The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
 
 MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.
-
-### Handling Existing BIMI-Location Headers
-
-Regardless of success of the BIMI lookup, if the BIMI-Location header already exists it MUST be either removed or renamed.
-
-This is because the MTA doing BIMI Assertion is the only entity allowed to specify the BIMI-Location header, and allowing any existing header through is a security risk.
-
-### Example BIMI-Location construction flow
-
-#### BIMI Selector Record Published
-
-The domain example.com publishes the following BIMI record:
-
-    brand._bimi.example.com IN TXT "v=BIMI1; z=64x64; f=png; l=https://image.example.com/bimi/logo/"
-
-#### Sender constructs a message
-
-The sender now sends a message, DKIM signs it, and transmits to the receiver:
-
-    DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
-    From: sender@example.com
-    BIMI-Selector: v=BIMI1; s=brand;
-    BIMI-Location: image.example.com/bimi/logo/128x128.gif
-    Subject: Hi, this is a message from the good folks at Example Learning
-
-#### MTA does its authentication checks
-
-The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). The domain is verified and has good reputation. The Receiver proceeds to perform a BIMI lookup.
-
-#### MTA performs BIMI Assertion
-
-Ihe MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
-
-#### MTA Stemps Authentication-Results
-
-It stamps the results of the BIMI to the Authentication-Results header:
-
-    Authentication-Results: spf=fail smtp.mailfrom=example.com;
-      dkim=pass (signature was verified) header.d=example.com;
-      dmarc=pass action=none header.from=example.com;
-      bimi=pass header.d=example.com selector=brand;
-
-#### MTA Constructs BIMI-Location header
-
-Finally, the MTA removes the existing BIMI-Location header, and stamps a new one:
-
-    BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/64x64.png
-
-In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.
-
-#### The MUA displays the indicator
-
-The mail is opened in an MUA and that MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.
-
-BIMI Record Parsing for indicator selection {#bimi-record-parsing}
-----------------------------------
-
-\[tzink\] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.\[/tzink\]
-
-A brand or Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
-
-### Indicator Selection
-
-Look up the DNS record for the l= tag which tells the location of the brand’s indicators:
-
-    default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
-
-The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
-
-### Indicator preferences and precedence
-
-The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
-
-    default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
-
-This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:
-
-    https://bimi.example.com/marks/256x256.png
-    https://bimi.example.com/marks/256x256.tif
-    https://bimi.example.com/marks/256x256.jpg
-    https://bimi.example.com/marks/512x512.png
-    https://bimi.example.com/marks/512x512.tif
-    https://bimi.example.com/marks/512x512.jpg
-
-It is NOT done this way (interweaving the sizes):
-
-    https://bimi.example.com/marks/256x256.png
-    https://bimi.example.com/marks/512x512.png
-    https://bimi.example.com/marks/256x256.tif
-    https://bimi.example.com/marks/512x512.tif
-    https://bimi.example.com/marks/256x256.jpg
-    https://bimi.example.com/marks/512x512.jpg
-
-### Domain Owner Preference
-
-If a brand owner wants the largest images to show first, they should ensure the 512x512 appears first in the BIMI DNS record. If they want the jpg to take priority, they should publish it first in the DNS record.
-
-This does not guarantee that the first one will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first image SHOULD be the one that is used.
 
 Set appropriate flags on the mail store {#mail-stores}
 ----------------------------------
@@ -733,3 +604,139 @@ The domain example.com sends with a BIMI-Selector header, but does not include t
     BIMI-Selector: s=selector;
 
 The MTA would ignore this header, and lookup default._bimi.example.com.
+
+
+Appendix B   {#appendix-b}
+=============
+
+Example Authentication-Results stamps
+
+Successful BIMI lookup
+-------------
+
+    From: sender@example.com
+    BIMI-Selector: v=BIMI1; s=selector;
+    Authentication-Results: bimi=pass header.d=example.com selector=selector;
+
+No BIMI record
+--------------
+
+    From: sender@sub.example.com
+    Authentication-Results: bimi=none header.d=sub.example.com selector=default;
+
+In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com
+
+Subdomain has no default record, but organizataional domain does
+----------------
+
+    From: sender@sub.example.com
+    Authentication-Results: bimi=pass header.d=example.com selector=default;
+
+Subdomain has no record for selector, but organization domain has a deafult
+---------------
+
+    From: sender@sub.example.com
+    BIMI-Selector: v=BIMI1; s=selector;
+    Authentication-Results: bimi=pass header.d=example.com selector=default;
+
+In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
+
+
+Appendix C    {#appendix-C}
+===============
+
+Example BIMI-Location construction flow
+
+BIMI Selector Record Published
+---------------
+
+The domain example.com publishes the following BIMI record:
+
+    brand._bimi.example.com IN TXT "v=BIMI1; z=64x64; f=png; l=https://image.example.com/bimi/logo/"
+
+Sender constructs a message
+-----------------
+
+The sender now sends a message, DKIM signs it, and transmits to the receiver:
+
+    DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
+    From: sender@example.com
+    BIMI-Selector: v=BIMI1; s=brand;
+    BIMI-Location: image.example.com/bimi/logo/128x128.gif
+    Subject: Hi, this is a message from the good folks at Example Learning
+
+MTA does its authentication checks
+------------------
+
+The receiving MTA receives the message and performs an SPF verification (which fails), a DKIM verification (which passes), and a DMARC verification (which passes). The domain is verified and has good reputation. The Receiver proceeds to perform a BIMI lookup.
+
+MTA performs BIMI Assertion
+------------------
+
+Ihe MTA sees that the message has a BIMI-Selector header, and it is covered by the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that covers the BIMI-Selector header. The MTA sees the header contains 'v=BIMI1', and 's=brand'. Since there is no 'd=' value in the header, it uses 'd=example.com'. It performs a DNS query for brand._bimi.example.com. It exists, it verifies the syntax of the BIMI DNS record, and it, too passes.
+
+MTA Stemps Authentication-Results
+-----------------
+
+It stamps the results of the BIMI to the Authentication-Results header:
+
+    Authentication-Results: spf=fail smtp.mailfrom=example.com;
+      dkim=pass (signature was verified) header.d=example.com;
+      dmarc=pass action=none header.from=example.com;
+      bimi=pass header.d=example.com selector=brand;
+
+MTA Constructs BIMI-Location header
+-----------------
+
+Finally, the MTA removes the existing BIMI-Location header, and stamps a new one:
+
+    BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/64x64.png
+
+In this example, the BIMI-Location header that the sender included is different from the one that the MTA stamped.
+
+The MUA displays the indicator
+---------------
+
+The mail is opened in an MUA and that MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.
+
+Appendix D  {#appendix-d}
+================
+
+BIMI Record Parsing for indicator selection {#bimi-record-parsing}
+
+\[tzink\] This section was originally in the IMAP document, and assumed previously that the MUA would do all of this checking. Moving it to this section instead. But now that I think about it, maybe it *should* be in the MUA/mailstore section since the MTA doesn't know which image the MUA would prefer.\[/tzink\]
+
+A brand or Domain Owner may have multiple BIMI indicators for the MUA to select from, and they are permitted to publish all of them in a BIMI DNS record. To pick between them:
+
+## Indicator Selection
+
+Look up the DNS record for the l= tag which tells the location of the brand’s indicators:
+
+    default._bimi.example.com IN TXT "v=1; f=png; z=512x512; l=https://bimi.example.com/marks/"
+
+The exact file to download from the location is the z= tag with the f= tag extension, e.g., https://bimi.example.com/marks/512x512.png.
+
+## Indicator preferences and precedence
+
+The MTA can check the various file at the remote location in any order, but SHOULD give precedence to the order in which they are listed. For example, if the following record were published:
+
+    default._bimi.example.com IN TXT "v=1; f=png,tif,jpg; z=256x256,512x512; l=https://bimi.example.com/marks/"
+
+This means that there are at least six different files. They will be prioritized by taking the first z= tag and appending all the f= extensions, then taking the next z= tag and appending the f= extensions:
+
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/256x256.tif
+    https://bimi.example.com/marks/256x256.jpg
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/512x512.tif
+    https://bimi.example.com/marks/512x512.jpg
+
+It is NOT done this way (interweaving the sizes):
+
+    https://bimi.example.com/marks/256x256.png
+    https://bimi.example.com/marks/512x512.png
+    https://bimi.example.com/marks/256x256.tif
+    https://bimi.example.com/marks/512x512.tif
+    https://bimi.example.com/marks/256x256.jpg
+    https://bimi.example.com/marks/512x512.jpg
+
