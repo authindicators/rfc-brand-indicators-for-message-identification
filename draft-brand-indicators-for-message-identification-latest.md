@@ -105,7 +105,7 @@ Introduction        {#problems}
 
 This document defines Brand Indicators for Message Identification (BIMI), which permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.
 
-Due to the amount of spam and forged email on the internet today, many mail receivers wish to benefit their users by clearly identifying authenticated email.  For email-sending organizations, the belief is that clear indicators of their brand is the most effective way to accomplish this.  This has in turn led receivers to build closed systems to manage brand indicators.
+Due to the amount of spam and forged email on the internet today, many mail receivers wish to benefit their users by clearly identifying authenticated email.  For email-sending organizations, clear indicators of their brand is the most effective way to accomplish this.  This has led receivers to build closed systems to manage brand indicators.
 
 BIMI is an open system that works at internet scale, so that Domain Owners can coordinate with MUAs to display appropriate Indicators.  BIMI has the added benefit of incentivizing Domain Owners to authenticate their email.
 
@@ -124,13 +124,13 @@ This document covers the BIMI mechanism for Domain Owners to publish their desir
 Overview        {#why-bimi}
 ============
 
-The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are or are not in fact authenticated.
+The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are or are not authenticated.
 
-It is currently possible for MUAs to indicate the validity of messages authenticated via these mechanisms through the use of generic visual indicators such as checkmarks if authenticated or questions marks otherwise.  But there is a belief that the effectiveness of such generic indicators is limited, and that end users are better served through the use of brand indicators associated with the authenticated sender of the message.
+It is currently possible for MUAs to indicate the validity of messages authenticated via these mechanisms through the use of generic visual indicators such as checkmarks if authenticated, or questions marks if not authenticated.  But the effectiveness of such generic indicators is limited, and end users are better served through the use of brand indicators associated with the authenticated sender of the message.
 
-To accomplish this, MUAs need to be able to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are believed to be a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a very large number of brands.
+To accomplish this, MUAs need toeffectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
 
-Due to this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
+Because of this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
 1. It puts a significant burden on each mail-receiving organization, because they must identify and manage a large database of brand indicators.
 2. Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.
@@ -177,7 +177,7 @@ BIMI has the following high-level goals:
 Security     {#security}
 ------------
 
-Brand indicators are a potential vector for abuse.  BIMI creates a relationship between sending organization and Mail Receiver so that the receiver can display appropriately designated indicators if the sending domain is verified and has meaningful reputation with the receiver.  Without verification and reputation, there is no way to prevent a bad actor exxample.com from using example.com's brand indicators and behaving in a malicious manner.  This document does not cover these verification and reputation mechanisms, but BIMI requires them to control abuse.
+Brand indicators are a potential vector for abuse.  BIMI creates a relationship between sending organization and Mail Receiver so that the receiver can display appropriately designated indicators if the sending domain is verified and has meaningful reputation with the receiver.  Without verification and reputation, there is no way to prevent a bad actor exxample.com from using example.com's brand indicators and behaving maliciously.  This document does not cover these verification and reputation mechanisms, but BIMI requires them to control abuse.
 
 Scalability     {#scalability}
 ------------
@@ -221,7 +221,7 @@ The mechanism through which a Protocol Client verifies the BIMI Assertion Record
 Domain Owner
 -------------
 
-An entity or organization that owns a DNS domain.  The term "owns" here indicates that the entity or organization being referenced holds the registration of that DNS domain.  Domain Owners range from complex, globally distributed organizations, to service providers working on behalf of non-technical clients, to individuals responsible for maintaining personal domains.  This specification uses this term as analogous to an Administrative Management Domain as defined in [EMAIL-ARCH].
+An entity or organization that owns a DNS domain.  The term "owns" refers to the entity or organization holding the registration of that DNS domain.  Domain Owners range from complex, globally distributed organizations, to service providers working on behalf of non-technical clients, to individuals responsible for maintaining personal domains.  This specification uses this term as analogous to an Administrative Management Domain as defined in [EMAIL-ARCH].
 
 Indicator
 -------------
@@ -267,7 +267,7 @@ A Domain Owner advertises BIMI participation of one or more of its domains by ad
 
 A Domain Owner may choose not to participate in BIMI.  In this case, the Domain Owner simply declines to advertise participation by not publishing any BIMI assertion record.
 
-An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner's published BIMI policy.  But MUAs have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.
+An MUA implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere to the Domain Owner's published BIMI policy.  However, MUAs have final control over the user interface published to their end users, and MAY use alternate indicators than those specified in the BIMI assertion record or no indicator at all.
 
 BIMI's use of the DNS is driven by BIMI's use of domain names and the nature of the query it performs. Use of the DNS as the query service has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
@@ -431,6 +431,7 @@ l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after par
 And the formal definition of the BIMI Location Header, using ABNF, is as follows:
 
 ....bimi-location-header = bimi-header-version bimi-sep bimi-header-locations \[bimi-sep\]
+
 
 Header Signing
 ---------------
@@ -649,10 +650,24 @@ The domain example.com sends with a BIMI-Selector header:
 
 The MTA would lookup selector._bimi.example.com.
 
-MISSING EXAMPLE - TZINK WHAT WAS IT - Malformed header?
---------
+Without BIMI-Selector Header on a subdomain
+------------
 
-THIS EXAMPLE IS MISSING AND WE WOULD LIKE IT BACK PLEASE
+The domain foo.example.com sends without a BIMI-Selector header:
+
+    From: sender@foo.example.com
+    
+The MTA would lookup default._bimi.foo.example.com for the BIMI DNS record. If it did not exist, it would lookup default._bimi.example.com.
+
+With BIMI-Selector Header on a subdomain
+------------
+
+The domain foo.example.com sends without a BIMI-Selector header:
+
+    From: sender@foo.example.com
+    BIMI-Selector: v=BIMI1; s=selector;
+    
+The MTA would lookup selector._bimi.foo.example.com for the BIMI DNS record. If it did not exist, it would lookup default._bimi.foo.example.com.
 
 Invalid BIMI-Selector Header
 ---------
@@ -749,6 +764,8 @@ This means that there are at least six different files. They will be prioritized
     https://bimi.example.com/marks/512x512.png
     https://bimi.example.com/marks/1024x1024.png
     https://bimi.example.com/marks/1024x1024.svg
+    
+It is up to the domain owner to publish the extensions and file sizes in the preferred order. MUAs MAY still choose to reorder them (e.g., prefer .svg over .png even if .png comes first in the BIMI assertion record).
 
 Example BIMI-Location Construction (INFORMATIONAL)   {#bimi-location-example}
 ===============
