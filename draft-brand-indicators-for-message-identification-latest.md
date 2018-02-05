@@ -340,6 +340,12 @@ An explicit declination to publish looks like:
 
     v=BIMI1; l=; a=;
 
+### Supported Image Formats for l= tag
+
+Any format in the BIMI-formats IANA registry are acceptable targets for the l= tag. If an l= tag ends with any other image format, the record MUST be treated as if it has a permanent error.
+
+As of the publishing of this document, only SVG as defined in (RFC6170 section 5.2)[https://tools.ietf.org/html/rfc6170#section-5.2] is acceptable for publishing in the l= tag.
+
 Selectors   {#selectors}
 ------------------------
 
@@ -390,7 +396,7 @@ And the formal definition of the BIMI Selector Header, using ABNF, is as follows
 BIMI-Location {#bimi-location}
 ----------------------------------
 
-BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
+BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from.
 
 The syntax of the header is as following:
 
@@ -424,20 +430,14 @@ This section includes a walk through of the actions a Domain Owner takes when se
 Determine and publish Indicator(s) for use
 -------------
 
-Domain Owners should consider which Indicator file formats to choose when setting up their BIMI Assertion Records. Vector image formats (SVG for this document) have some advantages over raster formats, and vice versa. As a Sender, BIMI provides control over which Indicators are chosen for display, but not the ultimate manner in which the MUA will display the image.
-
-Therefore, for any given Indicator, it is RECOMMENDED to provide several different versions (sizes, aspect ratios, and file types) of each Indicator so that the MUA may choose the most appropriate one for its layout.
-
-Then publish these Indicator options somewhere world readable.
-
-If publishing both vector and raster Indicators in the same Assertion Record, for each aspect ratio, only the smallest and largest z= size values will be used for vector Indicator retrieval, and those will be considered small and large vector Indicators respectively.
+Domain Owners should consider which Indicator file formats to choose when setting up their BIMI Assertion Records. As a Sender, BIMI provides control over which Indicators are chosen for display, but not the ultimate manner in which the MUA will display the image.
 
 BIMI allows multiple comma separated l= values in the Assertion Record, so that a Domain Owner may publish the same Indicators in multiple world readable locations. This is so Indicators may still be available if there are service or DNS issues for a particular l= value.
 
 Specify Domain Owner Preference
 -------------
 
-A Domain Owner's preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.
+The ordering of the l= tag is significant, the first location specified should have priority over the second, etc.
 
 This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.
 
@@ -517,10 +517,6 @@ Construct BIMI-Location URI(s)
 
 The l= value of the BIMI-Location header is a comma separated list of URIs to Indicators the MTA believes are most applicable to its MUAs. From the options provided by the Assertion Record, MTAs SHOULD choose the Indicators to include based on Receiver policy for optimal performance and user experience for its MUAs from the.
 
-The URIs in the list are created from the exact concatenation of the l= and appropriate z= and then f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
-
-  ....INFORMATIONAL: The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
-
 MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.
 
 Set appropriate flags on the mail store {#mail-stores}
@@ -577,6 +573,11 @@ Domain Owners should be careful to strip any metadata out of published Indicator
 IANA Considerations   {#iana}
 ===================
 
+IANA will need to reserve two new entries for the "Permanent Message Header Field Names" registry and create a registry for support file formats for BIMI.
+
+Permanent Header Field Updates
+------------
+
 IANA will need to reserve two new entries to the "Permanent Message Header Field Names" registry.
 
    Header field name: BIMI-Selector
@@ -599,6 +600,13 @@ IANA will need to reserve two new entries to the "Permanent Message Header Field
    Author/Change controller: IETF
 
    Specification document: This one
+
+Registry for Support BIMI Formats
+------------
+
+Names of support file types supported by BIMI must be registered by IANA.
+
+New entries are assigned only for values that have been documented in a published RFC that has had IETF Review, per [IANA-CONSIDERATIONS]. Each method must register a name, the file extension, the specification that defines it, and a description.
 
 --- back
 
