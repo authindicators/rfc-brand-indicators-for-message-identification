@@ -304,21 +304,13 @@ v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI re
 
 ....bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
-a= Trust Authorities (plain-text; OPTIONAL).  A reserved value.
+a= Trust Authorities (plain-text; URI; OPTIONAL).  A reserved value.
 
 ....ABNF:
 
 ....bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
 
-f= Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is "png").  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).
-
-....ABNF:
-
-....bimi-format-ext = \[FWS\] 3*4(ALPHA / DIGIT) \[FWS\]
-
-....bimi-formats = %x66 *WSP "=" bimi-format-ext *("," bimi-format-ext) \[","\]
-
-l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport is HTTPS only.
+l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  The supported transport is HTTPS only.
 
 ....ABNF:
 
@@ -330,39 +322,23 @@ l= locations (URI; REQUIRED).  The value of this tag is a comma separated list o
 
 ....bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
 
-z= List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no Indicator should be used. (See below.)
-
-....ABNF:
-
-....bimi-dimension = \[FWS\] 2*4DIGIT \[FWS\]
-
-....; min 32
-
-....; max 1024
-
-....bimi-size = bimi-dimension "x" bimi-dimension
-
-....bimi-size-list = bimi-size *("," bimi-size) \[","\]
-
-....bimi-image-sizes = %x7a *WSP "=" \[bimi-size-list\]
-
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
 ....bimi-sep = *WSP %x3b *WSP
 
-....bimi-record = bimi-version (bimi-sep bimi-locations) \[bimi-sep bimi-formats\] \[bimi-sep bimi-image-sizes\] \[bimi-sep\]
+....bimi-record = bimi-version (bimi-sep bimi-locations) (bimi-sep bimi-authorities) \[bimi-sep\]
  
 ....; components other than bimi-version
  
 ....; may appear in any order
 
-### An empty "z" tag
+### Declination to publish
 
-If the "z" tag is empty, it is an explicit refusal to participate in BIMI. This is critically different than not publishing a BIMI record in the first place. For example, an empty z= tag allows a subdomain to decline participation when its organizational domain has default Indicators available. Also, an empty z= tag in a selector would allow messages sent with this selector to decline the use of Indicators while messages with other selectors would display normally.
+If both the "l" and "a" tags are empty, it is an explicit refusal to participate in BIMI. This is critically different than not publishing a BIMI record in the first place. For example, this allows a subdomain to decline participation when its organizational domain has default Indicators available. Furthermore, messages sent using a selector that has declined to publish will not show an Indicator while messages with other selectors would display normally.
 
-### The "z" tag for vector formats
+An explicit declination to publish looks like:
 
-The "z" tag is defined as "WxH" which does not translate cleanly when using vector formats (SVG for this document). If a vector format is specified, and there are multiple z= values, then for each aspect ratio, an MTA SHOULD treat the smallest z value as the "small" vector graphic (for example, for thumbnails or mobile), and the largest z value as the "large" vector graphic. Any other z values should be ignored in conjunction with vector formats.
+    v=BIMI1; l=; a=;
 
 Selectors   {#selectors}
 ------------------------
