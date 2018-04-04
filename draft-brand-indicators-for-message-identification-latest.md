@@ -128,7 +128,7 @@ The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Do
 
 It is currently possible for MUAs to indicate the validity of messages authenticated via these mechanisms through the use of generic visual indicators such as checkmarks if authenticated, or questions marks if not authenticated.  But the effectiveness of such generic indicators is limited, and end users are better served through the use of brand indicators associated with the authenticated sender of the message.
 
-To accomplish this, MUAs need toeffectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
+To accomplish this, MUAs need to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
 
 Because of this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
