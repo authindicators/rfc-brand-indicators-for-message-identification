@@ -2,9 +2,9 @@
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
 date: 2017-04-16
-category: info
+category: experimental
 
-workgroup: Authindicators Working Group
+workgroup: Network Working Group
 keyword: Internet-Draft
 
 normative:
@@ -76,8 +76,8 @@ author:
  -
     ins: T. Loder
     name: Thede Loder
-    organization: Agari
-    email: tloder@agari.com
+    organization: Skye Logicworks
+    email: thede@skyelogicworks.com
  -
     ins: T. Zink
     name: Terry Zink
@@ -96,7 +96,7 @@ author:
 
 --- abstract
 
-Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity and reputation of the domain.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
+Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity of the indicator.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  BIMI is just a mechanism to support coordination between mail-originating organizations and MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
 
 --- middle
 
@@ -119,7 +119,7 @@ The approach taken by BIMI is nearly identical to the approach taken by [DKIM](h
 * can be deployed incrementally; and
 * allows delegation of indicator hosting to third parties.
 
-This document covers the BIMI mechanism for Domain Owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP) should be extended to work with BIMI.  Other documents will cover these topics.
+This document covers the BIMI mechanism for Domain Owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains or indicators are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP) should be extended to work with BIMI.  Other documents will cover these topics.
 
 Overview        {#why-bimi}
 ============
@@ -189,7 +189,6 @@ Out of Scope     {#out-of-scope}
 
 Several topics and issues are specifically out of scope for the initial version of this work.  These include the following:
 
-* Defining what constitutes authenticated email for the purposes of this standard.
 * Publishing policy other than via the DNS.
 * Specific requirements for indicator display on MUAs.
 * How receivers should use reputation to influence the display of BIMI indicators.
@@ -208,30 +207,17 @@ Readers are encouraged to be familiar with the contents of [EMAIL-ARCH].  In par
 
 Syntax descriptions use Augmented BNF [ABNF].
 
-Author Domain
--------------
-
-The domain name of the apparent author, as extracted from the RFC5322.From field.
+"Author Domain", "Domain Owner", and "Mail Receiver" are imported from [DMARC] Section 3.
 
 BIMI Assertion
 -------------
 
 The mechanism through which a Protocol Client verifies the BIMI Assertion Record and constructs the URI(s) to the requested indicator(s) to be placed in the BIMI-Location header.
 
-Domain Owner
--------------
-
-An entity or organization that owns a DNS domain.  The term "owns" refers to the entity or organization holding the registration of that DNS domain.  Domain Owners range from complex, globally distributed organizations, to service providers working on behalf of non-technical clients, to individuals responsible for maintaining personal domains.  This specification uses this term as analogous to an Administrative Management Domain as defined in [EMAIL-ARCH].
-
 Indicator
 -------------
 
 The icon, image, mark, or other graphical representation of the brand. The Indicator is in a common image format with restrictions detailed in the [Assertion Record definition](#assertion-record-def).
-
-Mail Receiver
--------------
-
-The entity or organization that receives and processes email.  Mail Receivers operate one or more Internet-facing Mail Transport Agents (MTAs).
 
 Mark Asserting Entity (MAE)
 -------------
@@ -300,37 +286,37 @@ The following tags are introduced as the initial valid BIMI tags:
 
 v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI record.  It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
-....ABNF:
+    ABNF:
 
-....bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
+    bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
 a= Trust Authorities (plain-text; URI; OPTIONAL).  A reserved value.
 
-....ABNF:
+    ABNF:
 
-....bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
+    bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
 
 l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  The supported transport is HTTPS only.
 
-....ABNF:
+    ABNF:
 
-....bimi-location-uri = \[FWS\] URI \[FWS\]
+    bimi-location-uri = \[FWS\] URI \[FWS\]
 
-....; "URI" is imported from [URI]
+    ; "URI" is imported from [URI]
 
-....; commas (ASCII ; 0x2C) MUST be encoded
+    ; commas (ASCII ; 0x2C) MUST be encoded
 
-....bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+    bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
 
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
-....bimi-sep = *WSP %x3b *WSP
+    bimi-sep = *WSP %x3b *WSP
 
-....bimi-record = bimi-version (bimi-sep bimi-locations) (bimi-sep bimi-authorities) \[bimi-sep\]
+    bimi-record = bimi-version (bimi-sep bimi-locations) (bimi-sep bimi-authorities) \[bimi-sep\]
  
-....; components other than bimi-version
+    ; components other than bimi-version
  
-....; may appear in any order
+    ; may appear in any order
 
 ### Declination to publish
 
@@ -355,13 +341,13 @@ The selector "default" is the default Assertion Record. Domain Owners can specif
 
 Periods are allowed in selectors and are component separators.  When BIMI Assertion Records are retrieved from the DNS, periods in selectors define DNS label boundaries in a manner similar to the conventional use in domain names.  In a DNS implementation, this can be used to allow delegation of a portion of the selector namespace.
 
-....ABNF:
+    ABNF:
 
-....selector = sub-domain *( "." sub-domain )
+    selector = sub-domain *( "." sub-domain )
 
-....; from [SMTP] Domain,
+    ; from [SMTP] Domain,
 
-....; excluding address-literal
+    ; excluding address-literal
 
 The number of selectors for each domain is determined by the Domain Owner.  Many Domain Owners will be satisfied with just one selector, whereas organizations with more complex branding requirements can choose to manage disparate selectors.  BIMI sets no maximum limit on the number of selectors.
 
@@ -379,19 +365,19 @@ BIMI DNS records are placed in \<selector\>._bimi.\<domain\>, and by default the
 
 v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
-....ABNF:
+    ABNF:
 
-....bimi-header-version = "v" *WSP "=" *WSP "BIMI" 1DIGIT
+    bimi-header-version = "v" *WSP "=" *WSP "BIMI" 1DIGIT
 
 s= Selector (plain-text; REQUIRED). The location of the BIMI DNS record, when combined with the RFC5322.From domain.
 
-....ABNF:
+    ABNF:
 
-....bimi-selector = "s" *WSP "=" *WSP selector
+    bimi-selector = "s" *WSP "=" *WSP selector
 
 And the formal definition of the BIMI Selector Header, using ABNF, is as follows:
 
-....bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
+    bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
 
 BIMI-Location {#bimi-location}
 ----------------------------------
@@ -402,17 +388,17 @@ The syntax of the header is as following:
 
 v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire retrieved record MUST be ignored.  It MUST be the first tag in the list.
 
-....The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
+    The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
 l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after parsing through the BIMI DNS record and performing the required checks.  The value of this tag is a comma separated list of URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.
 
-....ABNF:
+    ABNF:
 
-....bimi-header-locations = "l" *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+    bimi-header-locations = "l" *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
 
 And the formal definition of the BIMI Location Header, using ABNF, is as follows:
 
-....bimi-location-header = bimi-header-version bimi-sep bimi-header-locations \[bimi-sep\]
+    bimi-location-header = bimi-header-version bimi-sep bimi-header-locations \[bimi-sep\]
 
 
 Header Signing
@@ -492,10 +478,10 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 8. If the remaining set contains only a single record, this record is used for BIMI Assertion.
 
-Stamp BIMI status in Authentication Results {#bimi-results}
+Affix BIMI status to Authentication Results header field {#bimi-results}
 ----------------------------------
 
-Upon completion of Indicator Discovery, an MTA SHOULD stamp the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
+Upon completion of Indicator Discovery, an MTA SHOULD affix the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
 
 bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check did not perform, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., bimi=skipped (sender not trusted) or bimi=skipped (message failed DMARC).
 
@@ -663,7 +649,7 @@ The domain example.com sends with a BIMI-Selector header, but does not include t
 
 The MTA would ignore this header, and lookup default._bimi.example.com.
 
-Example Authentication-Results stamps (INFORMATIONAL)   {#ar-examples}
+Example Authentication-Results entry (INFORMATIONAL)   {#ar-examples}
 =============
 
 This section shows example Authentication-Results stamps based on different BIMI lookup statuses.
