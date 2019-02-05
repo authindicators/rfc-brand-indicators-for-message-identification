@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2019-02-04
+date: 2019-02-05
 category: exp
 
 workgroup: Network Working Group
@@ -76,12 +76,12 @@ author:
  -
     ins: S. Blank
     name: Seth Blank
-    organization: ValiMail
+    organization: Valimail
     email: seth@valimail.com
  -
     ins: P. Goldstein
     name: Peter Goldstein
-    organization: ValiMail
+    organization: Valimail
     email: peter@valimail.com
  -
     ins: T. Loder
