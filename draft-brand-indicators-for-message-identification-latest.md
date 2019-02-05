@@ -150,7 +150,7 @@ The basic structure of BIMI is as follows:
 
 2. Then, for any message received by a Mail Receiver:
 
-    a. Receivers authenticate the messages using [DMARC] and/or whatever other authentication mechanisms they wish to apply.
+    a. Receivers authenticate the messages using [DMARC] and whatever other authentication mechanisms they wish to apply.
 
     b. The receiver queries the DNS for a corresponding BIMI record and proof of indicator validation.
 
@@ -202,7 +202,7 @@ Readers are encouraged to be familiar with the contents of [EMAIL-ARCH].  In par
 
 Syntax descriptions use Augmented BNF [ABNF].
 
-"Author Domain", "Domain Owner", and "Mail Receiver" are imported from [DMARC] Section 3.
+"Author Domain", "Domain Owner", "Organizational Domain", and "Mail Receiver" are imported from [DMARC] Section 3.
 
 BIMI Assertion
 -------------
@@ -280,6 +280,8 @@ a= Trust Authorities (plain-text; URI; OPTIONAL).  A reserved value.
     ABNF:
 
     bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
+
+    NOTE TO WORKING GROUP: This a= tag needs to be extended, to provide validation options. Current expectations are: "self", "cert", and "mva". Where "self" means there is no validation option (perhaps this is best done by simply not supplying an a= tag?), "cert" provides an HTTPS URL to a Mark Verified Certificate that can be used to validate the indicator at the l= tag, and "mva" specifies an HTTPS URL to an API endpoint that can be queried for validation information.
 
 l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  The supported transport is HTTPS only.
 
@@ -589,6 +591,11 @@ Registry for Support BIMI Formats
 Names of support file types supported by BIMI must be registered by IANA.
 
 New entries are assigned only for values that have been documented in a published RFC that has had IETF Review, per [IANA-CONSIDERATIONS]. Each method must register a name, the file extension, the specification that defines it, and a description.
+
+Other IANA needs
+------------
+
+NOTE TO WORKING GROUP: The registry for BIMI tags needs to be properly set up, as does the registry for validation actions.
 
 --- back
 
