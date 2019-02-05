@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2017-04-16
+date: 2019-02-04
 category: experimental
 
 workgroup: Network Working Group
@@ -74,25 +74,26 @@ pi: [toc, sortrefs, symrefs]
 
 author:
  -
-    ins: T. Loder
-    name: Thede Loder
-    organization: Skye Logicworks
-    email: thede@skyelogicworks.com
- -
-    ins: T. Zink
-    name: Terry Zink
-    organization: Microsoft
-    email: tzink@exchange.microsoft.com
+    ins: S. Blank
+    name: Seth Blank
+    organization: ValiMail
+    email: seth@valimail.com
  -
     ins: P. Goldstein
     name: Peter Goldstein
     organization: ValiMail
     email: peter@valimail.com
  -
-    ins: S. Blank
-    name: Seth Blank
-    organization: ValiMail
-    email: seth@valimail.com
+    ins: T. Loder
+    name: Thede Loder
+    organization: Skye Logicworks
+    role: editor
+    email: thede@skyelogicworks.com
+ -
+    ins: T. Zink
+    name: Terry Zink
+    role: editor
+    email: tzink@terryzink.com
 
 --- abstract
 
