@@ -106,8 +106,6 @@ Introduction        {#problems}
 
 This document defines Brand Indicators for Message Identification (BIMI), which permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.
 
-Due to the amount of spam and forged email on the internet today, many mail receivers wish to clearly identify the sender of authenticated email. This has led receivers to build closed systems to manage brand indicators.
-
 BIMI is an open system that works at internet scale, so that Domain Owners can coordinate with MUAs to display appropriate Indicators.  BIMI has the added benefit of incentivizing Domain Owners to authenticate their email.
 
 The approach taken by BIMI is heavily influenced by the approach taken in [DKIM](https://tools.ietf.org/html/rfc6376#section-1), in that BIMI:
@@ -120,18 +118,16 @@ The approach taken by BIMI is heavily influenced by the approach taken in [DKIM]
 * can be deployed incrementally; and
 * allows delegation of indicator hosting to third parties.
 
-This document covers the BIMI mechanism for Domain Owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains or indicators are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP) should be extended to work with BIMI.  Other documents will cover these topics.
+This document covers the BIMI mechanism for Domain Owners to publish their desired indicators and how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains or indicators are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP, JMAP) should be extended to work with BIMI.  Other documents will cover these topics.
 
 Overview        {#why-bimi}
 ============
 
-The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are or are not authenticated.
+The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.
 
-It is currently possible for MUAs to indicate when the sender of a message is not likely valid through the use of generic visual indicators such as questions marks or fishhooks if authentication is not present or fails.  But there is no consistent positive assertion associated with the authenticated sender of the message.
+MUAs are increasingly incorporating graphical logos to indicate the identity of the sender of a message.  While a discussion of the merits of doing this are beyond the scope of this document, at present there are no open standards for publishing and discovery of logos or of tying these usages only to properly authenticated messages. 
 
-To accomplish this, MUAs need to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating sender identity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
-
-Because of this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
+Because of this need for brand specific indicators, some mail-receiving organizations have developed closed systems for obtaining and displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
 1. It puts a significant burden on each mail-receiving organization, because they must identify and manage a large database of brand indicators.
 2. Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.
@@ -142,7 +138,7 @@ Because of this need for brand specific indicators, some mail-receiving organiza
 
 This all speaks to the need for a standardized mechanism by which Domain Owners interested in ensuring that their indicators are displayed correctly and appropriately can publish and distribute brand indicators for use by any participating MUA.
 
-BIMI removes the substantial burden of curating and maintaining an indicator database from the MUAs, and allows each brand to manage its own indicators.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.
+BIMI removes the substantial burden of curating and maintaining an indicator database from the MUAs, and allows each domain to manage its own indicators.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email, should that come with the ability to influence how email from the organization is displayed.
 
 The basic structure of BIMI is as follows:
 
