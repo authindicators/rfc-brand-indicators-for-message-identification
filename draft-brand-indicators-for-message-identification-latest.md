@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-brand-indicators-for-message-identification-latest
-date: 2019-02-05
+date: 2019-02-06
 category: exp
 
 workgroup: Network Working Group
