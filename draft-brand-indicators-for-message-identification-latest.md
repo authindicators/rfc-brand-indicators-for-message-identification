@@ -97,7 +97,7 @@ author:
 
 --- abstract
 
-Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity of the indicator.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents.  By itself BIMI does not impose specific requirements for indicator display on MUAs.  MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
+Brand Indicators for Message Identification (BIMI) permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.  There are two aspects of BIMI coordination: a scalable mechanism for Domain Owners to publish their desired indicators, and a mechanism for Mail Transfer Agents (MTAs) to verify the authenticity of the indicator.  This document specifies how Domain Owners communicate their desired indicators through the BIMI assertion record in DNS and how that record is to be handled by MTAs and MUAs.  The domain verification mechanism and extensions for other mail protocols (IMAP, etc.) are specified in separate documents. MUAs and mail-receiving organizations are free to define their own policies for indicator display that makes use or not of BIMI data as they see fit.
 
 --- middle
 
@@ -123,9 +123,9 @@ This document covers the BIMI mechanism for Domain Owners to publish their desir
 Overview        {#why-bimi}
 ============
 
-The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.
+The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not. BIMI relies on these authentication protocols, but is not a new authentication protocol itself.
 
-MUAs are increasingly incorporating graphical logos to indicate the identity of the sender of a message.  While a discussion of the merits of doing this are beyond the scope of this document, at present there are no open standards for publishing and discovery of logos or of tying these usages only to properly authenticated messages. 
+MUAs are increasingly incorporating graphical logos to indicate the identity of the sender of a message.  While a discussion of the merits of doing this are beyond the scope of this document, at present there are no open standards for publishing and discovery of preferred logos or of tying these usages only to properly authenticated messages. 
 
 Because of this need for brand specific indicators, some mail-receiving organizations have developed closed systems for obtaining and displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
@@ -214,6 +214,12 @@ Mark Verifying Authority (MVA)
 -------------
 
 An entity of organization that can provide evidence of verification of indicators asserted by a Domain Owner to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain indicator standards (ie. size, trademark, content, etc).
+
+Mark Verified Certificate (MVC)
+-------------
+
+A certificate issued by a CA which has validated the attested logo in accordance with Validated Mark Certificate Guidelines, which are defined in a separate document.
+
 
 Protocol Client
 -------------
