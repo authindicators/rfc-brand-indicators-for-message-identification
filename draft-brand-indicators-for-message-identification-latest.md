@@ -128,7 +128,7 @@ The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Do
 
 It is currently possible for MUAs to indicate the validity of messages authenticated via these mechanisms through the use of generic visual indicators such as checkmarks if authenticated, or questions marks if not authenticated.  But the effectiveness of such generic indicators is limited, and end users are better served through the use of brand indicators associated with the authenticated sender of the message.
 
-To accomplish this, MUAs need toeffectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
+To accomplish this, MUAs need to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
 
 Because of this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
@@ -304,21 +304,13 @@ v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI re
 
 ....bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
-a= Trust Authorities (plain-text; OPTIONAL).  A reserved value.
+a= Trust Authorities (plain-text; URI; OPTIONAL).  A reserved value.
 
 ....ABNF:
 
 ....bimi-authorities = %x61 *WSP "=" \[bimi-location-uri\]
 
-f= Supported Image Formats (comma-separated plain-text list of values; OPTIONAL; default is "png").  Comma-separated list of three or four character filename extensions denoting the available file formats.  Supported raster formats are TIFF (tiff, tif), PNG (png), and JPEG (jpg, jpeg).  Supported vector formats are SVG (svg).
-
-....ABNF:
-
-....bimi-format-ext = \[FWS\] 3*4(ALPHA / DIGIT) \[FWS\]
-
-....bimi-formats = %x66 *WSP "=" bimi-format-ext *("," bimi-format-ext) \[","\]
-
-l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport is HTTPS only.
+l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of base URLs representing the location of the brand indicator files.   All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  The supported transport is HTTPS only.
 
 ....ABNF:
 
@@ -330,39 +322,29 @@ l= locations (URI; REQUIRED).  The value of this tag is a comma separated list o
 
 ....bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
 
-z= List of supported image sizes  (comma-separated plain-text list of values; OPTIONAL).  A comma separated list of available image dimensions, written in the form “WxH”, with width W and height H specified in pixels.  Example: a image dimension listed as “512x512” implies a 1x1 aspect ratio image (square) of 512 pixels on a side.  The minimum size of any dimension is 32.  The maximum is 1024.  If the tag is missing or has an empty value, there is no default image dimension.  This lets a Domain Owner broadcast intent that no Indicator should be used. (See below.)
-
-....ABNF:
-
-....bimi-dimension = \[FWS\] 2*4DIGIT \[FWS\]
-
-....; min 32
-
-....; max 1024
-
-....bimi-size = bimi-dimension "x" bimi-dimension
-
-....bimi-size-list = bimi-size *("," bimi-size) \[","\]
-
-....bimi-image-sizes = %x7a *WSP "=" \[bimi-size-list\]
-
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
 ....bimi-sep = *WSP %x3b *WSP
 
-....bimi-record = bimi-version (bimi-sep bimi-locations) \[bimi-sep bimi-formats\] \[bimi-sep bimi-image-sizes\] \[bimi-sep\]
+....bimi-record = bimi-version (bimi-sep bimi-locations) (bimi-sep bimi-authorities) \[bimi-sep\]
  
 ....; components other than bimi-version
  
 ....; may appear in any order
 
-### An empty "z" tag
+### Declination to publish
 
-If the "z" tag is empty, it is an explicit refusal to participate in BIMI. This is critically different than not publishing a BIMI record in the first place. For example, an empty z= tag allows a subdomain to decline participation when its organizational domain has default Indicators available. Also, an empty z= tag in a selector would allow messages sent with this selector to decline the use of Indicators while messages with other selectors would display normally.
+If both the "l" and "a" tags are empty, it is an explicit refusal to participate in BIMI. This is critically different than not publishing a BIMI record in the first place. For example, this allows a subdomain to decline participation when its organizational domain has default Indicators available. Furthermore, messages sent using a selector that has declined to publish will not show an Indicator while messages with other selectors would display normally.
 
-### The "z" tag for vector formats
+An explicit declination to publish looks like:
 
-The "z" tag is defined as "WxH" which does not translate cleanly when using vector formats (SVG for this document). If a vector format is specified, and there are multiple z= values, then for each aspect ratio, an MTA SHOULD treat the smallest z value as the "small" vector graphic (for example, for thumbnails or mobile), and the largest z value as the "large" vector graphic. Any other z values should be ignored in conjunction with vector formats.
+    v=BIMI1; l=; a=;
+
+### Supported Image Formats for l= tag
+
+Any format in the BIMI-formats IANA registry are acceptable targets for the l= tag. If an l= tag ends with any other image format, the record MUST be treated as if it has a permanent error.
+
+As of the publishing of this document, only SVG as defined in (RFC6170 section 5.2)[https://tools.ietf.org/html/rfc6170#section-5.2] is acceptable for publishing in the l= tag.
 
 Selectors   {#selectors}
 ------------------------
@@ -414,7 +396,7 @@ And the formal definition of the BIMI Selector Header, using ABNF, is as follows
 BIMI-Location {#bimi-location}
 ----------------------------------
 
-BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from. This is formed by combining the 'l' and 'z' values from the BIMI DNS record.
+BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from.
 
 The syntax of the header is as following:
 
@@ -448,20 +430,14 @@ This section includes a walk through of the actions a Domain Owner takes when se
 Determine and publish Indicator(s) for use
 -------------
 
-Domain Owners should consider which Indicator file formats to choose when setting up their BIMI Assertion Records. Vector image formats (SVG for this document) have some advantages over raster formats, and vice versa. As a Sender, BIMI provides control over which Indicators are chosen for display, but not the ultimate manner in which the MUA will display the image.
-
-Therefore, for any given Indicator, it is RECOMMENDED to provide several different versions (sizes, aspect ratios, and file types) of each Indicator so that the MUA may choose the most appropriate one for its layout.
-
-Then publish these Indicator options somewhere world readable.
-
-If publishing both vector and raster Indicators in the same Assertion Record, for each aspect ratio, only the smallest and largest z= size values will be used for vector Indicator retrieval, and those will be considered small and large vector Indicators respectively.
+Domain Owners should consider which Indicator file formats to choose when setting up their BIMI Assertion Records. As a Sender, BIMI provides control over which Indicators are chosen for display, but not the ultimate manner in which the MUA will display the image.
 
 BIMI allows multiple comma separated l= values in the Assertion Record, so that a Domain Owner may publish the same Indicators in multiple world readable locations. This is so Indicators may still be available if there are service or DNS issues for a particular l= value.
 
 Specify Domain Owner Preference
 -------------
 
-A Domain Owner's preference is specified through the ordering of the l, z, and f tags in the Assertion Record. For example, if both png and jpeg indicators are specified, and the Domain Owner wishes the jpeg to have precedence, then the f= tag should specify jpeg first. Mail Receivers SHOULD respect the ordering in these tags as representative of Domain Owner preference.
+The ordering of the l= tag is significant, the first location specified should have priority over the second, etc.
 
 This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all formats. However, on average, the first tags specified SHOULD be used to construct the indicator passed to the MUA.
 
@@ -541,10 +517,6 @@ Construct BIMI-Location URI(s)
 
 The l= value of the BIMI-Location header is a comma separated list of URIs to Indicators the MTA believes are most applicable to its MUAs. From the options provided by the Assertion Record, MTAs SHOULD choose the Indicators to include based on Receiver policy for optimal performance and user experience for its MUAs from the.
 
-The URIs in the list are created from the exact concatenation of the l= and appropriate z= and then f= tags from the BIMI Assertion Record.  Concatenation MUST be exact, and a trailing slash MUST NOT be added to the l= tag from the BIMI Assertion Record.  A period MUST be used for the concatenation of the z= and f= tags.
-
-  ....INFORMATIONAL: The reason the concatenation must be exact and a trailing slash must not be added, is if concatenation required a trailing slash, that would create the operational overhead of requiring all indicators for all selectors to potentially require subdirectories of their own on servers hosting the indicators, which is not a requirement for Domain Owners that BIMI seeks to establish.
-
 MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.
 
 Set appropriate flags on the mail store {#mail-stores}
@@ -601,6 +573,11 @@ Domain Owners should be careful to strip any metadata out of published Indicator
 IANA Considerations   {#iana}
 ===================
 
+IANA will need to reserve two new entries for the "Permanent Message Header Field Names" registry and create a registry for support file formats for BIMI.
+
+Permanent Header Field Updates
+------------
+
 IANA will need to reserve two new entries to the "Permanent Message Header Field Names" registry.
 
    Header field name: BIMI-Selector
@@ -623,6 +600,13 @@ IANA will need to reserve two new entries to the "Permanent Message Header Field
    Author/Change controller: IETF
 
    Specification document: This one
+
+Registry for Support BIMI Formats
+------------
+
+Names of support file types supported by BIMI must be registered by IANA.
+
+New entries are assigned only for values that have been documented in a published RFC that has had IETF Review, per [IANA-CONSIDERATIONS]. Each method must register a name, the file extension, the specification that defines it, and a description.
 
 --- back
 
