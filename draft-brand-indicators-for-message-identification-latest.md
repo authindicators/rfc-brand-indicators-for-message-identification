@@ -106,7 +106,7 @@ Introduction        {#problems}
 
 This document defines Brand Indicators for Message Identification (BIMI), which permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.
 
-Due to the amount of spam and forged email on the internet today, many mail receivers wish to benefit their users by clearly identifying authenticated email.  For email-sending organizations, clear indicators of their brand is the most effective way to accomplish this.  This has led receivers to build closed systems to manage brand indicators.
+Due to the amount of spam and forged email on the internet today, many mail receivers wish to clearly identify the sender of authenticated email. This has led receivers to build closed systems to manage brand indicators.
 
 BIMI is an open system that works at internet scale, so that Domain Owners can coordinate with MUAs to display appropriate Indicators.  BIMI has the added benefit of incentivizing Domain Owners to authenticate their email.
 
@@ -127,9 +127,9 @@ Overview        {#why-bimi}
 
 The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication for email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not.  Given that not all senders employ these authentication mechanisms, many Mail User Agents (MUAs) make attempts to indicate to their end users when particular messages are or are not authenticated.
 
-It is currently possible for MUAs to indicate the validity of messages authenticated via these mechanisms through the use of generic visual indicators such as checkmarks if authenticated, or questions marks or fishhooks if authentication is not present or fails.  But the effectiveness of such generic indicators is limited, and end users are better served through the use of brand indicators associated with the authenticated sender of the message.
+It is currently possible for MUAs to indicate when the sender of a message is not likely valid through the use of generic visual indicators such as questions marks or fishhooks if authentication is not present or fails.  But there is no consistent positive assertion associated with the authenticated sender of the message.
 
-To accomplish this, MUAs need to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating message authenticity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
+To accomplish this, MUAs need to effectively and meaningfully convey that messages being displayed are both authenticated and originate from a known organization.  Brand-specific indicators are a more effective method of communicating sender identity to end users.  Thus there is a need for MUAs to have access to brand-specific indicators for a large number of brands.
 
 Because of this need for brand specific indicators, some mail-receiving organizations have developed closed systems for displaying brand indicators for some select domains.  While this enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
