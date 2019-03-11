@@ -1,0 +1,726 @@
+<?xml version="1.0"?>
+<!DOCTYPE rfc SYSTEM "rfc2629.dtd">
+<?rfc toc="yes"?>
+<?rfc compact="yes"?>
+<?rfc subcompact="no"?>
+<?rfc strict="yes"?>
+<?rfc symrefs="yes"?>
+<?rfc linkmailto="no"?>
+<?rfc comments="yes" ?>
+<?rfc inline="yes" ?>
+<rfc category="info" submissionType="IETF" ipr="trust200902"
+   docName="draft-chuang-ietf-bimi-security-perspectives-00">
+<front>
+<title abbrev="VMC Security Perspective">
+Verified Mark Certificates Proposal: A Security Perspective
+</title>
+<author initials="W." surname="Chuang" fullname="Weihaw Chuang" role="editor">
+    <organization>Google, Inc.</organization>
+	<address>
+	  <email>weihaw@google.com</email>
+	</address>
+</author>
+<author initials="T." surname="Loder" fullname="Thede Loder" role="editor">
+	<organization>Skye Logicworks</organization>
+	<address>
+    <email>thede@skyelogicworks.com</email>
+	</address>
+</author>
+<date month="March" year="2019" />
+<area>General</area>
+<workgroup>Application Area Working Group</workgroup>
+<keyword>LOGOTYPE</keyword>
+<keyword>email</keyword>
+
+<abstract>
+
+<t>
+This document motivates the need for embedding logotypes in X.509
+certificates along with the certificate validation process from a
+security perspective.
+</t>
+
+</abstract>
+</front>
+<middle>
+
+<section anchor="objectives" title="Objectives">
+<t>
+Many Mail User Agents and mail systems provide logo imagery as avatars
+as part of the user interface chrome.  For branded email, the agents
+and systems use different, proprietary methods for provisioning the
+avatar which causes consistency problems.  Instead there should a
+common, internet scale, secure method to fetch the sender’s brand logo
+indicators during message delivery which this document along with
+others documents by the AuthIndicators Working Group (aka BIMI Working
+Group) propose.
+</t>
+<t>
+Given the potential for impersonation abuse if not safeguarded, the
+proposal incorporates defense in depth as it assumes an adversarial
+security model and that parties will attempt to exploit
+sender/subscribers for their own criminal benefit.  Due to this risk
+of identity spoofing, a sender’s identity is verified by a Certificate
+Authority (CA) that acts as a Mark Verification Authority (MVA) that
+then issues X.509 certificate with this evidence as a Verified Mark
+Certificate (VMC).  One risk is that the MVA may fail to distinguish a
+spoofed identity during their verification either by oversight or
+intentionally.  To enable detection, issued certificates are publicly
+disclosed through permanent untamperable logs that can be verified by
+receivers, trademark monitors, the trademark holders themselves, and
+other interested parties.  Because of this, email receivers will have
+greater confidence that the sender’s logo is what the sender says they
+are.
+</t><t>
+The logo may be presented to the recipient if the email is at a
+minimum authenticated via SPF <xref target="RFC7208"/>, or DKIM <xref target="RFC6376"/>,
+and passes the DMARC <xref target="RFC7489"/> policy check.  Because this proposal
+uses domain authentication and DMARC in order for the logo to be
+shown, it incentivizes the use of these domain authentication and
+authorization methods.  These methods are important because they
+provide a consistent means of protecting against an sender domain
+spoofing.  However the FTC Office of Technology Research and
+Investigation in 2017 found that 66% of business mail domains did not
+use DMARC.  Logo carrying mail must also pass other receiver
+requirements such as not phish and not spam per their own policies.
+Domain-based authentication methods SPF, and DKIM, enables the email
+receivers’ automated anti-abuse systems to tie together emails sent by
+the same sender to generate accurate per domain reputations that allow
+them to filter abusive emails.  The Verified Mark Certificate contains
+curated sender’s metadata, that provides additional signals for
+anti-phishing.
+</t>
+<t>
+This document builds on the more generalized brand logo association
+drafts that is specified in <xref target="I-D.blank-ietf-bimi"/> and
+<xref target="I-D.brotman-ietf-bimi-guidance"/>.  This document is meant to
+motivate the purpose for Verified Mark Certificates, and is purely
+informative.  The <xref target="roadmap">Roadmap</xref> section calls out where normative documents
+are needed. 
+</t>
+
+<section anchor="objectives-critique" title="Critique of the BIMI Proposals">
+  <section anchor="objectives-bimi-draft" title="BIMI Draft">
+  <t>
+    The <xref target="I-D.blank-ietf-bimi"/>, dated February 6, 2019
+    aka the “Assertion Record” specification, states as its objectives
+    the following goals:
+    <list style="symbols"> 
+      <t>No dependency on new Internet protocols or services for indicator registration or revocation</t>
+      <t>Incremental deployment</t>
+      <t>Policies solely published in BIMI DNS (TXT) record</t>
+      <t>Delegation by logo owners to third party logo providers</t>
+      <t>Scalability of brand associations across internet scale of domains</t>
+      <t>Uniformity of brands displayed</t>
+    </list>
+(BIMI stands for Brand Indicators for Message Identification) The
+Assertion Record draft uses SPF/DKIM/DMARC for message verification.
+It defines optional header metadata and defaults to determine from
+where to fetch the logo policy and locator from BIMI DNS TXT records.
+From these, the receiver can generate a URL to fetch the logo.  It
+succeeds with the above goals, however it admits an important
+limitation in that it does not specify "verification and reputation"
+mechanisms and depends on them to prevent abuse.  This document
+describes solutions for those limitations.
+  </t>
+  <section anchor="objectives-thread-modeling" title="BIMI Draft Threat Modeling">
+    <t>
+      Because some of the uses of branded email are high-value
+      transactional and business emails, there is the possibility the
+      protocol might be abused.  Consequently the following is a
+      threat model to identify security weaknesses in the above
+      protocol.  Malicious senders may spoof trusted identities for
+      phishing or spam by copying brand identities or by creating a
+      similar but confusable logo, served from their domain with their
+      own domain authentication.  A adversary could:
+
+      <list style="symbols">
+	<t>game the receiver’s reputation system by using <eref target="https://pdfs.semanticscholar.org/46d6/7fceac97a55fe9981b2d420f3b0c357be00c.pdf">automated networks</eref> to send good email traffic and then launch an attack.</t>
+	<t>related concern, is the problem of low traffic senders that receivers will have difficulty determining reputation.</t>
+      </list>
+
+      An explicit definition of trustworthiness may be helpful establishing a reputation in these circumstances.
+    </t><t>      
+      Another attack is to exploit the vulnerability of the email
+      system by injecting emails crafted by the adversary that use the
+      good sender's identity.  While BIMI uses message authentication
+      through SPF/DKIM/DMARC that is meant to prevent this type of
+      spoofing, the adversary could exploit domains with weak
+      authentication via:
+
+      <list style="symbols">
+	<t><eref target="https://research.google.com/pubs/archive/43962.pdf">overly broad SPF</eref> policies acceptance policies</t>
+	<t><eref target="https://www.wired.com/2012/10/dkim-vulnerability-widespread/">weak DKIM keys</eref></t>
+      </list>
+
+      Fortunately good senders can easily fix this.  The adversary
+      could exploit weaknesses in DNS integrity as message
+      authentication depends on the integrity of the SPF/DKIM/DMARC
+      records which may be attacked through DNS cache poisoning or
+      man-in-the-middle (MitM).  While such attacks seem far fetched,
+      the <eref
+      target="https://www.wired.com/2014/03/quantum/">Snowden
+      disclosures</eref> show that nation-state adversaries have been
+      able to mount such attacks.  Unfortunately deployment of DNS
+      protection through DNSSEC <eref
+      target="https://blog.apnic.net/2017/12/06/dnssec-deployment-remains-low/">seems
+      to be stalled</eref>.
+    </t>
+  </section>
+  </section>
+
+  <section anchor="objectives-bimi-guidance" title="BIMI Guidance (So far) About Certificates">
+    <t>
+      The <xref target="I-D.brotman-ietf-bimi-guidance"/> dated on 6 Feb 6 2019
+      aka “Receivers Guidance” extends and provides best practices for
+      the Assertion Records draft. It notes the use of Verified Mark
+      Certificates which is new certificate issued by Mark Verifying
+      Authorities (MVA) to resist the spoofing attacks though with
+      limited details on validation and usage.  The Receivers Guidance
+      document states receivers should work with multiple MVAs to
+      allow the successful untrust of any one malicious MVA.  It also
+      calls for receivers to partner with Dispute Resolution Agencies
+      to handle trademark conflicts as well as acknowledges the courts
+      primacy for conflict resolution.  It has other guidance: it
+      notes that receivers MTA may fetch and store the logo for the
+      MUA or it may have the MUA fetch it itself.  It also provides
+      deployment guidance on domain authentication and DMARC.
+    </t>
+    <t>
+      The Receiver Guidance document references an AuthIndicators
+      Working Group document <eref
+      target="https://docs.google.com/document/d/1OzL9FqexZpZJQuoqAK2E3sXjOwEcLNCvXW7e88Olt2I/edit?usp=sharing">“Verified
+      Mark Certificates Usage (for review)”</eref> dated 23 October
+      2018 for details about Verified Mark Certificates.  That
+      document is a specification on the handling of Verified Mark
+      Certificates by the receiver MTA and recipient MUA.  It defines
+      the VMC validation and fetch process designed to protect the
+      privacy for the recipient from the sender- VMC fetch occurs at
+      delivery time, and cached by the MTA for use by the MUA, thus
+      view time usage of the VMC is hidden from the sender.  Similarly
+      Certificate Revocation Lists (CRLs) are specified to allow for
+      offline revocation checking of the certificate.  (There is the
+      related scenario of keeping private the use of the VM
+      Certificate content by the recipient from the receiver.  This
+      hasn’t been specified in any of the documents, but a likely
+      solution would be embed the logo as a new header for use by the
+      MUA)
+    </t><t>
+      Notably those two documents avoid detailed discussion on the use
+      of Verified Mark Certificates for which this document tries to
+      fill in.  Moreover, there are potential operational risks with
+      using curated information provided by X.509 certificates that
+      this document discusses next.
+    </t>
+    <section anchor="objectives-problems-certificates" title="Problems with Certificates">
+      <t>
+	Experience using identity carrying certificates have
+	identified several important issues.  An adversary attempting
+	to spoof an identity might try to exploit weaknesses in
+	certificate issuance validation.
+	<list style="symbols">
+	  <t>Lax or intentionally malicious validation by CA/MVA may allow an adversary to impersonate with a copied or look alike identity.</t>
+	  <t>Ambiguities in the registered identity that the CA/MVA checks against may allow an adversary to obtain an “legitimate” identity for spoofing.  Note that arguably the CA/MVA validation is considered successful here.
+	  <list style="symbols">
+	    <t><eref target="https://stripe.ian.sh/">Carroll</eref> demonstrated in 2017 that ambiguities caused by different jurisdictions allowed him to obtain a web EV certificate for "Stripe, Inc." in Kentucky that could have allowed him to spoof the better known "Stripe, Inc" in Delaware.  While browsers displays differences in country jurisdiction, it does not show state level information, and even if it did, it is doubtful users would notice.  The analog for logos is that an adversary that desires spoofing logos in one jurisdiction would register similar or identical logos in another.</t>
+	    <t><eref target="https://typewritten.net/write/ev-phishing/">Burton</eref> similarly demonstrated that he could obtain a web EV certificate for a misleading company name with a positive sounding security message e.g. "Identity Verified".  The analog logo attack might be that the adversary registers a checkmark or padlock logo.
+</t>
+	    <t>"Cousin marks" are similar but legitimate logos add another dimension of confusability as illustrated by <eref target="http://whatculture.com/offbeat/10-massive-companies-unbelievably-similar-logos">this list</eref>.  This confusability of this list seems to be caused by the trademark registration agency allowing similar logos when the company’s line of business don’t overlap. </t>	    
+	  </list></t>
+	</list>
+
+With these spoofing attacks, one issue has been understanding the
+scope of the attack i.e. given one bad certificate, if there are other
+ones.  Lack of global visibility in what has been issued has
+historically made this problematic.
+    </t><t>
+The largest deployed set of these identity carrying certificates has
+been web Extended Validation (EV) where the subscribers legal identity
+gets additional validation.  Web sites uses these EV certificates get
+additional chrome e.g. historically a green “bar” containing the
+company name and padlock indicator.  However operational experience
+has indicated problems with this approach:
+
+<list style="symbols">
+<t><eref target="http://www.usablesecurity.org/papers/jackson.pdf">Jackson et al.</eref> found that using the web EV green padlock UI as a positive security indicator was not effective in helping users distinguish good websites from phishing as users did not notice the indicators. </t>
+<t>Company names sometime are not familiar to users.  For example Google’s parent company name is “Alphabet Inc” which likely isn’t as familiar as “Google”.</t>
+</list>
+      </t>
+    </section>
+  </section>
+</section>
+</section><!--Objectives-->
+
+
+<section anchor="vmc" title="Verified Mark Certificate">
+  <t>
+    This section specifies issuing a BIMI-specific X.509 certificate
+    that binds logos and other information to domains and to a legal
+    entity.  CA/MVAs validate the binding and the X.509 CA based PKI
+    proves to all parties that this validation was done.  These
+    certificates are called Verified Mark Certificates (VMC or VM
+    Certificates aka Mark Verified Certificates or MVC in some of our
+    other documents).  This document primarily works with the use of
+    registered trademarks as it provides a useful legal framework to
+    establish VMC upon, however the AuthIndicators working group is
+    evaluating how to expand that to include other non-registered
+    identities.
+  </t>
+  <section anchor="vmc-association-logo" title="Certificate Association With Logo">
+    <t>
+Existing work provides specification for brand logos in X.509 PKIX
+certificates as specified in <xref target="RFC3709"/> and <xref
+target="RFC6170"/>.  The logo images can be embedded within the X.509
+certificate as a subject extension <xref target="RFC3709"/> using a DATA URL mentioned
+in <xref target="RFC6170"/> and specified in <xref target="RFC2397"/>.  The certificate
+subject identifier describes a legal owner of the brand that can be
+used for verification, and a DNS domain that matches the sender's
+email address domain.  The validation of these identities can follow
+the procedures in <eref
+target="https://cabforum.org/wp-content/uploads/EV-V1_6_6.pdf">CABF EV
+baseline 1.6</eref> with additional guidelines specific for BIMI as
+described in these <eref
+target="https://docs.google.com/document/d/10IzxkdrveDazBAvTvOUa9uCIDBwMkdmluwHEcbja42w/edit?usp=sharing">Guidelines
+for Issuance of Verified Mark Certificates v0.97</eref>.
+    </t><t>
+The Verified Mark Certificate must chain-up to a well known public
+trust anchor i.e. a well known Certificate Authority certificate
+issuer.  This provides a cryptographic means to prove that a domain
+owns a brand to the relying party as long as they can trust the
+transitive issuing policy.  If the logo bearing certificate is a CA
+certificate, then it must be name constrained to the owning domain or
+subdomain.  This prevents the brand from being wrongly associated with
+some non-owning domain for some child entity certificate issued from
+the CA certificate.
+
+<xref target="RFC3709"/> allows the specification of only one logo per certificate.  The issuer may need to issue multiple certificates that bear different logos for the brand.  The appropriate logo is optionally selected by the BIMI email header as mentioned in <xref target="I-D.blank-ietf-bimi"/> or defaults to the default for the organizational domain name.  
+
+    </t>
+  </section>
+  <section anchor="vmc-verified-identity" title="Verified Identity of Sender">
+    <t>
+ The Verified Mark Certificate issuance process builds upon the web
+ <eref
+ target="https://cabforum.org/wp-content/uploads/EV-V1_6_1.pdf">Extended
+ Validation (EV)</eref> certificates issuance guidelines, with
+ appropriate extensions as described <eref
+ target="https://docs.google.com/document/d/10IzxkdrveDazBAvTvOUa9uCIDBwMkdmluwHEcbja42w/edit?usp=sharing">Guidelines
+ for Issuance of Verified Mark Certificates v0.97</eref>.  In
+ particular the brand ownership must undergo rigorous validation by
+ the issuing CA back to that legal entity, including explicit
+ face-to-face identity validation of the applicant.  CAs already have
+ experience validating internet domain ownership back to legal
+ entities for the web EV program, and it would be reasonably feasible
+ for them to examine brand IP as well since these may be registered in
+ government trademark registries i.e. the logos must match a
+ registered trademark as described later.  In addition brand names may
+ also be specified and found in those registries, as often they are
+ more easily recognized than the owning company’s name.  CAs
+ performing these additional vetting steps would act as the Mark
+ Verifying Authorities (MVA) mentioned earlier.  Further, the
+ requesting party for the certificates must meet certain minimum
+ identification and formation requirement e.g. be an incorporated
+ company, government body or registered non-profit known in the public
+ record.  The requesting party’s legal address is disclosed in the
+ certificate for identification by the recipient and other interested
+ parties following the practices of the trademark jurisdiction.  For
+ example here's the <eref
+ target="https://www.uspto.gov/trademarks-application-process/faqs-personal-information-trademark-records">link
+ to USPTO</eref> FAQ, and the <eref
+ target="https://euipo.europa.eu/tunnel-web/secure/webdav/guest/document_library/contentPdfs/data_protection/EUIPOs_explanatory_note_en.pdf">link
+ for EU</eref> (on page 3).  This also in some hopefully limited
+ circumstance may help an aggrieved party serve legal notice.
+    </t><t>
+ In summary the VMC Guidelines validation process proves that:
+ <list style="symbols">
+   <t>Legal entity is legitimate</t>
+   <t>Domain names are controlled by the organization</t>
+   <t>Person requesting the certificate
+   <list style="symbols">
+     <t>Duly and currently authorized to do so by the organization</t>
+     <t>Who they say they are</t>
+   </list>
+   </t>
+   <t>Legal entity has the rights to display the trademark logo (design mark) and optionally name (text mark)</t>
+ </list>
+    </t>
+  </section>
+  <section anchor="vmc-root-program" title="Root Program">
+    <t>
+BIMI-aware email receivers and/or mail clients should maintain their
+own trusted BIMI CA/MVA root certificate store programs, or otherwise
+rely on a program by another receiver.  Such programs would manage a
+fixed set of BIMI root certificates managed much like browser root
+certificates.  Most importantly these BIMI root certificate set owners
+must create a security program to monitor the performance of CA/MVA to
+adhere to their CPS much like the browser programs.  A fixed root
+certificate set creates certainty for the sender and recipients and
+mitigates some BIMI header attacks.  Certain receivers could publish
+their root CAs, which would make it possible for intended certificate
+subscribers to identify supported CAs. It also moves much of the
+security work to the email receivers from the sender, which are better
+positioned to do this work due to their security staffing and
+association with browser security teams (with their expertise in X.509
+PKI security).
+    </t>
+  </section>
+  <section anchor="vmc-certificate-transparency" title="Certificate Transparency">
+    <t>
+      We also propose that these certificates be published in
+      Certificate Transparency logs <xref target="RFC6962"/> analogous to those
+      operated for web EV certificates.  Certificate Transparency (CT)
+      logs are append only which provides protection against
+      equivocation i.e. manipulating the logs to show different views
+      to different requesters.  A VM Certificate proves that it is
+      published in a CT log by including a SCT extension generated
+      when logged.  All relying parties must check for the presence of
+      the valid SCT, and reject the certificate if it is not present.
+      Mandatory publishing provides global transparency that makes it
+      easier to detect other similar impersonation attacks or
+      mis-issuance.  Global transparency provides certainty once a
+      problem has been detected that it can be fully remedied and
+      contained.
+      </t><t>
+      While RFC3709 may allow an external logo with a secure hash
+      which may be convenient, an adversary may simply not supply
+      potentially incriminating logo during an investigation.  Instead
+      we propose embedding the logos in the Verified Mark Certificate.
+      With this the VMC CT log also provides a catalog of curated
+      logos and their ownership in a machine readable form that may
+      then be used by anti-abuse systems for use as reference
+      identities.
+      </t><t>
+      This document proposes that the major mail systems
+      using VMC along with VMC issuing CAs should run their own
+      publicly visible CT logs.  While logging may be done
+      collaboratively, there must always be enough diversity so that
+      multiple logs are available under separate ownership to prevent
+      conflict of interest.  Mail systems can elect to require logging
+      to their CT log in order to show the logos.
+      </t><t>
+      While some companies (e.g. Google) already actively monitors the
+      CT logs for misissuance, many companies don’t that should
+      monitor CT logs.  This document encourages the development of
+      log monitoring services in particular visual logo monitoring to
+      protect brands from spoofing.  For example, it is conceivable
+      that a CA may be interested in providing issuing and monitoring
+      service for brands as part of their commercial offering.  Along
+      those lines there are companies specialized in mark monitoring
+      e.g. <eref
+      target="https://www.markmonitor.com/">MarkMonitor</eref> that
+      might be interested.  Automated visual recognition of logos is a
+      capability commercially available e.g. <eref
+      target="https://www.brandwatch.com/blog/top-image-recognition-tools">top
+      8 list</eref>.
+    </t><t>
+Beyond that we also propose research into pre-publication of the
+certificate in the CT logs before issuance that allows trademark
+monitors to detect and block issuance if necessary.  These monitors
+would follow the log to look for trademark infringement, improperly
+created certificates, and other abuses, and can file complaints to the
+log.  If the conflict is not initially resolved between the parties on
+he log, then the trademark owners have access to the courts.
+Assuming the research into CT with preview, which is being
+investigated by the AuthIndicators working group, proves its
+feasibility, this can potentially be followed up with standards work.
+
+      
+    </t>
+  </section>
+  <section anchor="vmc-registered-trademark" title="Registered Trademark">
+    <t>
+Using registered trademark helps clarifies ownership of the logo, and
+raises the difficulty of succeeding at impersonation. The registration
+process in many jurisdictions requires that the trademark be
+distinctive and non-confusable with another.  To enforce this, many
+jurisdictions use a public review period and brands already employ
+brand <eref
+target="https://secureyourtrademark.com/blog/trademark-101-monitoring-strategies-can-implement/">monitors</eref>
+to protect the trademarks.  As part of this review, many jurisdictions
+have tests for objectionable or deceptive marks e.g. “Identity
+Verified”.  It also provides a central authority that documents
+existing trademarks where an issuing CA/MVA can match the submitted
+embedded logo to the documented trademark.  If there is a dispute
+between non-fraudulent parties, registration provides access to the
+courts, and consequently trademark conflict resolution becomes a
+process of following the court process.  The certificate identifies
+the trademark owner in case it is necessary to start those legal
+proceedings.  </t>
+
+    <t> One issue is jurisdiction as trademarks laws and practices
+    differ.  This proposes that the smallest scope should be nation
+    level where trademark law is well established.  Trademarks may
+    also be registered internationally (across 90+ countries) via the
+    Madrid union and due to the universal first world coverage of the
+    Madrid union and largely the rest of the world, such a trademark
+    can be considered global jurisdiction.  Similarly well known
+    regional, multi-country jurisdictions e.g EU should be
+    distinguishable as well. The country code information can be
+    specified in the certificate trademark jurisdiction field.
+    Display of the brand logo/name information should follow where the
+    information is valid, and this can be done by displaying the logo
+    only when the client is within the jurisdiction to the best of the
+    client's ability e.g. GPS on mobile devices, and IP geolocation on
+    desktop computers.  A second closely related issue is the strength
+    of a particular jurisdiction trademark review and legal system to
+    prevent fraudulent trademarks.  A concern is that they may differ
+    in their ability to prevent spoofing.  The AuthIndicators Working
+    Group in conjunction with the CA/MVA and mail systems will review
+    and publish findings on the strength of particular jurisdictions.
+    International cross border registration or multiple jurisdiction
+    registration maybe helpful when some countries have better
+    trademark databases than others and should be encouraged.
+      
+    </t>
+    <section anchor="vmc-coexistance-non" title="Coexistence with non-Registered Trademark">
+      <t>
+This document extends the supported types in <xref
+target="I-D.blank-ietf-bimi"/> to include Verified Mark Certificates
+but does not preclude the other logo image types mentioned in there.
+In fact this proposal explicitly calls for supporting other logos
+policies as the requirements in this document may be too onerous.
+There are many reasonable use cases as documented in <eref
+target="https://docs.google.com/document/d/10IzxkdrveDazBAvTvOUa9uCIDBwMkdmluwHEcbja42w/edit#bookmark=id.r701mosrrfx3">VMC
+Guidelines document section 5</eref> that don’t have registered
+trademarks, or need VMC validation. Those other scenarios may use base
+images types as allowed in <xref target="I-D.blank-ietf-bimi"/> or may
+be X.509 certificates perhaps following their own validation profile
+but won’t be described as Verified Mark Certificates.  Furthermore
+there may be non-branded scenarios but validateable scenarios such as
+profile picture of an individual that could be embedded in VM
+Certificates.  Ultimately we want allow senders and receivers
+flexibility in choosing which security, authentication and
+authorization profile they wish to support and use.
+    </t>
+    </section>
+  </section>
+  <section anchor="vmc-logo-format" title="Logo Image Format">
+    <t>
+ The format of the logo is governed by <xref target="RFC3709"/> and
+ <xref target="RFC6170"/>.  This document proposes that the logo media
+ be encapsulated and represented as <eref
+ target="https://www.w3.org/TR/SVG11/">SVG vector graphics</eref> so
+ that the image representation supports arbitrary visual rescaling.
+ This has several advantages.  First, the logo image will always
+ appear sharp no matter the display resolution.  Brand owners would
+ likely prefer the brand logo to appear in the client without image
+ display artifacts like pixelation.  Second, having the ability to
+ render the logo in arbitrary many sizes assists in creating logo
+ detection neural networks as it eases training those neural networks.
+ The general idea is for automatic creation of the training dataset is
+ creations of different appearances of the logo with different sizes
+ and locations.  Such logo detection neural networks assists in
+ automated detection and trademark abuse prevention both in the avatar
+ and the message body.  A third advantage of standardizing on one
+ scalable image format is that it makes logo similarity comparison
+ more deterministic.
+    </t>
+<t>
+  One issue is the security of SVG.  <xref target="RFC6170"/> specifies restrictions on the SVG to secure it:
+  <list style="symbols">
+    <t>Use SVG Tiny profile</t>
+    <t>No script</t>
+    <t>No external resource references</t>
+  </list>
+Only images that meet these requirements from RFC6170 are acceptable for use with BIMI and must be validated by the CA/MVA.
+    </t>
+  </section>
+ <section anchor="vmc-non-display" title="Non-Display of Logo">
+   <t>
+Certificates that claim to Verified Mark Certificates that do not
+follow these specifications must be ignored by the receivers and mail
+clients, meaning that mail associated with these certificates would
+have no brand symbol attached in the UI.  Aside from the obvious
+safety benefits, this provides an incentive for certificate issuers
+and brand-owning domain registrants to follow these requirements.
+Also, receivers are not bound to show the logo if they believe the
+message is malicious or fraudulent such as when the receiver believes
+the message is spammy or phishy.  As noted above, when the mail client
+believes that the user is outside the jurisdiction of the trademark,
+then the logo should not be shown.  If the Verified Mark Certificate
+has expired, the mail client should not show the logo, though still
+permitted to do so for UI continuity.  If the Verified Mark
+Certificate is revoked, the mail client must not show the logo.
+    </t>
+  </section>
+  <section anchor="vmc-bimi-fetch" title="BIMI Message Fetch">
+    <t>
+ This normative description of this section is found in the Verified Mark Certificate Usage document, and the content here is provided to expand upon that description. 
+    </t>
+  <section anchor="vmc-mail-client" title="Mail Clients Support">
+    <t>
+A BIMI-aware IMAP client or proprietary client upon receiving a BIMI
+verified message fetches the logo and displays the logo alongside the
+message both in message view and threaded view.  It should be placed
+in a location distinct from the message body, in a way that prevents
+message body content from spoofing the logo.  It should be visually
+distinct from non-BIMI verified messages as many mail clients provides
+the means to display a profile image that might be used to spoof a
+BIMI verified logo.  Some ideas are to make the BIMI verified logo
+larger, different shape or use animation.  Also the UI should support
+display of extra descriptive information in case the recipient is
+unfamiliar with the logo.  This could be a tooltip or card panel.
+This information should include the curated trademark name name if
+available, description of the sender, and the jurisdiction of the logo
+from the Verified Mark Certificate subject.  As the ability of users
+to <eref
+target="https://static.googleusercontent.com/media/research.google.com/en//pubs/archive/45366.pdf">understand
+and recognize the logo</eref> across different mail user agents
+depends on consistency, AuthIndicators working group should create a
+voluntary guideline and encourage standard behavior across the email
+clients.  This guideline should updated periodically with input from
+all BIMI members developing mail clients, taking into account current
+and future mail client UIs.  As noted earlier there are circumstances
+where the mail client does not display the logo, and instead reverts
+to the non-BIMI display behavior.
+    </t>
+  </section>
+</section>
+</section>
+
+<section anchor="security" title="Security">
+  <section anchor="security-discussion" title="Discussion">
+    <t>
+      The proposal in this document attempts to create defense in
+      depth.  If a malicious domain attempts to spoof a brand using
+      the techniques in this document, there are several preventative
+      safeguards.  In order for the malicious domain to create and use
+      a Verified Mark Certificate, they must convince a CA/MVA to
+      issue one that they can publish.  For arbitrary claimed
+      logos/names the CA/MVA vetting process should be able to detect
+      the spoofed trademark i.e. lack of a registered trademark, and
+      prevent them from being issued.  A malicious domain could
+      register a similar confusable trademark, but some of these will
+      be prevented by the trademark registration review process.  For
+      those that are registered, these may pass CA/MVA validation.  If
+      CT with preview becomes reality and these certificates are
+      pre-published in that previewable log as proposed earlier,
+      trademark monitors can detect spoofed trademark, block issuance
+      and if necessary file a court action against the owner of the
+      wrongly claimed trademark.  When the certificate has already
+      been issued, the aggrieved owner can go to court.  Upon court
+      resolution against the infringing confusable logo/name (or upon
+      an injunction issued prior to a final resolution), the CA/MVA
+      can revoke the Verified Mark Certificate.  A malicious domain
+      may try to forge email with a valid RFC822.FROM domain aligned
+      with a valid brand bearing domain and BIMI header that uses that
+      brand, but whose body contains spam or phishing.  This should
+      fail SPF/DKIM message authentication which prevents the brand
+      logo from being shown.  The logos provided in the VMC can be
+      used for anti-phishing models to help prevent spoofing of
+      legitimate mails.  At the final step this proposal provides
+      visual branding imagery to help the recipient identify the
+      sender.  </t>
+
+
+    <t> Visual security indicators have been a controversial topics
+    since <eref
+    target="https://people.eecs.berkeley.edu/~tygar/papers/Why_Johnny_Cant_Encrypt/OReilly.pdf.">“Why
+    Johnny Can’t Encrypt”</eref> which noted that users have a hard
+    time understanding security concepts. As noted earlier, <eref
+    target="http://www.usablesecurity.org/papers/jackson.pdf">subsequent
+    research</eref> indicated that web EV security indicators did not
+    seem to have an effect on stopping phishing as users seemingly
+    tend to ignore positive security indicators.  More recent by <eref
+    target="https://www.usenix.org/system/files/conference/soups2016/soups2016-paper-porter-felt.pdf">Felt
+    et al.</eref> provided a more nuanced view in that positive
+    security indicators have some effect on user decision making but
+    was weaker than negative indicators.  Research is needed to see if
+    that brand recognition can have an effect albeit perhaps more
+    weakly on security decisions.  Users already have a positive
+    association with brands since brand owners are incentivized to
+    build brand equity by associating their brand with a quality
+    product or service.  Brand owners then go about educating
+    consumers, allowing them to have <eref
+    target="https://faculty.fuqua.duke.edu/~moorman/Marketing-Strategy-Seminar-2015/Session%203/Keller.pdf">strong
+    brand recall and discrimination</eref>.  This research is ongoing
+    in the AuthIndicators working group.  Care must be taken though
+    because the adversary will try to spoof positive security
+    indicators which will <eref
+    target="http://people.ischool.berkeley.edu/~tygar/papers/Phishing/why_phishing_works.pdf">dupe
+    the user</eref>.
+    </t>
+  </section>
+  <section anchor="security-x509" title="X.509 Message Authentication Proposal">
+    <t>
+The proposed updates to BIMI in this document improve its security
+profile, but there still are some security weaknesses for an adversary
+to exploit.  First, if SPF message authentication is used, it is
+subject to MitM message modification.  Second, both SPF/DKIM message
+authentication are subject to DNS record attacks either through MitM
+or DNS cache poisoning.  Third, BIMI depends on three separate
+mechanisms- DKIM or SPF/DMARC/BIMI to work right.  A relatively simple
+improvement to both reduce failure modes and attack surface is to
+mandate the use of DKIM style full body message authentication to
+resist message modification and use the private-key associated with
+the Verified Mark Certificate to sign the DKIM signature.  Verified
+Mark Certificate aware receivers can use the certificate public key to
+verify the message signature contained in the DKIM header, and can
+skip the DKIM DNS record lookup.  For backwards compatibility this
+verification can still leverages DKIM with its headers, and DNS record
+with the same public key as Verified Mark Certificate, which allows
+non BIMI-aware email receivers to use the DKIM for message
+authentication.  While this still uses DNS to locate information and
+even allows the use of the DKIM public key, receivers aware of
+Verified Mark Certificates do not need to depend on DNS to assert
+identity and instead uses cryptographic proof via X.509 issuer-signed
+certificate that chains up to a CA root certificate instead.  Care
+must be taken with approach to prevent downgrade attacks say between
+the approach in this section and that of the rest of this document.
+Because of the additional complexity and newness, this idea is
+relegated to future discussion.
+    </t>
+  </section>
+</section><!--Security-->
+
+<section anchor="roadmap" title="Roadmap">
+    <t>
+      This informational document describes the rationale for Verified
+      Mark Certificates.  This presumes several normative,
+      specification documents: 1) Verified Mark Certificate profile
+      and policy, 2) Verified Mark Certificate handling by the
+      receivers and 3) Certificate Transparency for Verified Mark
+      Certificates that includes a preview process.  The BIMI profile
+      and policy document should be reviewed and published through a
+      policy directing body such as the CA/Browser Forum or the
+      AuthIndicators Working Group.  The protocol to fetch and handle
+      Verified Mark Certificate by the receivers document should be
+      reviewed and published by the IETF.  Lastly the concept of CT
+      logging with preview needs detailed review by the community and
+      may be submitted at an academic conference/workshop.  Assuming a
+      satisfactory outcome, the final form of the preview work too
+      should be published through the IETF.
+    </t>
+</section>
+
+
+<section title="Conventions Used in This Document">
+<t>The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
+"SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in
+this document are to be interpreted as described in
+<xref target="RFC2119"/>.</t>
+
+</section>
+
+
+
+
+</middle>
+<back>
+<references title="Normative References">
+  <?rfc include="reference.RFC.2119"?> <!-- Keywords -->
+  <?rfc include="reference.RFC.2397"?>
+<?rfc include="reference.RFC.3709"?> <!-- Logotype x-->
+<?rfc include="reference.RFC.5280"?> <!-- X.509 Certificates x-->
+<?rfc include="reference.RFC.6170"?> <!-- Logotype (2) x -->
+<?rfc include="reference.RFC.6376"?> <!-- DKIM X-->
+<?rfc include="reference.RFC.6962"?> <!-- CT -->
+<?rfc include="reference.RFC.7208"?> <!-- SPF X-->
+<?rfc include="reference.RFC.7489"?> <!-- DMRARC X -->
+</references>
+<references title="Informative References">
+<?rfc include="reference.I-D.blank-ietf-bimi.xml"?>
+<?rfc include="reference.I-D.brotman-ietf-bimi-guidance.xml"?>
+</references>
+</back>
+</rfc>
