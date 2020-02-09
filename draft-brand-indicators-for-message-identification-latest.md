@@ -14,6 +14,12 @@ normative:
     author:
       ins: Crocker, D., Ed., and P. Overell
     date: January 2008
+  ARC:
+    target: http://www.rfc-editor.org/info/rfc8617
+    title: The Authenticated Received Chain (ARC) Protocol
+    author:
+      ins: K. Andersen, B. Long, Ed., S. Blank, Ed., and M. Kucherawy, Ed.
+    date: July 2019
   KEYWORDS:
     target: http://www.rfc-editor.org/info/rfc2119
     title: Key words for use in RFCs to Indicate Requirement Levels
@@ -442,7 +448,7 @@ Manage multiple uses of the same Indicator(s) within a trust boundary
 For Domain Owners with multiple domains that wish to share the same set of Indicators within a trust boundary and only manage those Indicators from a single DNS location, it is RECOMMENDED to use DNS CNAMEs.
 
 Using a CNAME here is functionally similar to the SPF redirect modifier. Since BIMI does not require l= tags to be aligned to the Author Domain, CNAMEs present a cleaner solution than extending the protocol. 
-
+ 
 Set the headers on outgoing email as appropriate
 -------------
 
@@ -457,6 +463,29 @@ Receiver Actions   {#bimi-receiver}
 
 This section includes a walk through of the actions a Protocol Client takes when evaluating an email message for BIMI Assertion.
 
+Authentication Requirements {#authentication-requirements}
+----------------------------------------------------------
+
+Before applying BIMI processing for a message, a receiver MUST verify that the message passed the following BIMI authentication requirements:
+
+1. If more than 1 RFC5322.From header is present in the message, or any RFC5322.From header contains more than 1 email address then BIMI processing MUST NOT be performed for this message.
+
+2. Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Author Domain.
+
+3. Evaluate the [DMARC] result for the Author Domain.  Define the result as the BIMI DMARC Result.
+
+4. If the BIMI DMARC result is not 'pass', then the receiver MAY choose to apply additional authentication methods, for example by evaluating a trusted [ARC] chain or a list of trusted forwarders. In this case the Receiver MAY choose to treat the message as if the BIMI DMARC Result was 'pass'.
+
+5. If the [DMARC] result for the Author Domain is not 'pass' then BIMI processing MUST NOT be performed for this message.
+T
+6. If the [DMARC] policy for the Author Domain is p=none then BIMI processing MUST NOT be performed for this message.
+
+7. IF the [DMARC] record for the Author Domain includes a subdomain policy, and that subdomain policy is sp=none then BIMI processing MUST NOT be performed for this message.
+
+8. If the [DMARC] policy for the Author Domain is p=quarantine, and the [DMARC] record defines a percentage tag, then that tag MUST be pct=100, otherwise BIMI processing MUST NOT be performed for this message.
+
+9. If the Author Domain has an [SPF] policy, and that policy ends with +all, then BIMI processing MUST NOT be performed for this message.
+
 Indicator Discovery {#indicator-discovery}
 ----------------------------------
 
@@ -468,29 +497,19 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 1. Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Author Domain.
 
-2. If more than 1 RFC5322.From header is present in the message, or any RFC5322.From header contains more than 1 email address then BIMI processing MUST NOT be performed for this message.
+2. If the message for which the indicator is being determined specifies a selector value in the [BIMI Selector Header](#bimi-selector), use this value for the selector.  Otherwise the value 'default' MUST be used for the selector.
 
-3. If the DMARC policy for the Author Domain is p=none then BIMI processing MUST NOT be performed for this message.
+3. Clients MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string '_bimi', and the Author Domain.  A possibly empty set of records is returned.
 
-4. IF the DMARC record for the Author Domain includes a subdomain policy, and that subdomain policy is sp=none then BIMI processing MUST NOT be performed for this message.
+4. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
-5. If the DMARC policy for the Author Domain is p=quarantine, and the DMARC record defines a percentage tag, then that tag MUST be pct=100, otherwise BIMI processing MUST NOT be performed for this message.
+5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.\<organizationalDomain\>, and NOT \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
 
-6. If the Author Domain has an SPF policy, and that policy ends with +all, then BIMI processing MUST NOT be performed for this message.
+6. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
-7. If the message for which the indicator is being determined specifies a selector value in the [BIMI Selector Header](#bimi-selector), use this value for the selector.  Otherwise the value 'default' MUST be used for the selector.
+7. If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing MUST NOT be performed for this message.
 
-8. Clients MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string '_bimi', and the Author Domain.  A possibly empty set of records is returned.
-
-9. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
-
-10. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.\<organizationalDomain\>, and NOT \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
-
-11. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
-
-12. If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing MUST NOT be performed for this message.
-
-13. If the remaining set contains only a single record, this record is used for BIMI Assertion.
+8. If the remaining set contains only a single record, this record is used for BIMI Assertion.
 
 Indicator Validation {#indicator-validation}
 ----------------------------------
