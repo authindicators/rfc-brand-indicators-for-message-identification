@@ -476,8 +476,8 @@ Before applying BIMI processing for a message, a receiver MUST verify that the m
 
 4. If the BIMI DMARC result is not 'pass', then the receiver MAY choose to apply additional authentication methods, for example by evaluating a trusted [ARC] chain or a list of trusted forwarders. In this case the Receiver MAY choose to treat the message as if the BIMI DMARC Result was 'pass'.
 
-5. If the [DMARC] result for the Author Domain is not 'pass' then BIMI processing MUST NOT be performed for this message.
-T
+5. If the [DMARC] result for the Author Domain is not 'pass', and the message could not be authenticated by any additional authentication method, then BIMI processing MUST NOT be performed for this message.
+
 6. If the [DMARC] policy for the Author Domain is p=none then BIMI processing MUST NOT be performed for this message.
 
 7. IF the [DMARC] record for the Author Domain includes a subdomain policy, and that subdomain policy is sp=none then BIMI processing MUST NOT be performed for this message.
