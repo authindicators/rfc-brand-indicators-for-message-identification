@@ -94,6 +94,12 @@ author:
     name: Terry Zink
     role: editor
     email: tzink@terryzink.com
+ -
+    ins: M. Bradshaw
+    name: Marc Bradshaw
+    organization: Fastmail
+    role: editor
+    email: marc@fastmailteam.com
 
 --- abstract
 
