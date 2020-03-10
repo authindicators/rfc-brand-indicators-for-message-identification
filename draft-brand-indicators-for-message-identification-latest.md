@@ -307,6 +307,8 @@ a= Authority Evidence Locations (plain-text; URI; OPTIONAL).  If present, this t
 
     NOTE TO WORKING GROUP: The a= tag value is a short list of VMC certificate locations.  Should we wish to introduce additional approaches for Domain Owners to publish evidence of rights, we can introduce additional tags. 
 
+l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of URLs representing the location of brand indicator files. All clients MUST support attempted fetches from at least 2 location URIs, used in order.  Clients MAY support retrival from more locations, if provided.  The supported transport is HTTPS only.  
+
     ABNF:
 
     bimi-location-uri = \[FWS\] URI \[FWS\]
@@ -410,9 +412,6 @@ And the formal definition of the BIMI Location Header, using ABNF, is as follows
 
 Header Signing
 ---------------
-
-The BIMI-Selector SHOULD be signed by DKIM.
-=======
 
 If present, the BIMI-Selector header SHOULD be included in the DMARC-aligned DKIM signature used to confirm authenticity of the message.  If it is not included in the DMARC-compliant DKIM signature, the header should be ignored.  
 
