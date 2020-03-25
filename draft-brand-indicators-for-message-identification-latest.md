@@ -413,7 +413,7 @@ And the formal definition of the BIMI Location Header, using ABNF, is as follows
 Header Signing
 ---------------
 
-If present, the BIMI-Selector header SHOULD be included in the DMARC-aligned DKIM signature used to confirm authenticity of the message.  If it is not included in the DMARC-compliant DKIM signature, the header should be ignored.  
+If present, the BIMI-Selector header SHOULD be included in the DMARC-aligned DKIM signature used to confirm authenticity of the message.  If it is not included in the DMARC-compliant DKIM signature, the header SHOULD be ignored.  
 
 Receivers MAY choose to apply additional methods to validate the BIMI-Selector header, for example by evaluating a trusted [ARC] chain. In this case the Receiver MAY choose to treat the message as if the BIMI-Selector header was signed.  
 
