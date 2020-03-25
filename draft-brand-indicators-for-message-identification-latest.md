@@ -14,6 +14,12 @@ normative:
     author:
       ins: Crocker, D., Ed., and P. Overell
     date: January 2008
+  ARC:
+    target: http://www.rfc-editor.org/info/rfc8617
+    title: The Authenticated Received Chain (ARC) Protocol
+    author:
+      ins: K. Andersen, B. Long, Ed., S. Blank, Ed., and M. Kucherawy, Ed.
+    date: July 2019
   KEYWORDS:
     target: http://www.rfc-editor.org/info/rfc2119
     title: Key words for use in RFCs to Indicate Requirement Levels
@@ -94,6 +100,12 @@ author:
     name: Terry Zink
     role: editor
     email: tzink@terryzink.com
+ -
+    ins: M. Bradshaw
+    name: Marc Bradshaw
+    organization: Fastmail
+    role: editor
+    email: marc@fastmailteam.com
 
 --- abstract
 
@@ -401,7 +413,9 @@ And the formal definition of the BIMI Location Header, using ABNF, is as follows
 Header Signing
 ---------------
 
-If present, the BIMI-Selector SHOULD be included in the DMARC-aligned DKIM signature used to confirm authenticity of the message.  If it is not included in the DMARC-compliant DKIM signature, the header should be ignored.  
+If present, the BIMI-Selector header SHOULD be included in the DMARC-aligned DKIM signature used to confirm authenticity of the message.  If it is not included in the DMARC-compliant DKIM signature, the header SHOULD be ignored.  
+
+Receivers MAY choose to apply additional methods to validate the BIMI-Selector header, for example by evaluating a trusted [ARC] chain. In this case the Receiver MAY choose to treat the message as if the BIMI-Selector header was signed.  
 
 The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by definition, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.
 
@@ -435,7 +449,7 @@ Manage multiple uses of the same Indicator(s) within a trust boundary
 For Domain Owners with multiple domains that wish to share the same set of Indicators within a trust boundary and only manage those Indicators from a single DNS location, it is RECOMMENDED to use DNS CNAMEs.
 
 Using a CNAME here is functionally similar to the SPF redirect modifier. Since BIMI does not require l= tags to be aligned to the Author Domain, CNAMEs present a cleaner solution than extending the protocol. 
-
+ 
 Set the headers on outgoing email as appropriate
 -------------
 
@@ -449,6 +463,29 @@ Receiver Actions   {#bimi-receiver}
 =============
 
 This section includes a walk through of the actions a Protocol Client takes when evaluating an email message for BIMI Assertion.
+
+Authentication Requirements {#authentication-requirements}
+----------------------------------------------------------
+
+Before applying BIMI processing for a message, a receiver MUST verify that the message passed the following BIMI authentication requirements:
+
+1. If more than 1 RFC5322.From header is present in the message, or any RFC5322.From header contains more than 1 email address then BIMI processing MUST NOT be performed for this message.
+
+2. Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Author Domain.
+
+3. Evaluate the [DMARC] result for the Author Domain.  Define the result as the BIMI DMARC Result.
+
+4. If the BIMI DMARC result is not 'pass', then the receiver MAY choose to apply additional authentication methods, for example by evaluating a trusted [ARC] chain, a list of trusted forwarders, or by applying a local policy. In this case the Receiver MAY choose to treat the message as if the BIMI DMARC Result was 'pass'.
+
+5. If the [DMARC] result for the Author Domain is not 'pass', and the message could not be authenticated by any additional authentication method, then BIMI processing MUST NOT be performed for this message.
+
+6. If the [DMARC] policy for the Author Domain is p=none then BIMI processing MUST NOT be performed for this message.
+
+7. IF the [DMARC] record for the Author Domain includes a subdomain policy, and that subdomain policy is sp=none then BIMI processing MUST NOT be performed for this message.
+
+8. If the [DMARC] policy for the Author Domain is p=quarantine, and the [DMARC] record defines a percentage tag, then that tag MUST be pct=100, otherwise BIMI processing MUST NOT be performed for this message.
+
+9. If the Author Domain has an [SPF] policy, and that policy ends with +all, then BIMI processing MUST NOT be performed for this message.
 
 Indicator Discovery {#indicator-discovery}
 ----------------------------------
@@ -522,7 +559,7 @@ If a mail store is BIMI-compliant, the MTA SHOULD set a flag on the message when
 
 If an MUA has a BIMI-compliant mail store, and no appropriate flag is set, the MUA SHOULD ignore the BIMI-Location header.
 
-If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the protocol-specific BIMI flag when it pulls down the relayed message. If it trusts the other mail store, it may simply set the same flag. Or, it may re-evaluae BIMI policy and requirements, create or replace the BIMI-Location header, and set its own flag appropriately. Or, it may simply choose not to set the flag at all.
+If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the protocol-specific BIMI flag when it pulls down the relayed message. If it trusts the other mail store, it may simply set the same flag. Or, it may re-evaluate BIMI policy and requirements, create or replace the BIMI-Location header, and set its own flag appropriately. Or, it may simply choose not to set the flag at all.
 
 Security Considerations   {#security-considerations}
 ===================
