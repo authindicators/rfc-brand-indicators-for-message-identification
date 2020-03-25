@@ -559,7 +559,7 @@ If a mail store is BIMI-compliant, the MTA SHOULD set a flag on the message when
 
 If an MUA has a BIMI-compliant mail store, and no appropriate flag is set, the MUA SHOULD ignore the BIMI-Location header.
 
-If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the protocol-specific BIMI flag when it pulls down the relayed message. If it trusts the other mail store, it may simply set the same flag. Or, it may re-evaluae BIMI policy and requirements, create or replace the BIMI-Location header, and set its own flag appropriately. Or, it may simply choose not to set the flag at all.
+If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the protocol-specific BIMI flag when it pulls down the relayed message. If it trusts the other mail store, it may simply set the same flag. Or, it may re-evaluate BIMI policy and requirements, create or replace the BIMI-Location header, and set its own flag appropriately. Or, it may simply choose not to set the flag at all.
 
 Security Considerations   {#security-considerations}
 ===================
