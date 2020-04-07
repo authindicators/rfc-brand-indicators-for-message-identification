@@ -116,11 +116,11 @@ Brand Indicators for Message Identification (BIMI) permits Domain Owners to coor
 Introduction        {#problems}
 ============
 
-This document defines Brand Indicators for Message Identification (BIMI), which permits Domain Owners to coordinate with Mail User Agents (MUAs) to display brand-specific Indicators next to properly authenticated messages.
+This document defines Brand Indicators for Message Identification (BIMI), which enables Domain Owners to coordinate with Mail Box Providers (MBPs) and Mail User Agents (MUAs) in the display of brand-specific Indicators next to properly authenticated messages.
 
-BIMI is designed to be open and to work at Internet scale.  For some senders of email, the display of Indicators BIMI is intended to enable and coordinate will be an incentive to adopt the required email authentication practices.  
+BIMI is designed to be open and to work at Internet scale.  BIMI is intended to drive adoption of email authentication best practices by leveraging existing [DMARC] policies, the supporting authentication methods [DKIM] and [SPF], and other associated standards such as [ARC].
 
-The approach taken by BIMI is heavily influenced by the approach taken in [DKIM](https://tools.ietf.org/html/rfc6376#section-1), in that BIMI:
+The approach taken by BIMI is heavily influenced by the approach taken in [DKIM], in that BIMI:
 
 * has no dependency on the deployment of any new Internet protocols or services for indicator registration or revocation;
 * makes no attempt to include encryption as part of the mechanism;
@@ -130,7 +130,7 @@ The approach taken by BIMI is heavily influenced by the approach taken in [DKIM]
 * can be deployed incrementally; and
 * allows delegation of indicator hosting to third parties.
 
-This document defines the BIMI mechanism for Domain Owners to publish their desired indicators and describes how Mail Transfer Agents (MTAs) and MUAs should handle this communication.  This document does not cover how domains or indicators are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP, JMAP) can be extended to work with BIMI.  Other documents may cover these topics.
+This document defines how Domain Owners specify their desired indicators through the BIMI Assertion Record in DNS and how that record is to be interpreted by MTAs and MUAs.  This document does not cover how domains or indicators are verified, how MUAs should display the indicators, or how other protocols (i.e. IMAP, JMAP) can be extended to work with BIMI.  Other documents may cover these topics.  MUAs and Mail Box Providers (MBPs) are free to define their own policies for making use of BIMI data and for indicator display as they see fit.
 
 Overview        {#why-bimi}
 ============
