@@ -307,7 +307,7 @@ a= Authority Evidence Locations (plain-text; URI; OPTIONAL).  If present, this t
 
     NOTE TO WORKING GROUP: The a= tag value is a short list of VMC certificate locations.  Should we wish to introduce additional approaches for Domain Owners to publish evidence of rights, we can introduce additional tags. 
 
-l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of URLs representing the location of brand indicator files. All clients MUST support attempted fetches from at least 2 location URIs, used in order.  Clients MAY support retrival from more locations, if provided.  The supported transport is HTTPS only.  
+l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of URIs representing the location of brand indicator files. All clients MUST support attempted fetches from at least 2 location URIs, used in order.  Clients MAY support retrival from more locations, if provided.  The supported transport is HTTPS only.  
 
     ABNF:
 
@@ -399,7 +399,7 @@ v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value o
 
     The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
-l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a comma-separated list of URLs representing locations of the brand indicator files. All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.  
+l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a comma-separated list of URIs representing locations of the brand indicator files. All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.  
 
     ABNF:
 
