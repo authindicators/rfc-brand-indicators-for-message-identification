@@ -135,7 +135,7 @@ This document defines how Domain Owners specify their desired indicators through
 Overview        {#why-bimi}
 ============
 
-The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), and Domain-based Message Authentication, Reporting, and Conformance ([DMARC]) provide mechanisms for domain-level authentication of email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not. BIMI relies on these authentication protocols, but is not a new authentication protocol itself.
+The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), "Domain-based Message Authentication, Reporting, and Conformance" ([DMARC]), and Authenticated Received Chain ([ARC]) provide mechanisms for domain-level authentication of email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not. BIMI relies on these authentication protocols, but is not a new authentication protocol itself.
 
 MUAs are increasingly incorporating graphical logos to indicate the identity of the sender of a message.  While a discussion of the merits of doing this are beyond the scope of this document, at present there are no open standards for publishing and aiding discovery of preferred logos or for tying display of them to authentic messages only. 
 
@@ -148,23 +148,25 @@ Because of the desire to have brand-specific indicators available, some mail-rec
 5. Many Domain Owners have no ability to participate whatsoever as they do not have the appropriate relationships to coordinate with mail-receiving organizations.
 6. MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive indicators in a standardized manner or optimized for their user interfaces.  
 
-This all speaks to the need for a standardized mechanism by which Domain Owners interested in ensuring that their indicators are displayed correctly and appropriately can publish and distribute brand indicators for use by any participating MUA.
+This shows the need for a standardized mechanism by which Domain Owners interested in ensuring that their indicators are displayed correctly and appropriately can publish and distribute brand indicators for use by any participating MUA.
 
-BIMI removes from the MUAs the substantial burden of curating and maintaining an indicator database, and allows each domain to manage its own indicators available for use.  As an additional benefit, mail-originating organizations are more likely to invest the time and effort to authenticate their email should doing so come with the ability to influence how email and Indicators from the organization are displayed.
+BIMI removes the substantial burden of curating and maintaining an indicator database from MUAs and MBPs, and allows each domain owner to manage their own indicators.  As an aadditional benefit, mail-originating organizations are incentivized to authenticate their email as doing so will enable them to influence how email and Indicators from the organization are displayed.
 
-The basic structure of BIMI is as follows:
+The structure of BIMI is as follows:
 
-1. Domain Owners publish their preferred brand indicators for their domains via the [DNS].
+1. Domain Owners: Publish their preferred brand indicators via the [DNS].
 
-2. Then, for any message received by a Mail Receiver:
+2. Senders: Ensure mail is properly authenticated, and has a sufficiently strict [DMARC] policy.
 
-    a. The receiver confirms authenticity of the message using [DMARC] and whatever other authentication mechanisms they wish to apply.
+2. MUAs and MBPs:
 
-    b. The receiver checks for a corresponding BIMI record, obtaining references to the indicator media and optional substantiation of indicator ownership rights
+  a. Confirm authenticity of the message using [DMARC] and whatever other authentication mechanisms they wish to apply.
 
-    c. If both the message is authentic and the logo is deemed acceptable, the receiver adds a header to the message which can be used by the MUA to obtain the Domain Owner's preferred brand indicator.
+  b. Check for a corresponding BIMI record, obtaining references to the indicator media and optional substantiation of indicator ownership rights
 
-3. The MUA retrieves and displays the brand indicator as appropriate based on its policy and user interface.
+  c. If both the message is authentic and the logo is deemed acceptable, the receiver adds a header to the message which can be used by the MUA to obtain the Domain Owner's preferred brand indicator.
+
+3. MUA: retrieves and displays the brand indicator as appropriate based on its policy and user interface.
 
 The purpose of this structure is to reduce operational complexity at each step.  It is also to consolidate validation and indicator selection operations into the MTA, so that Domain Owners need only publish a few simple records and MUAs only need simple display logic.
 
