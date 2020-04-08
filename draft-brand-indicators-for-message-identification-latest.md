@@ -184,6 +184,7 @@ BIMI has the following high-level goals:
 * Enable the authors of MUAs to display meaningful indicators associated with the Domain Owner to recipients of authenticated email.
 * Provide mechanisms to prevent attempts by malicious Domain Owners to fraudulently represent messages from their domains as originating with other entities.
 * Work at Internet Scale.
+* Encourage the adoption of Email Authentication Best Practices.
 
 Security     {#security}
 ------------
