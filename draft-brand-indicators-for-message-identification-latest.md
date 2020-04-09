@@ -296,11 +296,11 @@ v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI re
 
     bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
-a= Authority Evidence Locations (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualfied domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrivable evidence document.  Clients MUST skip consideration of the evidence document if the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts.  The evidence document MUST only contain one VMC certificate and SHOULD contain CA certificates in issuing order, all in PEM format. The evidence document SHOULD start with the end entity VMC certificate, followed by the immediate issuer CA certificate of the end entity, and then its issuing CA certificates. Potentially this issuing sequence of certificate terminates at the self-signed trusted root certificate, where the trusted root certificate MAY optionally be included in the evidence document.  Intermediate certificates and any issuer certificates needed to reach the root of the VMC issuer SHOULD be provided in the evidence document.  If the a= tag is not present, it is assumed to have an empty value.  
+a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualfied domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrivable evidence document.  Clients MUST skip consideration of the evidence document if the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts.  The evidence document MUST only contain one VMC certificate and SHOULD contain CA certificates in issuing order, all in PEM format. The evidence document SHOULD start with the end entity VMC certificate, followed by the immediate issuer CA certificate of the end entity, and then its issuing CA certificates. Potentially this issuing sequence of certificate terminates at the self-signed trusted root certificate, where the trusted root certificate MAY optionally be included in the evidence document.  Intermediate certificates and any issuer certificates needed to reach the root of the VMC issuer SHOULD be provided in the evidence document.  If the a= tag is not present, it is assumed to have an empty value.  
 
     ABNF:
 
-    bimi-evidence-locations = %x61 *WSP "=" bimi-evidence-location-uri
+    bimi-evidence-location = %x61 *WSP "=" bimi-evidence-location-uri
 
     bimi-evidence-location-uri = \[FWS\] URI \[FWS\]
 
@@ -310,7 +310,7 @@ a= Authority Evidence Locations (plain-text; URI; OPTIONAL).  If present, this t
 
     NOTE TO WORKING GROUP: The a= tag value is a short list of VMC certificate locations.  Should we wish to introduce additional approaches for Domain Owners to publish evidence of rights, we can introduce additional tags. 
 
-l= locations (URI; REQUIRED).  The value of this tag is either empty indicating declination to publish, or a single URI representing the location of a brand indicator file.  The only supported transport is HTTPS.  
+l= location (URI; REQUIRED).  The value of this tag is either empty indicating declination to publish, or a single URI representing the location of a brand indicator file.  The only supported transport is HTTPS.  
 
     ABNF:
 
@@ -320,13 +320,13 @@ l= locations (URI; REQUIRED).  The value of this tag is either empty indicating 
     ; HTTPS only
     ; commas (ASCII ; 0x2C) MUST be encoded
 
-    bimi-locations = %x6c *WSP "=" bimi-location-uri
+    bimi-location = %x6c *WSP "=" bimi-location-uri
 
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
     bimi-sep = *WSP %x3b *WSP
 
-    bimi-record = bimi-version (bimi-sep bimi-locations) (bimi-sep bimi-authorities) \[bimi-sep\]
+    bimi-record = bimi-version (bimi-sep bimi-location) (bimi-sep bimi-evidence-location) \[bimi-sep\]
  
     ; components other than bimi-version may appear in any order
 
@@ -402,15 +402,15 @@ v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value o
 
     The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
-l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a comma-separated list of URIs representing locations of the brand indicator files. All clients MUST support use of at least 2 location URIs, used in order.  Clients MAY support more locations.  Initially the supported transport supported is HTTPS only.  
+l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing locations of the brand indicator file.  HTTPS is the only supported transport.  
 
     ABNF:
 
-    bimi-header-locations = "l" *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+    bimi-header-location = "l" *WSP "=" bimi-location-uri
 
 And the formal definition of the BIMI Location Header, using ABNF, is as follows:
 
-    bimi-location-header = bimi-header-version bimi-sep bimi-header-locations \[bimi-sep\]
+    bimi-location-header = bimi-header-version bimi-sep bimi-header-location \[bimi-sep\]
 
 
 Header Signing
