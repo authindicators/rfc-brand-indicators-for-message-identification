@@ -546,12 +546,10 @@ Regardless of success of the BIMI lookup, if a BIMI-Location header is already p
 
 If the original email message had a DKIM signature, it has already been evaluated. Removing the BIMI-Location header at this point should not break the signature since it should not be included within it per this spec.
 
-Construct BIMI-Location URI(s)
+Construct BIMI-Location URI
 ---------------
 
-The l= value of the BIMI-Location header is a comma separated list of URIs to Indicators the MTA believes are most applicable to its MUAs. From the options provided by the Assertion Record, MTAs SHOULD choose the Indicators to include based on Receiver policy for optimal performance, safety, and user experience.  
-
-MTAs MAY add as many comma separated URIs to the l= tag in the BIMI-Location header as they wish, MUAs MUST support at least 2 location URIs in the header, and MAY support more.
+The l= value of the BIMI-Location header is the URI of the Indicator specified in the BIMI record. 
 
 Set appropriate flags on the mail store {#mail-stores}
 ----------------------------------
