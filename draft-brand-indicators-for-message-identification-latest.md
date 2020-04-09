@@ -310,7 +310,7 @@ a= Authority Evidence Locations (plain-text; URI; OPTIONAL).  If present, this t
 
     NOTE TO WORKING GROUP: The a= tag value is a short list of VMC certificate locations.  Should we wish to introduce additional approaches for Domain Owners to publish evidence of rights, we can introduce additional tags. 
 
-l= locations (URI; REQUIRED).  The value of this tag is a comma separated list of URIs representing the location of brand indicator files. All clients MUST support attempted fetches from at least 2 location URIs, used in order.  Clients MAY support retrival from more locations, if provided.  The supported transport is HTTPS only.  
+l= locations (URI; REQUIRED).  The value of this tag is either empty indicating declination to publish, or a single URI representing the location of a brand indicator file.  The only supported transport is HTTPS.  
 
     ABNF:
 
@@ -320,7 +320,7 @@ l= locations (URI; REQUIRED).  The value of this tag is a comma separated list o
     ; HTTPS only
     ; commas (ASCII ; 0x2C) MUST be encoded
 
-    bimi-locations = %x6c *WSP "=" bimi-location-uri *("," bimi-location-uri) \[","\]
+    bimi-locations = %x6c *WSP "=" bimi-location-uri
 
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
