@@ -554,13 +554,9 @@ The l= value of the BIMI-Location header is the URI of the Indicator specified i
 Set appropriate flags on the mail store {#mail-stores}
 ----------------------------------
 
-Once an MTA has completed BIMI-related processing for a message, generic message processing continues so that the intended recipient(s) can eventually access the message with an MUA. Users typically access their email stored on mail stores through either POP3, IMAP, and MAPI. Separate documents will define protocol-specific BIMI extensions for mail stores.
+Once an MTA has completed BIMI-related processing for a message, generic message processing continues so that the intended recipient(s) can eventually have been processed for BIMI on mail stores through either POP3, IMAP, and MAPI. Separate documents will define protocol-specific BIMI extensions for mail stores.
 
-If a mail store is BIMI-compliant, the MTA SHOULD set a flag on the message when depositing in the mail store. This is to communicate between the MTA and its MUA that the BIMI-Location header was set locally and can be trusted.
-
-If an MUA has a BIMI-compliant mail store, and no appropriate flag is set, the MUA SHOULD ignore the BIMI-Location header.
-
-If a mail store ingests a message from another mail store through some other means, the ingesting mail store may or may not set the protocol-specific BIMI flag when it pulls down the relayed message. If it trusts the other mail store, it may simply set the same flag. Or, it may re-evaluate BIMI policy and requirements, create or replace the BIMI-Location header, and set its own flag appropriately. Or, it may simply choose not to set the flag at all.
+If a mail store ingests a message from another mail store through some other means, the message may or may not have BIMI headers added already.  If the receiving store trusts the other mail store, it may simply use existing headers. Or, it may re-evaluate BIMI policy and requirements, and create or replace the BIMI-Location header.
 
 Security Considerations   {#security-considerations}
 ===================
