@@ -248,11 +248,11 @@ A Protocol Client that uses optional capabilities to obtain and evaluate evidenc
 BIMI DNS Records   {#bimi-dns}
 =============
 
-Domain owners publish their BIMI policies through BIMI Assertion Records.  Each Assertion Record is DNS TXT record, with a format and the meaning of its text-based contents specific to BIMI and specified herein.  
+Domain owners publish BIMI policies by adding BIMI Assertion Records in the DNS as TXT records.
 
 Published policies are interpreted and applied by Protocol Clients.  A Domain Owner signals intended BIMI participation for one or more of its domains by publishing an Assertion Record in a subdomain under it.  In doing so, Domain Owners make specific requests of MUAs regarding the preferred set of indicators to be displayed with messages that are confirmed to be authorized to appear from the Domain Owner's domain.
 
-The use of BIMI is opt-in.  Receivers default to performing no BIMI-specific message handling unless a BIMI record for the sender's domain is found.  By merely doing nothing, BIMI use is avoided. 
+The use of BIMI is opt-in.  Receivers default to performing no BIMI-specific message handling unless a BIMI record for the sender's domain is found.
 
 BIMI's use of the DNS is driven in part by BIMI's use of domain names as the basis of sender identity and message authentication. Use of the DNS as the policy publication service also has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
@@ -262,9 +262,7 @@ BIMI's policy payload is intentionally only published via a DNS record and not v
 
 2. Operational complexity is reduced.  MTAs only need to check a single record in a consistent manner to discover and enforce policy.
 
-3. MTAs that understand their MUAs have more control over which Indicators they choose for those MUAs.
-
-4. Indicators can be verified and/or cached in advance, so that malicious headers cannot be used as an attack vector.
+3. Indicators can be verified and/or cached in advance, so that malicious headers cannot be used as an attack vector.
 
 Per [DNS], a TXT record can comprise several "character-string" objects. BIMI TXT records with multiple strings must be treated in an identical manner to [SPF Section 3.3](https://tools.ietf.org/html/rfc7208#section-3.3).
 
