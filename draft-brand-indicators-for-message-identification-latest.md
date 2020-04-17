@@ -235,7 +235,6 @@ Verified Mark Certificate (VMC)
 
 A certificate issued by a Certificate Authority in accordance with the Verified Mark Certificate Guidelines.  These guidelines are defined in a separate document.
 
-
 Protocol Client
 -------------
 
