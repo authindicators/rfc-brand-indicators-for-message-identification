@@ -262,7 +262,7 @@ BIMI's policy payload is intentionally only published via a DNS record and not v
 
 2. Operational complexity is reduced.  MTAs only need to check a single record in a consistent manner to discover and enforce policy.
 
-3. Indicators can be verified and/or cached in advance, so that malicious headers cannot be used as an attack vector.
+3. Indicators SHOULD be verified and cached in advance, so that malicious headers cannot be used as an attack vector.
 
 Per [DNS], a TXT record can comprise several "character-string" objects. BIMI TXT records with multiple strings must be treated in an identical manner to [SPF Section 3.3](https://tools.ietf.org/html/rfc7208#section-3.3).
 
