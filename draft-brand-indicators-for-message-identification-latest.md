@@ -393,22 +393,35 @@ BIMI-Location Header {#bimi-location}
 
 BIMI-Location is the header a Mail Receiver inserts that tells the MUA where to get the BIMI indicator from.
 
-The syntax of the header is as following:
+The syntax of the header is as follows:
 
 v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value of "BIMI1" for implementations compliant with this version of BIMI.  The value of this tag MUST match precisely; if it does not or it is absent, the entire header MUST be ignored.  It MUST be the first tag in the list.
 
     The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
-l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing locations of the brand indicator file.  HTTPS is the only supported transport.  
+l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the brand indicator file.  HTTPS is the only supported transport.  
 
     ABNF:
 
-    bimi-header-location = "l" *WSP "=" bimi-location-uri
+    bimi-location-header-uri = "l" *WSP "=" bimi-location-uri
 
 And the formal definition of the BIMI Location Header, using ABNF, is as follows:
 
-    bimi-location-header = bimi-header-version bimi-sep bimi-header-location \[bimi-sep\]
+    bimi-location-header = bimi-header-version bimi-sep bimi-location-header-uri \[bimi-sep\]
 
+BIMI-Indicator Header {#bimi-indicator}
+---------------------------------------
+
+BIMI-Indicator is the header a Mail Receiver inserts to pass a verified indicator to the MUA.
+
+The header contains the SVG of the indicator encoded as base64, and is inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The contents of this tag MUST match the content retrieved from the URI specified in the BIMI-Location header.
+
+    base64string    =  ALPHADIGITPS *([FWS] ALPHADIGITPS)
+                       [ [FWS] "=" [ [FWS] "=" ] ]
+
+And the formal definition of the BIMI Indicator Header, using ABNF, is as follows:
+
+    bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
 
 Header Signing
 ---------------
@@ -417,7 +430,7 @@ If present, the BIMI-Selector header SHOULD be included in the DMARC-aligned DKI
 
 Receivers MAY choose to apply additional methods to validate the BIMI-Selector header, for example by evaluating a trusted [ARC] chain. In this case the Receiver MAY choose to treat the message as if the BIMI-Selector header was signed.  
 
-The BIMI-Location header MUST NOT be DKIM signed. This header is untrusted by definition, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.
+The BIMI-Location and BIMI-Indicator headers MUST NOT be DKIM signed. This header is untrusted by definition, and is only for use between an MTA and its MUAs, after DKIM has been validated by the MTA. Therefore, signing this header is meaningless, and any messages with it signed are either coming from malicious or misconfigured third parties.
 
 Domain Owner Actions    {#bimi-sender}
 =============
@@ -536,10 +549,10 @@ header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=
 
 selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
 
-Handle Existing BIMI-Location Headers
+Handle Existing BIMI-Location and BIMI-Indicator Headers
 ---------------
 
-Regardless of success of the BIMI lookup, if a BIMI-Location header is already present in a message it MUST be either removed or renamed.  This is because the MTA performing BIMI-related processing immediately prior to a Mail Delivery Agent (or within the same administrative realm) is the only entity allowed to specify the BIMI-Location header (e.g. not the sending MTA, and not an intermediate MTA).  Allowing one or more existing headers through to a MUA is a security risk.
+Regardless of success of the BIMI lookup, if a BIMI-Location or a BIMI-Indicator header is already present in a message it MUST be either removed or renamed.  This is because the MTA performing BIMI-related processing immediately prior to a Mail Delivery Agent (or within the same administrative realm) is the only entity allowed to specify the BIMI-Location or BIMI-Indicator headers (e.g. not the sending MTA, and not an intermediate MTA).  Allowing one or more existing headers through to a MUA is a security risk.
 
 If the original email message had a DKIM signature, it has already been evaluated. Removing the BIMI-Location header at this point should not break the signature since it should not be included within it per this spec.
 
@@ -548,17 +561,24 @@ Construct BIMI-Location URI
 
 The l= value of the BIMI-Location header is the URI of the Indicator specified in the BIMI record. 
 
-Set appropriate flags on the mail store {#mail-stores}
-----------------------------------
+Construct BIMI-Indicator header
+----------------
 
-Once an MTA has completed BIMI-related processing for a message, generic message processing continues so that the intended recipient(s) can eventually have been processed for BIMI on mail stores through either POP3, IMAP, and MAPI. Separate documents will define protocol-specific BIMI extensions for mail stores.
+Retrieve and check the SVG from the URI of the Indicator specified in the BIMI record.
 
-If a mail store ingests a message from another mail store through some other means, the message may or may not have BIMI headers added already.  If the receiving store trusts the other mail store, it may simply use existing headers. Or, it may re-evaluate BIMI policy and requirements, and create or replace the BIMI-Location header.
+If the SVG is missing or does not pass the validation checks specified in the BIMI SVG document then the MTA MUST return a BIMI fail.
+
+If the SVG passes validation then the MTA adds the SVG as base64 encoded data in the BIMI-Indicator header. The MTA MUST fold the header to be within the line length limits of [SMTP].
 
 Security Considerations   {#security-considerations}
 ===================
 
 The consistent use of brand indicators is valuable for Domain Owners, Mail Receivers, and End Users. However, the routine display of brand indicators represents an attractive target for abuse, especially for determined malicious actors.  Great care is warranted.  The discussion following as an incomplete list of considerations.  
+
+Indirect Mail Flows
+------------
+
+If a mail store ingests a message from another mail store through some other means, the message may or may not have BIMI headers added already.  If the receiving store trusts the other mail store, it may simply use existing headers. Or, it may re-evaluate BIMI policy and requirements, and create or replace the BIMI-Location header.
 
 Lookalike Domains and Copycat Indicators
 ------------
