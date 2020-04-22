@@ -158,7 +158,7 @@ The structure of BIMI is as follows:
 
 2. Senders: Ensure mail is properly authenticated, and has a sufficiently strict [DMARC] policy.
 
-2. MUAs and MBPs:
+3. MUAs and MBPs:
 
   a. Confirm authenticity of the message using [DMARC] and whatever other authentication mechanisms they wish to apply.
 
@@ -166,7 +166,7 @@ The structure of BIMI is as follows:
 
   c. If both the message is authentic and the logo is deemed acceptable, the receiver adds a header to the message which can be used by the MUA to obtain the Domain Owner's preferred brand indicator.
 
-3. MUA: retrieves and displays the brand indicator as appropriate based on its policy and user interface.
+4. MUA: retrieves and displays the brand indicator as appropriate based on its policy and user interface.
 
 The purpose of this structure is to reduce operational complexity at each step.  It is also to consolidate validation and indicator selection operations into the MTA, so that Domain Owners need only publish a few simple records and MUAs only need simple display logic.
 
