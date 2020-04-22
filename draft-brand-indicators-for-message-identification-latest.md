@@ -566,7 +566,7 @@ Construct BIMI-Indicator header
 
 Retrieve and check the SVG from the URI of the Indicator specified in the BIMI record.
 
-If the SVG is missing or does not pass the validation checks specified in the BIMI SVG document then the MTA MUST return a BIMI fail.
+If the SVG is missing or does not pass the validation checks specified in the BIMI SVG document then logo validation has failed and then indicator MUST NOT be displayed. In this case the MTA MUST add a bimi=fail entry to the Authentication-Results header for the message, MAY add a comment to that Authentication-Results entry with details of the failing check, and MUST NOT add BIMI-Location or BIMI-Indicator headers to the message.
 
 If the SVG passes validation then the MTA adds the SVG as base64 encoded data in the BIMI-Indicator header. The MTA MUST fold the header to be within the line length limits of [SMTP].
 
