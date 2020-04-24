@@ -293,7 +293,9 @@ v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI re
 
     bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
-a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualfied domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrivable evidence document.  Clients MUST skip consideration of the evidence document if the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts.  The evidence document MUST only contain one VMC certificate and SHOULD contain CA certificates in issuing order, all in PEM format. The evidence document SHOULD start with the end entity VMC certificate, followed by the immediate issuer CA certificate of the end entity, and then its issuing CA certificates. Potentially this issuing sequence of certificate terminates at the self-signed trusted root certificate, where the trusted root certificate MAY optionally be included in the evidence document.  Intermediate certificates and any issuer certificates needed to reach the root of the VMC issuer SHOULD be provided in the evidence document.  If the a= tag is not present, it is assumed to have an empty value.  
+a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualfied domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrivable evidence document.
+
+The evidence document MUST only contain one VMC certificate and SHOULD contain CA certificates in issuing order, all in PEM format. The evidence document SHOULD start with the end entity VMC certificate, followed by the immediate issuer CA certificate of the end entity, and then its issuing CA certificates. Potentially this issuing sequence of certificate terminates at the self-signed trusted root certificate, where the trusted root certificate MAY optionally be included in the evidence document.  Intermediate certificates and any issuer certificates needed to reach the root of the VMC issuer SHOULD be provided in the evidence document.  If the a= tag is not present, it is assumed to have an empty value.  
 
     ABNF:
 
@@ -339,7 +341,7 @@ An explicit declination to publish looks like:
 
 Any format in the BIMI-formats IANA registry are acceptable targets for the l= tag. If an l= tag URI ends with any other image format suffix, or if the document retrievable from the location(s) in the l= tag are of any other format, the evaluation of the record MUST be treated as a permanent error.
 
-As of the publishing of this document, only SVG, as defined in [RFC6170 section 5.2](https://tools.ietf.org/html/rfc6170#section-5.2) is acceptable in the l= tag.  Further restrictions may apply to the SVG, and if so, these are documented elsewhere. 
+As of the publishing of this document, only SVG and SVGZ, as defined in [RFC6170 section 5.2](https://tools.ietf.org/html/rfc6170#section-5.2) is acceptable in the l= tag.  Further restrictions apply to the SVG, these are documented elsewhere. 
 
 Selectors   {#selectors}
 ------------------------
@@ -414,7 +416,7 @@ BIMI-Indicator Header {#bimi-indicator}
 
 BIMI-Indicator is the header a Mail Receiver inserts to pass a verified indicator to the MUA.
 
-The header contains the SVG of the indicator encoded as base64, and is inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The contents of this tag MUST match the content retrieved from the URI specified in the BIMI-Location header.
+The header contains the SVG of the indicator encoded as base64, and is inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The contents of this tag MUST match the content retrieved from the URI specified in the BIMI-Location header. If he Indicator was supplied as a gzipped SVGZ file then the MTA MUST NOT uncompress the file before base64 encoding.
 
     base64string    =  ALPHADIGITPS *([FWS] ALPHADIGITPS)
                        [ [FWS] "=" [ [FWS] "=" ] ]
@@ -532,11 +534,15 @@ If an Assertion Record is found and has an a= tag, it must be used to validate t
 
 1. Use the mechanism in the a= tag to retrieve the validated hash.
 
-2. Compute the hash of the logo in the l= tag.
+2. If the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts then logo validation has failed and the indicator MUST NOT be displayed.
 
-3. If the hash of the logo does not match the validated hash, then logo validation has failed and then indicator MUST NOT be displayed.
+3. If the evidence document does not contain a single valid VMC certificate chain then logo validation has failed, and the indicatore MUST NOT be displayed.
 
-4. If the hashes match, and the validated hash is from a trusted source, then the indicator can be displayed per receiver policy.
+4. Retrieve the logo from the URI specified in the l= tag and compute its hash. If the logo is supplied in compressed SVGZ format then the hash of the compressed version MUST be used.
+
+5. If the hash of the logo does not match the validated hash from the VMC, then logo validation has failed and the indicator MUST NOT be displayed.
+
+6. If the hashes match, and the validated hash is from a trusted source, then the indicator can be displayed per receiver policy.
 
 Affix BIMI status to Authentication Results header field {#bimi-results}
 ----------------------------------
@@ -566,7 +572,7 @@ Construct BIMI-Indicator header
 
 Retrieve and check the SVG from the URI of the Indicator specified in the BIMI record.
 
-If the SVG is missing or does not pass the validation checks specified in the BIMI SVG document then logo validation has failed and then indicator MUST NOT be displayed. In this case the MTA MUST add a bimi=fail entry to the Authentication-Results header for the message, MAY add a comment to that Authentication-Results entry with details of the failing check, and MUST NOT add BIMI-Location or BIMI-Indicator headers to the message.
+If the SVG is missing or does not pass the validation checks specified in this document or specified in the BIMI SVG document then logo validation has failed and then indicator MUST NOT be displayed. In this case the MTA MUST add a bimi=fail entry to the Authentication-Results header for the message, MAY add a comment to that Authentication-Results entry with details of the failing check, and MUST NOT add BIMI-Location or BIMI-Indicator headers to the message.
 
 If the SVG passes validation then the MTA adds the SVG as base64 encoded data in the BIMI-Indicator header. The MTA MUST fold the header to be within the line length limits of [SMTP].
 
