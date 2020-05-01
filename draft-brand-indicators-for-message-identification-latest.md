@@ -555,6 +555,16 @@ header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=
 
 header.selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
 
+policy.authority: Authority verification status of the Brand Identifier (plain-text; REQUIRED if the authority evidence was checked). If the Authority Evidence presented in the BIMI Assertion Record was checked and found to be valid then this MUST be set to pass. If the validation failed then this MUST be set to fail. If no Authority Evidence was presented, or the MTA did not check the Authority Evidence then this SHOULD be set to none.
+
+policy.authority-uri: The URI of the Authority Evidence document checked, as found in the a= tag of the BIMI Assertion Record (plain-text; OPTIONAL).
+
+policy-authority-issuer: The Issuer presented in the validated VMC (plain-text; OPTIONAL).
+
+policy-authority-not-before: The Not Before Validity date presented in the validated VMC (plain-text; OPTIONAL).
+
+policy-authority-not-after: The Not After Validity date presented in the validated VMC (plain-text; OPTIONAL).
+
 Handle Existing BIMI-Location and BIMI-Indicator Headers
 ---------------
 
