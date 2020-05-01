@@ -553,7 +553,7 @@ bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pas
 
 header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.
 
-selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
+header.selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
 
 Handle Existing BIMI-Location and BIMI-Indicator Headers
 ---------------
@@ -730,7 +730,7 @@ Successful BIMI lookup
 
     From: sender@example.com
     BIMI-Selector: v=BIMI1; s=selector;
-    Authentication-Results: bimi=pass header.d=example.com selector=selector;
+    Authentication-Results: bimi=pass header.d=example.com header.selector=selector;
 
 No BIMI record
 --------------
@@ -744,14 +744,14 @@ Subdomain has no default record, but organizational domain does
 ----------------
 
     From: sender@sub.example.com
-    Authentication-Results: bimi=pass header.d=example.com selector=default;
+    Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 
 Subdomain has no record for selector, but organization domain has a default
 ---------------
 
     From: sender@sub.example.com
     BIMI-Selector: v=BIMI1; s=selector;
-    Authentication-Results: bimi=pass header.d=example.com selector=default;
+    Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 
 In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
 
@@ -794,7 +794,7 @@ The MTA computes and affixes the results of the BIMI to the Authentication-Resul
     Authentication-Results: spf=fail smtp.mailfrom=example.com;
       dkim=pass (signature was verified) header.d=example.com;
       dmarc=pass header.from=example.com;
-      bimi=pass header.d=example.com selector=brand;
+      bimi=pass header.d=example.com header.selector=brand;
 
 MTA Constructs BIMI-Location header
 -----------------
