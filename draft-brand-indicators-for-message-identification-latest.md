@@ -532,7 +532,7 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 6. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
-7. If the remaining set contains multiple records or no records, indicator discovery terminates and BIMI processing MUST NOT be performed for this message.
+7. If the remaining set contains multiple records or no records, Assertion Record Discovery terminates and BIMI processing MUST NOT be performed for this message.
 
 8. If the remaining set contains only a single record, this record is used for BIMI Assertion.
 
