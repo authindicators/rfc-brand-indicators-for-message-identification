@@ -57,6 +57,12 @@ normative:
     author:
       ins: Kucherawy, M., Ed. and E. Zwicky, Ed.
     date: March 2015
+  Logotype:
+    target: http://www.rfc-editor.org/info/rfc3709
+    title: Internet X.509 Public Key Infrastructure, Logotypes in X.509 Certificates
+    author:
+      ins: Santesson, S., Housley R., and Freemani T.
+    date: February 2004
   SMTP:
     target: http://www.rfc-editor.org/info/rfc5321
     title: Simple Mail Transfer Protocol
@@ -503,12 +509,14 @@ Before applying BIMI processing for a message, a receiver MUST verify that the m
 
 9. If the Author Domain has an [SPF] policy, and that policy ends with +all, then BIMI processing MUST NOT be performed for this message.
 
-Indicator Discovery {#indicator-discovery}
+Assertion Record Discovery {#assertion-record-discovery}
 ----------------------------------
 
 Through the [BIMI Assertion Record](#assertion-record-def), Domain Owners use DNS TXT records to advertise their preferences.  Preference discovery is accomplished via a method similar to the method used for [DMARC] records.  This method, and the important differences between BIMI and [DMARC] mechanisms, are discussed below.
 
-Indicator Discovery MUST only be attempted if the message authenticates per Receiver policy.
+Assertion Record Discovery MUST NOT be attempted if the message authenticates fails per Receiver policy.
+
+(Note to WG, how does this affect reporting, we can't report bad authentication if we can't retrieve an assertion record)
 
 To balance the conflicting requirements of supporting wildcarding, allowing subdomain policy overrides, and limiting DNS query load, Protocol Clients MUST employ the following lookup scheme for the appropriate BIMI record for the message:
 
@@ -528,29 +536,65 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 8. If the remaining set contains only a single record, this record is used for BIMI Assertion.
 
-Indicator Validation {#indicator-validation}
+Indicator Discovery. {#indicator-discovery}
 ----------------------------------
 
-If an Assertion Record is found and has an a= tag, it must be used to validate the indicator using the following algorithm:
+1. If the retrieved Assertion Record does not include a valid bimi-location in the l= tag, then Indicator Discovery has failed, and the Indicator MUST NOT be displayed. The bimi-location entry MUST be a URI with a HTTPS transport. 
 
-1. Use the mechanism in the a= tag to retrieve the validated hash.
+2. If the retrieved Assertion Record includes a bimi-evidence-location entry in the a= tag, and the receiver supports VMC validation, then proceed to the [Indicator Discovery With Evidence](#indicator-discovery-with-evidence) step. 
+
+3. If the receiver does not support VMC validation, or the retrieved Assertion Record does not include a bimi-evidence-location entry, then proceed to the [Indicator Discovery Without Evidence](#indicator-discovery-without-evidence) step. 
+
+Indicator Discovery With Evidence. {#indicator-discovery-with-evidence}
+----------------------------------
+
+If the receiver supports VMC validation, and an Assertion Record is found which has bimi-evidence-location entry in the a= tag, then the VMC document MUST be used to validate the Indicator using the following algorithm:
+
+1. Use the mechanism in the bimi-evidence-location to retrieve the VMC, this MUST be a URI with a HTTPS transport. 
+
+2. If the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts then Indicator Discovery has failed and the Indicator MUST NOT be displayed. 
+
+3. If the evidence document does not contain a single valid VMC certificate chain then Indicator Discovery has failed, and the Indicator MUST NOT be displayed. 
+
+4. Validate the certificate back to a trusted root certificate using the supplied intermediate certificates as necessary. If validation fails then Indicator Discovery has failed, and the Indicator MUST NOT be displayed. 
+
+5. Retrieve the SVG Indicator from the [Logotype] Extension (oui 1.3.6.1.5.5.7.1.12) of the validated VMC. 
+
+6. Optionally, the receiver MAY choose to retrieve the SVG Indicator from the URI specified in the bimi-location entry of the Assertion Record and compare this to the SVG Indicator embedded within the VMC. The receiver MAY fail validation if these Indicators differ. 
+
+7. Proceed to the [Indicator Validation](#indicator-validation) step. 
+
+Indicator Discovery Without Evidence. {#indicator-discovery-without-evidence}
+----------------------------------
+
+If an Assertion Record is found, and has an empty or missing bimi-evidence-location entry then no evidence has is presented, and the Indicator MUST be retrieved from the URI specified in the bimi-location-uri entry using the following algorithm:
+
+1. Retrieve the SVG Indicator from the URI specified in the l= tag. This MUST be a URI with a HTTPS transport. 
 
 2. If the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts then logo validation has failed and the indicator MUST NOT be displayed.
 
-3. If the evidence document does not contain a single valid VMC certificate chain then logo validation has failed, and the indicator MUST NOT be displayed.
+3. Proceed to the [Indicator Validation](#indicator-validation) step. 
 
-4. Retrieve the logo from the URI specified in the l= tag and compute its hash. If the logo is supplied in compressed SVGZ format then the hash of the compressed version MUST be used.
+Indicator Validation {#indicator-validation}
+----------------------------------
 
-5. If the hash of the logo does not match the validated hash from the VMC, then logo validation has failed and the indicator MUST NOT be displayed.
+1. Check the file size of the retrieved SVG against recommended maximum sizes as defined in this document, and in the BIMI SVG document. A receiver MAY choose to implement their own file size restrictions. If the Indicator is larger than the maximum size the the receiver MAY choose not to display the Indicator. A receiver MAY choose to implement the size limit as a retrieval limit rather than retrieving the entire document and then checking the size. 
 
-6. If the hashes match, and the validated hash is from a trusted source, then the indicator can be displayed per receiver policy.
+2. If the SVG Indicator is missing, or is not a valid SVG or SVGZ document then validation has failed and the indicator MUST NOT be displayed. 
+
+3. Check the retrieved SVG against the SVG validation steps specified in this document, and in the BIMI SVG document. 
+   (Note to WG, do we want to specify the SVG_1.2_PS profile here or leave that to the other document?)
+
+4. If Indicator verification has passed, and the logo is from a trusted source, then the indicator MAY be displayed per receiver policy. 
+
+(Note to WG, add link to BIMI SVG document)
 
 Affix BIMI status to Authentication Results header field {#bimi-results}
 ----------------------------------
 
-Upon completion of Indicator Discovery, an MTA SHOULD affix the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
+Upon completion of Assertion Record Discovery, Indicator Discovery, and Indicator Validation, an MTA SHOULD affix the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
 
-bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check did not perform, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., "bimi=skipped (sender not trusted)" or "bimi=skipped (message failed DMARC)".
+bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, failure in Discovery or Validation steps, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check did not perform, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., "bimi=fail (Invalid SVG)", "bimi=skipped (sender not trusted)" or "bimi=skipped (message failed DMARC)".
 
 header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.
 
@@ -571,21 +615,25 @@ Handle Existing BIMI-Location and BIMI-Indicator Headers
 
 Regardless of success of the BIMI lookup, if a BIMI-Location or a BIMI-Indicator header is already present in a message it MUST be either removed or renamed.  This is because the MTA performing BIMI-related processing immediately prior to a Mail Delivery Agent (or within the same administrative realm) is the only entity allowed to specify the BIMI-Location or BIMI-Indicator headers (e.g. not the sending MTA, and not an intermediate MTA).  Allowing one or more existing headers through to a MUA is a security risk.
 
-If the original email message had a DKIM signature, it has already been evaluated. Removing the BIMI-Location header at this point should not break the signature since it should not be included within it per this spec.
+If the original email message had a DKIM signature, it has already been evaluated. Removing the BIMI-Location header at this point should not invalidate the signature since it should not be included within it per this spec.
 
 Construct BIMI-Location URI
 ---------------
 
-The l= value of the BIMI-Location header is the URI of the Indicator specified in the BIMI record. 
+This header MUST NOT be added if Discovery or Validation steps failed.
+
+The URI used to retrieve the validated SVG Indicator. If the receiver extracted the Indicator from the VMC then this SHOULD be the bimi-evidence-location URI, otherwise it SHOULD be the bimi-location URI.
+
+(Note to WG, If the Indicator was pulled from the VMC then the document referenced by the bimi-location may be unverified and potentially malicious. If the BIMI-Location needs to be the bimi-location then we need to make retrieval and comparison of the bimi-location Indicator against the Indicator embedded within the VMC a MUST, this introduces an extra HTTPS request into the pipeline, I would prefer to avoid this.)
 
 Construct BIMI-Indicator header
 ----------------
 
-Retrieve and check the SVG from the URI of the Indicator specified in the BIMI record.
+This header MUST NOT be added if Discovery or Validation steps failed.
 
-If the SVG is missing or does not pass the validation checks specified in this document or specified in the BIMI SVG document then logo validation has failed and then indicator MUST NOT be displayed. In this case the MTA MUST add a bimi=fail entry to the Authentication-Results header for the message, MAY add a comment to that Authentication-Results entry with details of the failing check, and MUST NOT add BIMI-Location or BIMI-Indicator headers to the message.
+Encode the SVG Indicator retrieved and validated during the Indicator Discovery and Indicator Validation stepd as base64 encoded data. If the Indicator was compressed with gzip when retrieved then the data SHOULD NOT be uncompressed before being base64 encoded.
 
-If the SVG passes validation then the MTA adds the SVG as base64 encoded data in the BIMI-Indicator header. The MTA MUST fold the header to be within the line length limits of [SMTP].
+The MTA MUST fold the header to be within the line length limits of [SMTP].
 
 Security Considerations   {#security-considerations}
 ===================
