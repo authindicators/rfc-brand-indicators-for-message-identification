@@ -635,7 +635,7 @@ Domain Owners should be careful to strip any metadata out of published Indicator
 IANA Considerations   {#iana}
 ===================
 
-IANA will need to reserve two new entries for the "Permanent Message Header Field Names" registry and create a registry for support file formats for BIMI.
+IANA will need to reserve three new entries for the "Permanent Message Header Field Names" registry and create a registry for support file formats for BIMI.
 
 Permanent Header Field Updates
 ------------
@@ -654,6 +654,17 @@ IANA will need to reserve two new entries to the "Permanent Message Header Field
 
 
    Header field name: BIMI-Location
+
+   Applicable protocol: mail
+
+   Status: standard
+
+   Author/Change controller: IETF
+
+   Specification document: This one
+
+
+   Header field name: BIMI-Indicator
 
    Applicable protocol: mail
 
