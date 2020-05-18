@@ -536,7 +536,7 @@ If an Assertion Record is found and has an a= tag, it must be used to validate t
 
 2. If the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts then logo validation has failed and the indicator MUST NOT be displayed.
 
-3. If the evidence document does not contain a single valid VMC certificate chain then logo validation has failed, and the indicatore MUST NOT be displayed.
+3. If the evidence document does not contain a single valid VMC certificate chain then logo validation has failed, and the indicator MUST NOT be displayed.
 
 4. Retrieve the logo from the URI specified in the l= tag and compute its hash. If the logo is supplied in compressed SVGZ format then the hash of the compressed version MUST be used.
 
