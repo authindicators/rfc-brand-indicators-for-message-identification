@@ -631,7 +631,7 @@ Construct BIMI-Indicator header
 
 This header MUST NOT be added if Discovery or Validation steps failed.
 
-Encode the SVG Indicator retrieved and validated during the Indicator Discovery and Indicator Validation stepd as base64 encoded data. If the Indicator was compressed with gzip when retrieved then the data SHOULD NOT be uncompressed before being base64 encoded.
+Encode the SVG Indicator retrieved and validated during the Indicator Discovery and Indicator Validation steps as base64 encoded data. If the Indicator was compressed with gzip when retrieved then the data SHOULD NOT be uncompressed before being base64 encoded.
 
 The MTA MUST fold the header to be within the line length limits of [SMTP].
 
