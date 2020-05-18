@@ -641,8 +641,6 @@ IANA will need to reserve three new entries for the "Permanent Message Header Fi
 Permanent Header Field Updates
 ------------
 
-IANA will need to reserve two new entries to the "Permanent Message Header Field Names" registry.
-
    Header field name: BIMI-Selector
 
    Applicable protocol: mail
