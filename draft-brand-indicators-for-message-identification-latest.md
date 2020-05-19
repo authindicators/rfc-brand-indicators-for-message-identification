@@ -618,11 +618,11 @@ policy.authority: Authority verification status of the Brand Identifier (plain-t
 
 policy.authority-uri: The URI of the Authority Evidence document checked, as found in the a= tag of the BIMI Assertion Record (plain-text; OPTIONAL).
 
-policy-authority-issuer: The Issuer presented in the validated VMC (plain-text; OPTIONAL).
+policy.authority-issuer: The Issuer presented in the validated VMC (plain-text; OPTIONAL).
 
-policy-authority-not-before: The Not Before Validity date presented in the validated VMC (plain-text; OPTIONAL).
+policy.authority-not-before: The Not Before Validity date presented in the validated VMC (plain-text; OPTIONAL).
 
-policy-authority-not-after: The Not After Validity date presented in the validated VMC (plain-text; OPTIONAL).
+policy.authority-not-after: The Not After Validity date presented in the validated VMC (plain-text; OPTIONAL).
 
 Handle Existing BIMI-Location and BIMI-Indicator Headers
 ---------------
