@@ -408,22 +408,36 @@ v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value o
 
     The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
-l: location of the BIMI indicator (URI; REQUIRED). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the brand indicator file.  HTTPS is the only supported transport.  
+l: location of the BIMI Indicator (URI; OPTIONAL if a bimi-evidence-location-uri is specified, otherwise REQUIRED.). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the brand indicator file.  HTTPS is the only supported transport.  
 
     ABNF:
 
     bimi-location-header-uri = "l" *WSP "=" bimi-location-uri
 
+a: location of the BIMI VMC (URI; REQUIRED if the VMC was verified). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the VMC file.  HTTPS is the only supported transport.  
+
+    ABNF:
+
+    bimi-evidenced-location-header-uri = "a" *WSP "=" bimi-evidence-location-uri
+
 And the formal definition of the BIMI Location Header, using ABNF, is as follows:
 
-    bimi-location-header = bimi-header-version bimi-sep bimi-location-header-uri \[bimi-sep\]
+    bimi-location-header-location-only = bimi-location-header-uri
+
+    bimi-location-header-evidence-only = bimi-evidence-location-header-uri
+
+    bimi-location-header-both = bimi-location-header-uri bimi-evidence-location-header-uri
+
+    bimi-location-options = bimi-location-header-location-only / bimi-location-header-evidence-only / bimi-location-header-both
+
+    bimi-location-header = bimi-header-version bimi-sep bimi-location-options \[bimi-sep\]
 
 BIMI-Indicator Header {#bimi-indicator}
 ---------------------------------------
 
 BIMI-Indicator is the header a Mail Receiver inserts to pass a verified indicator to the MUA.
 
-The header contains the SVG of the indicator encoded as base64, and is inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The contents of this tag MUST match the content retrieved from the URI specified in the BIMI-Location header. If he Indicator was supplied as a gzipped SVGZ file then the MTA MUST NOT uncompress the file before base64 encoding.
+The header contains the SVG of the indicator encoded as base64, and is inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The contents of this tag MUST match the SVG Indicator content retrieved from the URI specified in the BIMI-Location header. If he Indicator was supplied as a gzipped SVGZ file then the MTA MUST NOT uncompress the file before base64 encoding. 
 
     base64string    =  ALPHADIGITPS *([FWS] ALPHADIGITPS)
                        [ [FWS] "=" [ [FWS] "=" ] ]
@@ -622,7 +636,7 @@ Construct BIMI-Location URI
 
 This header MUST NOT be added if Discovery or Validation steps failed.
 
-The URI used to retrieve the validated SVG Indicator. If the receiver extracted the Indicator from the VMC then this SHOULD be the bimi-evidence-location URI, otherwise it SHOULD be the bimi-location URI.
+The URI used to retrieve the validated SVG Indicator. If the receiver extracted the Indicator from the VMC then this SHOULD be the bimi-evidence-location-uri added with a a= tag, otherwise it SHOULD be the bimi-location-uri added with a l= tag. If both a= and l= tags are included then the MTA MUST perform checks to ensure that the SVG Indicator referenced by the bimi-location-uri is identical to the SVG Indicator extracted from the VMC.
 
 (Note to WG, If the Indicator was pulled from the VMC then the document referenced by the bimi-location may be unverified and potentially malicious. If the BIMI-Location needs to be the bimi-location then we need to make retrieval and comparison of the bimi-location Indicator against the Indicator embedded within the VMC a MUST, this introduces an extra HTTPS request into the pipeline, I would prefer to avoid this.)
 
