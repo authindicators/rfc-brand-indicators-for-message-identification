@@ -437,7 +437,7 @@ BIMI-Indicator Header {#bimi-indicator}
 
 BIMI-Indicator is the header a Mail Receiver inserts to pass a verified indicator to the MUA.
 
-The header contains the SVG of the indicator encoded as base64, and is inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The contents of this tag MUST match the SVG Indicator content retrieved from the URI specified in the BIMI-Location header. If he Indicator was supplied as a gzipped SVGZ file then the MTA MUST NOT uncompress the file before base64 encoding. 
+The header contains the SVG of the indicator encoded as base64, and is inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The contents of this tag MUST match the SVG Indicator content retrieved from the URI specified in the BIMI-Location header. If he Indicator was supplied as a gzipped SVGZ file then the MTA MUST uncompress the file before base64 encoding. 
 
     base64string    =  ALPHADIGITPS *([FWS] ALPHADIGITPS)
                        [ [FWS] "=" [ [FWS] "=" ] ]
