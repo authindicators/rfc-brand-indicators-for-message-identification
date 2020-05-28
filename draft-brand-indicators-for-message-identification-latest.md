@@ -284,7 +284,7 @@ MUAs implementing the BIMI mechanism SHOULD make a best-effort attempt to adhere
 Assertion Record   {#assertion-record-def}
 -----------------
 
-All Domain Owner BIMI preferences are expressed in DNS TXT records published in subdomains named "_bimi".  Multiple sets of preferences can be associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI defines and uses [selectors](#selectors). Senders declare which selector to use for a given message by specifying the selector in an optional [BIMI-Selector header](#bimi-selector).
+All Domain Owner BIMI preferences are expressed in DNS TXT records published in subdomains named "_bimi".  Multiple sets of preferences can be associated with a single RFC5322.From domain.  To distinguish between these different preferences, BIMI defines and uses selectors. Senders declare which selector to use for a given message by specifying the selector in an optional [BIMI-Selector header](#bimi-selector).
 
 For example, the Domain Owner of "example.com" would post BIMI policy in a TXT record at "default._bimi.example.com".  Similarly, a Mail Receiver wishing to query for BIMI policy regarding mail with an RFC5322.From Author Domain of "example.com" and a selector "default" (the default) would query the TXT record located at the subdomain of "default._bimi.example.com".  The DNS-based BIMI policy record is referred to as the "BIMI Assertion Record" or "Assertion Record".
 
