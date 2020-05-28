@@ -838,7 +838,7 @@ Subdomain has no record for selector, but organization domain has a default
 In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
 
 
-Example BIMI-Location Construction (INFORMATIONAL)   {#bimi-location-example}
+Example BIMI Headers Construction (INFORMATIONAL)   {#bimi-headers-example}
 ===============
 
 This section shows how an example MTA might evaluate an incoming email for BIMI participation, and how it could share that determination with its MUA(s).
@@ -868,6 +868,8 @@ The MTA sees that the message has a BIMI-Selector header, and it is covered by t
 
 The MTA verifies the syntax of the BIMI DNS record, and it, too passes.
 
+The MTA knows it has previously retrieved the Indicator referenced by the BIMI DNS record, and had already successfully checked this SVG against the published SVG profile. The MTA retrieves the SVG from the cache.
+
 MTA appends to Authentication-Results
 -----------------
 
@@ -878,23 +880,26 @@ The MTA computes and affixes the results of the BIMI to the Authentication-Resul
       dmarc=pass header.from=example.com;
       bimi=pass header.d=example.com header.selector=brand;
 
-MTA Constructs BIMI-Location header
+MTA Constructs BIMI-Location and BIMI-Indicator headers
 -----------------
 
-The MTA knows it has cached the indicator already, and wishes to use this cached indicator instead of a direct reference to the l= tag.
+The MTA base64 encodes the retrieved SVG and constructs a new BIMI-Indicator header.
 
-Finally, the MTA removes the existing BIMI-Location header, and stamps the new one:
+The MTA constructs a BIMI-Location header with a version tag, and an l tag indicating the URL from which the SVG was retrieved.
 
-    BIMI-Location: v=BIMI1; l=https://cache.mta.example/bimi/logo/bimi-example.com-sel-brand.svg
+Finally, the MTA removes any existing BIMI-Location and BIMI-Indicator headers, and stamps the new ones:
+
+    BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/
+
+    BIMI-Indicator: PD94bW...8L3N2Zz4K
 
 That the original sender signed a BIMI-Location header against this spec is irrelevant. It was used for DKIM validation and then thrown out by the MTA.
 
-The MTA then sets any relevant BIMI flags on the mail store when it deposits it.
 
 The MUA displays the indicator
 ---------------
 
-The mail is opened from the mail store in an MUA. The MUA checks to make sure the appropriate BIMI mail store flag has been set, so that it knows it can trust the BIMI-Location header. Finally, the MUA makes a simple determination of which image to show based upon the URI(s) in the BIMI-Location header.
+The mail is opened from the mail store in an MUA. The MUA performs locally defined checks to make sure that it can trust the BIMI-Indicator header. Finally, the MUA extracts the image from the BIMI-Indicator header and displays it to the user.
 
 Acknowledgements 
 ------------
