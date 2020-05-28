@@ -265,7 +265,7 @@ The use of BIMI is opt-in.  Receivers default to performing no BIMI-specific mes
 
 BIMI's use of the DNS is driven in part by BIMI's use of domain names as the basis of sender identity and message authentication. Use of the DNS as the policy publication service also has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
-BIMI's policy payload is intentionally only published via a DNS record and not via one or more email headers. This serves four purposes:
+BIMI's policy payload is intentionally only published via a DNS record and not via one or more email headers. This serves three purposes:
 
 1. There is one and only one mechanism for both simple and complex policies to be published.
 
