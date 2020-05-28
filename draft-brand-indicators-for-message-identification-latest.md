@@ -237,7 +237,7 @@ The icon, image, mark, or other graphical representation of the brand. The Indic
 Mark Verifying Authority (MVA)
 -------------
 
-An entity of organization that can provide evidence of verification of indicators asserted by a Domain Owner to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain indicator standards (ie. size, trademark, content, etc).
+An entity or organization that can provide evidence of verification of indicators asserted by a Domain Owner to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain indicator standards (ie. size, trademark, content, etc).
 
 Verified Mark Certificate (VMC)
 -------------
