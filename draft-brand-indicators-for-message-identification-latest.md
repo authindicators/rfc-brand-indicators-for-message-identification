@@ -610,9 +610,9 @@ Upon completion of Assertion Record Discovery, Indicator Discovery, and Indicato
 
 bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, failure in Discovery or Validation steps, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check was not performed, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., "bimi=fail (Invalid SVG)", "bimi=skipped (sender not trusted)" or "bimi=skipped (message failed DMARC)".
 
-header.d: Domain used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). If the first lookup fails for whatever reason, and the second one passes (e.g., using the organizational domain), the organizational domain should appear here. If both fail (or have no record), then the first domain appears here.
+header.d: Domain of the BIMI Assertion Record which was evaluated (plain-text; REQUIRED if bimi=pass). For example, this will be the organizational domain if the BIMI lookup used the fallback record, otherwise it will be the RFC5322.From domain.
 
-header.selector: Selector used in a successful BIMI lookup (plain-text; REQUIRED if bimi=pass). Range of values include the value in the BIMI-Selector header, and 'default'. If the first lookup fails (or has no record) and second passes, the second selector should appear here. If both fail (or have no record), then the first selector should appear here.
+header.selector: Selector of the BIMI Assertion Record which was evaluated (plain-text; REQUIRED if bimi=pass). For example, if a BIMI-Selector Header was present and used to discover a BIMI Assertion Record then this will be the Selector used, otherwise this will be 'default'.
 
 policy.authority: Authority verification status of the Brand Identifier (plain-text; REQUIRED if the authority evidence was checked). If the Authority Evidence presented in the BIMI Assertion Record was checked and found to be valid then this MUST be set to pass. If the validation failed then this MUST be set to fail. If no Authority Evidence was presented, or the MTA did not check the Authority Evidence then this SHOULD be set to none.
 
