@@ -532,8 +532,6 @@ Through the [BIMI Assertion Record](#assertion-record-def), Domain Owners use DN
 
 Assertion Record Discovery MUST NOT be attempted if the message authentication fails per Receiver policy.
 
-(Note to WG, how does this affect reporting, we can't report bad authentication if we can't retrieve an assertion record)
-
 To balance the conflicting requirements of supporting wildcarding, allowing subdomain policy overrides, and limiting DNS query load, Protocol Clients MUST employ the following lookup scheme for the appropriate BIMI record for the message:
 
 1. Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Author Domain.
