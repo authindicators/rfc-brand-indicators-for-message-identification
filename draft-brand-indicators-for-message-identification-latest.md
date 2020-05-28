@@ -350,7 +350,7 @@ An explicit declination to publish looks like:
 
 Any format in the BIMI-formats IANA registry are acceptable targets for the l= tag. If an l= tag URI ends with any other image format suffix, or if the document retrievable from the location(s) in the l= tag are of any other format, the evaluation of the record MUST be treated as a permanent error.
 
-As of the publishing of this document, only SVG and SVGZ, as defined in [RFC6170 section 5.2](https://tools.ietf.org/html/rfc6170#section-5.2) is acceptable in the l= tag.  Further restrictions apply to the SVG, these are documented elsewhere. 
+As of the publishing of this document, only SVG and SVGZ, as defined in [RFC6170 section 5.2](https://tools.ietf.org/html/rfc6170#section-5.2) is acceptable in the l= tag.  Further restrictions apply to the SVG; these are documented elsewhere. 
 
 Selectors   {#selectors}
 ------------------------
