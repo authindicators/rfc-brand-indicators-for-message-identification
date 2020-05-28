@@ -603,7 +603,7 @@ Indicator Validation {#indicator-validation}
 
 (Note to WG, add link to BIMI SVG document)
 
-Affix BIMI status to Authentication Results header field {#bimi-results}
+Affix BIMI Status to Authentication Results Header Field {#bimi-results}
 ----------------------------------
 
 Upon completion of Assertion Record Discovery, Indicator Discovery, and Indicator Validation, an MTA SHOULD affix the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
