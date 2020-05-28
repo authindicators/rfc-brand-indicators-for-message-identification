@@ -157,7 +157,7 @@ Because of the desire to have brand-specific indicators available, some mail-rec
 
 This shows the need for a standardized mechanism by which Domain Owners interested in ensuring that their indicators are displayed correctly and appropriately can publish and distribute brand indicators for use by any participating MUA.
 
-BIMI removes the substantial burden of curating and maintaining an indicator database from MUAs and MBPs, and allows each domain owner to manage their own indicators.  As an aadditional benefit, mail-originating organizations are incentivized to authenticate their email as doing so will enable them to influence how email and Indicators from the organization are displayed.
+BIMI removes the substantial burden of curating and maintaining an indicator database from MUAs and MBPs, and allows each domain owner to manage their own indicators.  As an additional benefit, mail-originating organizations are incentivized to authenticate their email as doing so will enable them to influence how email and Indicators from the organization are displayed.
 
 The structure of BIMI is as follows:
 
