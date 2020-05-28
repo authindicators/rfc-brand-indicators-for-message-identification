@@ -261,7 +261,7 @@ Domain owners publish BIMI policies by adding BIMI Assertion Records in the DNS 
 
 Published policies are interpreted and applied by Protocol Clients.  A Domain Owner signals intended BIMI participation for one or more of its domains by publishing an Assertion Record in a subdomain under it.  In doing so, Domain Owners make specific requests of MUAs regarding the preferred set of indicators to be displayed with messages that are confirmed to be authorized to appear from the Domain Owner's domain.
 
-The use of BIMI is opt-in.  Receivers default to performing no BIMI-specific message handling unless a BIMI record for the sender's domain is found.
+The use of BIMI is opt-in.  Receivers default to performing no BIMI-specific message handling until they choose to do so, and then onlf if a BIMI record for the sender's domain is found.
 
 BIMI's use of the DNS is driven in part by BIMI's use of domain names as the basis of sender identity and message authentication. Use of the DNS as the policy publication service also has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.
 
