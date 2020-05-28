@@ -146,7 +146,7 @@ The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), Domain
 
 MUAs are increasingly incorporating graphical logos to indicate the identity of the sender of a message.  While a discussion of the merits of doing this is beyond the scope of this document, at present there are no open standards for publishing and aiding discovery of preferred logos or for tying display of them to authentic messages only. 
 
-Because of the desire to have brand-specific indicators available, some mail-receiving organizations have developed closed systems for obtaining and displaying brand indicators for select domains.  While this has enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
+Because of the desire to have brand-specific indicators available, some mail-receiving organizations have developed closed systems for obtaining and displaying brand indicators for select domains.  While this has enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has a number of downsides:
 
 1. It puts a significant burden on each mail-receiving organization, because they must identify and manage a large database of brand indicators.
 2. Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.
