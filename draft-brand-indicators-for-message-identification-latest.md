@@ -123,7 +123,7 @@ Brand Indicators for Message Identification (BIMI) permits Domain Owners to coor
 Introduction        {#problems}
 ============
 
-This document defines Brand Indicators for Message Identification (BIMI), which enables Domain Owners to coordinate with Mail Box Providers (MBPs) and Mail User Agents (MUAs) in the display of brand-specific Indicators next to properly authenticated messages.
+This document defines Brand Indicators for Message Identification (BIMI), which enables Domain Owners to coordinate with Mail Box Providers (MBPs), Mail Transfer Agents (MTAs), and Mail User Agents (MUAs) in the display of brand-specific Indicators next to properly authenticated messages.
 
 BIMI is designed to be open and to work at Internet scale.  BIMI is intended to drive adoption of email authentication best practices by leveraging existing [DMARC] policies, the supporting authentication methods [DKIM] and [SPF], and other associated standards such as [ARC].
 
@@ -165,7 +165,7 @@ The structure of BIMI is as follows:
 
 2. Senders: Ensure mail is properly authenticated, and has a sufficiently strict [DMARC] policy.
 
-3. MUAs and MBPs:
+3. MTA:
 
   a. Confirm authenticity of the message using [DMARC] and whatever other authentication mechanisms they wish to apply.
 
@@ -176,6 +176,8 @@ The structure of BIMI is as follows:
 4. MUA: retrieves and displays the brand indicator as appropriate based on its policy and user interface.
 
 The purpose of this structure is to reduce operational complexity at each step.  It is also to consolidate validation and indicator selection operations into the MTA, so that Domain Owners need only publish a few simple records and MUAs only need simple display logic.
+
+It is expected that MBPs implementing BIMI will do so in both their MTAs and MUAs.
 
 Requirements   {#requirements}
 ========================
