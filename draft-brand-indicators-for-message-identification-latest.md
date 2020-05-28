@@ -735,7 +735,7 @@ Permanent Header Field Updates
 
    Specification document: This one
 
-Registry for Support BIMI Formats
+Registry for Supported BIMI Formats
 ------------
 
 Names of support file types supported by BIMI must be registered by IANA.
