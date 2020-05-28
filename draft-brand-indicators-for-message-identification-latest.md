@@ -144,7 +144,7 @@ Overview        {#why-bimi}
 
 The Sender Policy Framework ([SPF]), DomainKeys Identified Mail ([DKIM]), Domain-based Message Authentication, Reporting, and Conformance ([DMARC]), and Authenticated Received Chain ([ARC]) provide mechanisms for domain-level authentication of email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not. BIMI relies on these authentication protocols, but is not a new authentication protocol itself.
 
-MUAs are increasingly incorporating graphical logos to indicate the identity of the sender of a message.  While a discussion of the merits of doing this are beyond the scope of this document, at present there are no open standards for publishing and aiding discovery of preferred logos or for tying display of them to authentic messages only. 
+MUAs are increasingly incorporating graphical logos to indicate the identity of the sender of a message.  While a discussion of the merits of doing this is beyond the scope of this document, at present there are no open standards for publishing and aiding discovery of preferred logos or for tying display of them to authentic messages only. 
 
 Because of the desire to have brand-specific indicators available, some mail-receiving organizations have developed closed systems for obtaining and displaying brand indicators for select domains.  While this has enabled these mail-receiving organizations to display brand indicators for a limited subset of messages, this closed approach has significant downsides:
 
