@@ -530,7 +530,7 @@ Assertion Record Discovery {#assertion-record-discovery}
 
 Through the [BIMI Assertion Record](#assertion-record-def), Domain Owners use DNS TXT records to advertise their preferences.  Preference discovery is accomplished via a method similar to the method used for [DMARC] records.  This method, and the important differences between BIMI and [DMARC] mechanisms, are discussed below.
 
-Assertion Record Discovery MUST NOT be attempted if the message authenticates fails per Receiver policy.
+Assertion Record Discovery MUST NOT be attempted if the message authentication fails per Receiver policy.
 
 (Note to WG, how does this affect reporting, we can't report bad authentication if we can't retrieve an assertion record)
 
