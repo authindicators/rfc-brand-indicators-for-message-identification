@@ -322,13 +322,13 @@ l= location (URI; REQUIRED).  The value of this tag is either empty indicating d
 
     ABNF:
 
+    bimi-location = %x6c *WSP "=" bimi-location-uri
+
     bimi-location-uri = \[FWS\] URI \[FWS\]
 
     ; "URI" is imported from [URI]
     ; HTTPS only
     ; commas (ASCII ; 0x2C) MUST be encoded
-
-    bimi-location = %x6c *WSP "=" bimi-location-uri
 
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
