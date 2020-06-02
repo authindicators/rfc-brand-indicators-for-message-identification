@@ -13,73 +13,101 @@ normative:
     target: http://www.rfc-editor.org/info/rfc5234
     title: "Augmented BNF for Syntax Specifications: ABNF"
     author:
-      ins: Crocker, D., Ed., and P. Overell
+     -
+      ins: D. Crocker
+     -
+      ins: P. Overell
     date: January 2008
   ARC:
     target: http://www.rfc-editor.org/info/rfc8617
     title: The Authenticated Received Chain (ARC) Protocol
     author:
-      ins: K. Andersen, B. Long, Ed., S. Blank, Ed., and M. Kucherawy, Ed.
+     -
+      ins: K. Andersen
+     -
+      ins: B. Long
+     -
+      ins: S. Blank
+     -
+      ins: M. Kucherawy
     date: July 2019
   KEYWORDS:
     target: http://www.rfc-editor.org/info/rfc2119
     title: Key words for use in RFCs to Indicate Requirement Levels
     author:
-      ins: Bradner, S.
+      ins: S. Bradner
     date: March 1997
   EMAIL-ARCH:
     target: http://www.rfc-editor.org/info/rfc5598
     title: Internet Mail Architecture
     author:
-      ins: Crocker, D.
+      ins: D. Crocker
     date: July 2009
   DNS:
     target: http://www.rfc-editor.org/info/rfc1035
     title: Domain names - implementation and specification
     author:
-      ins: Mockapetris, P.
+      ins: P. Mockapetris
     date: November 1987
   DKIM:
     target: http://www.rfc-editor.org/info/rfc6376
     title: DomainKeys Identified Mail (DKIM) Signatures
     author:
-      ins: Crocker, D., Ed., Hansen, T., Ed., and M. Kucherawy, Ed.
+     -
+      ins: D. Crocker
+     -
+      ins: T. Hansen
+     -
+      ins: M. Kucherawy
     date: September 2011
   SPF:
     target: http://www.rfc-editor.org/info/rfc7208
     title: Sender Policy Framework (SPF) for Authorizing Use of Domains in Email, Version 1
     author:
-      ins: Kitterman, S.
+      ins: S. Kitterman
     date: April 2014
   DMARC:
     target: http://www.rfc-editor.org/info/rfc7489
     title: Domain-based Message Authentication, Reporting, and Conformance (DMARC)
     author:
-      ins: Kucherawy, M., Ed. and E. Zwicky, Ed.
+     -
+      ins: M. Kucherawy
+     -
+      ins: E. Zwicky
     date: March 2015
   Logotype:
     target: http://www.rfc-editor.org/info/rfc3709
     title: Internet X.509 Public Key Infrastructure, Logotypes in X.509 Certificates
     author:
-      ins: Santesson, S., Housley R., and Freemani T.
+     -
+      ins: S. Santesson
+     -
+      ins: R. Housley
+     -
+      ins: T. Freemani
     date: February 2004
   SMTP:
     target: http://www.rfc-editor.org/info/rfc5321
     title: Simple Mail Transfer Protocol
     author:
-      ins: Klensin, J.
+      ins: J. Klensin
     date: October 2008
   URI:
     target: http://www.rfc-editor.org/info/rfc3986
     title: "Uniform Resource Identifier (URI): Generic Syntax"
     author:
-      ins: Berners-Lee, T., Fielding, R., and L. Masinter
+     -
+      ins: T. Berners-Lee
+     -
+      ins: R. Fielding
+     -
+      ins: L. Masinter
     date: January 2005
   Authentication-Results:
     target: https://tools.ietf.org/html/rfc7601
     title: Message Header Field for Indicating Message Authentication Status
     author:
-      ins: Kucherawy, M.
+      ins: M. Kucherawy
     date: August 2015
 
 stand_alone: yes
