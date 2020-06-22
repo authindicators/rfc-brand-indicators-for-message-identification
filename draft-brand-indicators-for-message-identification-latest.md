@@ -344,8 +344,6 @@ The evidence document MUST only contain one VMC certificate and SHOULD contain C
     ; HTTPS only
     ; commas within a URI (ASCII ; 0x2C) MUST be encoded
 
-    NOTE TO WORKING GROUP: The a= tag value is a short list of VMC certificate locations.  Should we wish to introduce additional approaches for Domain Owners to publish evidence of rights, we can introduce additional tags. 
-
 l= location (URI; REQUIRED).  The value of this tag is either empty indicating declination to publish, or a single URI representing the location of a brand indicator file.  The only supported transport is HTTPS.  
 
     ABNF:
