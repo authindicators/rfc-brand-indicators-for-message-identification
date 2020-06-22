@@ -226,7 +226,7 @@ BIMI has the following high-level goals:
 Security     {#security}
 ------------
 
-Brand Indicators are a potential vector for abuse.  BIMI creates a relationship between sending organization and Mail Receiver so that the receiver can display appropriately designated Indicators if the sending domain is verified and has meaningful reputation with the receiver.  Without verification and reputation, there is no way to prevent a bad actor exxample.com from using example.com's Brand Indicators and behaving maliciously.  This document does not cover these verification and reputation mechanisms, but BIMI requires them to control abuse.
+Brand Indicators are a potential vector for abuse.  BIMI creates a relationship between sending organization and Mail Receiver so that the receiver can display appropriately designated Indicators if the sending domain is verified and has meaningful reputation with the receiver.  Without verification and reputation, there is no way to prevent a bad actor exxample.com from using example.com's Brand Indicators and behaving maliciously. This document does not cover the different verification and reputation mechanisms available, but BIMI relies upon them to be in deployed in order to control abuse.
 
 Out of Scope     {#out-of-scope}
 -------------
