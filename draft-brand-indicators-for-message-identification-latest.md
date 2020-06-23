@@ -555,8 +555,6 @@ Before applying BIMI processing for a message, a receiver MUST verify that the m
 
 9. If the [DMARC] policy for the Author Domain or Author Organizational Domain is p=quarantine, and the [DMARC] record defines a percentage tag, then that tag MUST be pct=100, otherwise BIMI processing MUST NOT be performed for this message.
 
-10. If the Author Domain has an [SPF] policy, and that policy ends with +all, then BIMI processing MUST NOT be performed for this message.
-
 Assertion Record Discovery {#assertion-record-discovery}
 ----------------------------------
 
