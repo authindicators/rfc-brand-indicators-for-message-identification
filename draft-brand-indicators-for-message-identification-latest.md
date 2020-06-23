@@ -8,6 +8,17 @@ ipr: trust200902
 workgroup: Network Working Group
 keyword: Internet-Draft
 
+informative:
+  BIMI-OVERVIEW:
+    target: https://tools.ietf.org/html/draft-bkl-bimi-overview-00
+    title: An Overview of the Design of BIMI
+    author:
+     -
+      ins: S. Blank
+     -
+      ins: N. Kumaran
+     -
+      ins: J. Levine
 normative:
   ABNF:
     target: http://www.rfc-editor.org/info/rfc5234
@@ -211,6 +222,8 @@ Requirements   {#requirements}
 ========================
 
 Specification of BIMI in this document is guided by the following high-level goals, security dependencies, detailed requirements, and items that are documented as out of scope.
+
+An overview of the security challenges and design decisions is documented at [BIMI-OVERVIEW].
 
 High-Level Goals    {#goals}
 -----------------
