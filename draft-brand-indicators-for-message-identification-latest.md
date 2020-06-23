@@ -541,19 +541,21 @@ Before applying BIMI processing for a message, a receiver MUST verify that the m
 
 2. Start with the DNS domain found in the RFC5322.From header in the message.  Define this DNS domain as the Author Domain.
 
-3. Evaluate the [DMARC] result for the Author Domain.  Define the result as the BIMI DMARC Result.
+3. Find the Organizational Domain for the Author Domain. Define this DNS domain as the Author Organizational Domain. If the Author Domain is an Organizational Domain then this will be identical to the Author Domain.
 
-4. If the BIMI DMARC result is not 'pass', then the receiver MAY choose to apply additional authentication methods, for example by evaluating a trusted [ARC] chain, a list of trusted forwarders, or by applying a local policy. In this case the Receiver MAY choose to treat the message as if the BIMI DMARC Result was 'pass'.
+4. Evaluate the [DMARC] result for the Author Domain.  Define the result as the BIMI DMARC Result.
 
-5. If the [DMARC] result for the Author Domain is not 'pass', and the message could not be authenticated by any additional authentication method, then BIMI processing MUST NOT be performed for this message.
+5. If the BIMI DMARC result is not 'pass', then the receiver MAY choose to apply additional authentication methods, for example by evaluating a trusted [ARC] chain, a list of trusted forwarders, or by applying a local policy. In this case the Receiver MAY choose to treat the message as if the BIMI DMARC Result was 'pass'.
 
-6. If the [DMARC] policy for the Author Domain is p=none then BIMI processing MUST NOT be performed for this message.
+6. If the [DMARC] result for the Author Domain is not 'pass', and the message could not be authenticated by any additional authentication method, then BIMI processing MUST NOT be performed for this message.
 
-7. IF the [DMARC] record for the Author Domain includes a subdomain policy, and that subdomain policy is sp=none then BIMI processing MUST NOT be performed for this message.
+7. If the [DMARC] policy for the Author Domain or Author Organizational Domain is p=none then BIMI processing MUST NOT be performed for this message.
 
-8. If the [DMARC] policy for the Author Domain is p=quarantine, and the [DMARC] record defines a percentage tag, then that tag MUST be pct=100, otherwise BIMI processing MUST NOT be performed for this message.
+8. IF the [DMARC] record for the Author Domain or Author Organizational Domain includes a subdomain policy, and that subdomain policy is sp=none then BIMI processing MUST NOT be performed for this message.
 
-9. If the Author Domain has an [SPF] policy, and that policy ends with +all, then BIMI processing MUST NOT be performed for this message.
+9. If the [DMARC] policy for the Author Domain or Author Organizational Domain is p=quarantine, and the [DMARC] record defines a percentage tag, then that tag MUST be pct=100, otherwise BIMI processing MUST NOT be performed for this message.
+
+10. If the Author Domain has an [SPF] policy, and that policy ends with +all, then BIMI processing MUST NOT be performed for this message.
 
 Assertion Record Discovery {#assertion-record-discovery}
 ----------------------------------
