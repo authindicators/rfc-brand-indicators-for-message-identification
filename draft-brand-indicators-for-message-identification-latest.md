@@ -506,15 +506,6 @@ Determine and Publish Indicator(s) for Use
 
 Domain Owners should consider which Indicator file formats to choose when setting up their BIMI Assertion Records. For a Sender, BIMI provides control over which Indicators are eligible and can be chosen for display, but not the ultimate manner in which the MUA will display the Indicator.
 
-BIMI allows multiple comma separated l= values in the Assertion Record, so that a Domain Owner may publish the same Indicators in multiple publicly accessible locations. This is so Indicators may still be available if there are service or DNS issues for a particular "l=" URI.  
-
-Specify Domain Owner Preference
--------------
-
-The ordering of the l= tag is significant, the first location specified should have priority over the second, etc.
-
-This does not guarantee that the first tags specified will be selected as there may be DNS errors, or some clients may not support all valid formats. However, on average, the first tags specified SHOULD be used to construct the Indicator passed to the MUA.
-
 Publish Assertion Records
 -------------
 
