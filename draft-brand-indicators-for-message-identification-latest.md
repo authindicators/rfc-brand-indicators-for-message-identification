@@ -176,7 +176,7 @@ The approach taken by BIMI is heavily influenced by the approach taken in [DKIM]
 * can be deployed incrementally; and
 * allows delegation of Indicator hosting to third parties.
 
-To participate in BIMI, Domain Owners must have a strong [DMARC] policy (quarantine or reject) on both the Organizational Domain, and the RFC5322.From Domain of the message.
+To participate in BIMI, Domain Owners MUST have a strong [DMARC] policy (quarantine or reject) on both the Organizational Domain, and the RFC5322.From Domain of the message. Quarantine policies MUST NOT have a pct less than pct=100.
 
 This document defines how Domain Owners specify their desired Indicators through the BIMI Assertion Record in DNS and how that record is to be interpreted by MTAs and MUAs.  This document does not cover how domains or Indicators are verified, how MUAs should display the Indicators, or how other protocols (i.e. IMAP, JMAP) can be extended to work with BIMI.  Other documents may cover these topics.  MUAs and Mail Box Providers (MBPs) are free to define their own policies for making use of BIMI data and for Indicator display as they see fit.
 
