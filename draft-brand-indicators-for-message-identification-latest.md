@@ -1,7 +1,7 @@
 ---
 title: Brand Indicators for Message Identification (BIMI)
 docname: draft-blank-ietf-bimi-01
-date: 2020-02-20
+date: 2020-07-06
 category: exp
 ipr: trust200902
 
