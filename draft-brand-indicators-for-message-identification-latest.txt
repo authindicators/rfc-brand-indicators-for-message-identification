@@ -221,32 +221,32 @@ Table of Contents
    Indicators for a limited subset of messages, this closed approach has
    a number of downsides:
 
-   1.  It puts a significant burden on each mail-receiving organization,
-       because they must identify and manage a large database of Brand
-       Indicators.
+   *  It puts a significant burden on each mail-receiving organization,
+      because they must identify and manage a large database of Brand
+      Indicators.
 
-   2.  Scalability is challenging for closed systems that attempt to
-       capture and maintain complete sets of data across the whole of
-       the Internet.
+   *  Scalability is challenging for closed systems that attempt to
+      capture and maintain complete sets of data across the whole of the
+      Internet.
 
-   3.  A lack of uniformity across different mail-receiving
-       organizations - each organization will have its own Indicator
-       set, which may or may not agree with those maintained by other
-       organizations for any given domain.
+   *  A lack of uniformity across different mail-receiving organizations
+      - each organization will have its own Indicator set, which may or
+      may not agree with those maintained by other organizations for any
+      given domain.
 
-   4.  Domain Owners have limited ability to influence the Brand
-       Indicator for the domain(s) they own, and any ability they do
-       have is likely to be dependent upon direct coordination with each
-       of many mail-receiving organizations.
+   *  Domain Owners have limited ability to influence the Brand
+      Indicator for the domain(s) they own, and any ability they do have
+      is likely to be dependent upon direct coordination with each of
+      many mail-receiving organizations.
 
-   5.  Many Domain Owners have no ability to participate whatsoever as
-       they do not have the appropriate relationships to coordinate with
-       mail-receiving organizations.
+   *  Many Domain Owners have no ability to participate whatsoever as
+      they do not have the appropriate relationships to coordinate with
+      mail-receiving organizations.
 
-   6.  MUAs that are not associated with a particular mail-receiving
-       organization are likely to be disadvantaged, because they are
-       unlikely to receive Indicators in a standardized manner or
-       optimized for their user interfaces.
+   *  MUAs that are not associated with a particular mail-receiving
+      organization are likely to be disadvantaged, because they are
+      unlikely to receive Indicators in a standardized manner or
+      optimized for their user interfaces.
 
    This shows the need for a standardized mechanism by which Domain
    Owners interested in ensuring that their Indicators are displayed
@@ -262,28 +262,28 @@ Table of Contents
 
    The structure of BIMI is as follows:
 
-   1.  Domain Owners: Publish their preferred Brand Indicators via the
-       [DNS].
+   *  Domain Owners: Publish their preferred Brand Indicators via the
+      [DNS].
 
-   2.  Senders: Ensure mail is properly authenticated, and has a
-       sufficiently strict [DMARC] policy.
+   *  Senders: Ensure mail is properly authenticated, and has a
+      sufficiently strict [DMARC] policy.
 
-   3.  MTA:
+   *  MTA:
 
-   a.  Confirm authenticity of the message using [DMARC] and whatever
-   other authentication mechanisms they wish to apply.
+      -  Confirm authenticity of the message using [DMARC] and whatever
+         other authentication mechanisms they wish to apply.
 
-   b.  Check for a corresponding BIMI record, obtaining references to
-   the Indicator media and optional substantiation of Indicator
-   ownership rights
+      -  Check for a corresponding BIMI record, obtaining references to
+         the Indicator media and optional substantiation of Indicator
+         ownership rights
 
-   c.  If both the message is authentic and the Indicator is deemed
-   acceptable, the receiver adds a header to the message which can be
-   used by the MUA to obtain the Domain Owner's preferred Brand
-   Indicator.
+      -  If both the message is authentic and the Indicator is deemed
+         acceptable, the receiver adds a header to the message which can
+         be used by the MUA to obtain the Domain Owner's preferred Brand
+         Indicator.
 
-   1.  MUA: retrieves and displays the Brand Indicator as appropriate
-       based on its policy and user interface.
+   *  MUA: retrieves and displays the Brand Indicator as appropriate
+      based on its policy and user interface.
 
    The purpose of this structure is to reduce operational complexity at
    each step.  It is also to consolidate validation and Indicator
@@ -441,15 +441,15 @@ Table of Contents
    record and not via one or more email headers.  This serves three
    purposes:
 
-   1.  There is one and only one mechanism for both simple and complex
-       policies to be published.
+   *  There is one and only one mechanism for both simple and complex
+      policies to be published.
 
-   2.  Operational complexity is reduced.  MTAs only need to check a
-       single record in a consistent manner to discover and enforce
-       policy.
+   *  Operational complexity is reduced.  MTAs only need to check a
+      single record in a consistent manner to discover and enforce
+      policy.
 
-   3.  Indicators SHOULD be verified and cached in advance, so that
-       malicious headers cannot be used as an attack vector.
+   *  Indicators SHOULD be verified and cached in advance, so that
+      malicious headers cannot be used as an attack vector.
 
    Per [DNS], a TXT record can comprise several "character-string"
    objects.  BIMI TXT records with multiple strings must be treated in

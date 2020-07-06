@@ -1208,8 +1208,8 @@ table.left {
 <p id="section-2-1">The Sender Policy Framework (<span>[<a href="#SPF" class="xref">SPF</a>]), DomainKeys Identified Mail (</span><span>[<a href="#DKIM" class="xref">DKIM</a>]), Domain-based Message Authentication, Reporting, and Conformance (</span><span>[<a href="#DMARC" class="xref">DMARC</a>]), and Authenticated Received Chain (</span><span>[<a href="#ARC" class="xref">ARC</a>]) provide mechanisms for domain-level authentication of email messages.  They enable cooperating email senders and receivers to distinguish messages that are authorized to use the domain name from those that are not. BIMI relies on these authentication protocols, but is not a new authentication protocol itself.</span><a href="#section-2-1" class="pilcrow">¶</a></p>
 <p id="section-2-2">MUAs are increasingly incorporating graphical Indicators to indicate the identity of the sender of a message.  While a discussion of the merits of doing this is beyond the scope of this document, at present there are no open standards for publishing and aiding discovery of preferred Indicators or for tying display of them to authentic messages only.<a href="#section-2-2" class="pilcrow">¶</a></p>
 <p id="section-2-3">Because of the desire to have brand-specific Indicators available, some mail-receiving organizations have developed closed systems for obtaining and displaying Brand Indicators for select domains.  While this has enabled these mail-receiving organizations to display brand Indicators for a limited subset of messages, this closed approach has a number of downsides:<a href="#section-2-3" class="pilcrow">¶</a></p>
-<ol type="1" start="1" class="normal" id="section-2-4">
-        <li id="section-2-4.1">It puts a significant burden on each mail-receiving organization, because they must identify and manage a large database of Brand Indicators.<a href="#section-2-4.1" class="pilcrow">¶</a>
+<ul>
+<li id="section-2-4.1">It puts a significant burden on each mail-receiving organization, because they must identify and manage a large database of Brand Indicators.<a href="#section-2-4.1" class="pilcrow">¶</a>
 </li>
         <li id="section-2-4.2">Scalability is challenging for closed systems that attempt to capture and maintain complete sets of data across the whole of the Internet.<a href="#section-2-4.2" class="pilcrow">¶</a>
 </li>
@@ -1221,27 +1221,32 @@ table.left {
 </li>
         <li id="section-2-4.6">MUAs that are not associated with a particular mail-receiving organization are likely to be disadvantaged, because they are unlikely to receive Indicators in a standardized manner or optimized for their user interfaces.<a href="#section-2-4.6" class="pilcrow">¶</a>
 </li>
-      </ol>
+      </ul>
 <p id="section-2-5">This shows the need for a standardized mechanism by which Domain Owners interested in ensuring that their Indicators are displayed correctly and appropriately can publish and distribute Brand Indicators for use by any participating MUA.<a href="#section-2-5" class="pilcrow">¶</a></p>
 <p id="section-2-6">BIMI removes the substantial burden of curating and maintaining an Indicator database from MUAs and MBPs, and allows each domain owner to manage their own Indicators.  As an additional benefit, mail-originating organizations are incentivized to authenticate their email as doing so will enable them to influence how email and Indicators from the organization are displayed.<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7">The structure of BIMI is as follows:<a href="#section-2-7" class="pilcrow">¶</a></p>
-<ol type="1" start="1" class="normal" id="section-2-8">
-        <li id="section-2-8.1">Domain Owners: Publish their preferred Brand Indicators via the <span>[<a href="#DNS" class="xref">DNS</a>].</span><a href="#section-2-8.1" class="pilcrow">¶</a>
+<ul>
+<li id="section-2-8.1">Domain Owners: Publish their preferred Brand Indicators via the <span>[<a href="#DNS" class="xref">DNS</a>].</span><a href="#section-2-8.1" class="pilcrow">¶</a>
 </li>
         <li id="section-2-8.2">Senders: Ensure mail is properly authenticated, and has a sufficiently strict <span>[<a href="#DMARC" class="xref">DMARC</a>] policy.</span><a href="#section-2-8.2" class="pilcrow">¶</a>
 </li>
-        <li id="section-2-8.3">MTA:<a href="#section-2-8.3" class="pilcrow">¶</a>
+        <li id="section-2-8.3">
+          <p id="section-2-8.3.1">MTA:
+          <a href="#section-2-8.3.1" class="pilcrow">¶</a></p>
+<ul>
+<li id="section-2-8.3.2.1">Confirm authenticity of the message using <span>[<a href="#DMARC" class="xref">DMARC</a>] and whatever other authentication mechanisms they wish to apply.</span><a href="#section-2-8.3.2.1" class="pilcrow">¶</a>
 </li>
-      </ol>
-<p id="section-2-9">a. Confirm authenticity of the message using <span>[<a href="#DMARC" class="xref">DMARC</a>] and whatever other authentication mechanisms they wish to apply.</span><a href="#section-2-9" class="pilcrow">¶</a></p>
-<p id="section-2-10">b. Check for a corresponding BIMI record, obtaining references to the Indicator media and optional substantiation of Indicator ownership rights<a href="#section-2-10" class="pilcrow">¶</a></p>
-<p id="section-2-11">c. If both the message is authentic and the Indicator is deemed acceptable, the receiver adds a header to the message which can be used by the MUA to obtain the Domain Owner's preferred Brand Indicator.<a href="#section-2-11" class="pilcrow">¶</a></p>
-<ol type="1" start="1" class="normal" id="section-2-12">
-        <li id="section-2-12.1">MUA: retrieves and displays the Brand Indicator as appropriate based on its policy and user interface.<a href="#section-2-12.1" class="pilcrow">¶</a>
+            <li id="section-2-8.3.2.2">Check for a corresponding BIMI record, obtaining references to the Indicator media and optional substantiation of Indicator ownership rights<a href="#section-2-8.3.2.2" class="pilcrow">¶</a>
 </li>
-      </ol>
-<p id="section-2-13">The purpose of this structure is to reduce operational complexity at each step.  It is also to consolidate validation and Indicator selection operations into the MTA, so that Domain Owners need only publish a few simple records and MUAs only need simple display logic.<a href="#section-2-13" class="pilcrow">¶</a></p>
-<p id="section-2-14">It is expected that MBPs implementing BIMI will do so in both their MTAs and MUAs.<a href="#section-2-14" class="pilcrow">¶</a></p>
+            <li id="section-2-8.3.2.3">If both the message is authentic and the Indicator is deemed acceptable, the receiver adds a header to the message which can be used by the MUA to obtain the Domain Owner's preferred Brand Indicator.<a href="#section-2-8.3.2.3" class="pilcrow">¶</a>
+</li>
+          </ul>
+</li>
+        <li id="section-2-8.4">MUA: retrieves and displays the Brand Indicator as appropriate based on its policy and user interface.<a href="#section-2-8.4" class="pilcrow">¶</a>
+</li>
+      </ul>
+<p id="section-2-9">The purpose of this structure is to reduce operational complexity at each step.  It is also to consolidate validation and Indicator selection operations into the MTA, so that Domain Owners need only publish a few simple records and MUAs only need simple display logic.<a href="#section-2-9" class="pilcrow">¶</a></p>
+<p id="section-2-10">It is expected that MBPs implementing BIMI will do so in both their MTAs and MUAs.<a href="#section-2-10" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="requirements">
@@ -1378,14 +1383,14 @@ document are to be interpreted as described in <span>[<a href="#KEYWORDS" class=
 <p id="section-5-3">The use of BIMI is opt-in.  Receivers default to performing no BIMI-specific message handling until they choose to do so, and then only if a BIMI record for the sender's domain is found.<a href="#section-5-3" class="pilcrow">¶</a></p>
 <p id="section-5-4">BIMI's use of the DNS is driven in part by BIMI's use of domain names as the basis of sender identity and message authentication. Use of the DNS as the policy publication service also has the benefit of reusing an extremely well-established operations, administration, and management infrastructure, rather than creating a new one.<a href="#section-5-4" class="pilcrow">¶</a></p>
 <p id="section-5-5">BIMI's policy payload is intentionally only published via a DNS record and not via one or more email headers. This serves three purposes:<a href="#section-5-5" class="pilcrow">¶</a></p>
-<ol type="1" start="1" class="normal" id="section-5-6">
-        <li id="section-5-6.1">There is one and only one mechanism for both simple and complex policies to be published.<a href="#section-5-6.1" class="pilcrow">¶</a>
+<ul>
+<li id="section-5-6.1">There is one and only one mechanism for both simple and complex policies to be published.<a href="#section-5-6.1" class="pilcrow">¶</a>
 </li>
         <li id="section-5-6.2">Operational complexity is reduced.  MTAs only need to check a single record in a consistent manner to discover and enforce policy.<a href="#section-5-6.2" class="pilcrow">¶</a>
 </li>
         <li id="section-5-6.3">Indicators SHOULD be verified and cached in advance, so that malicious headers cannot be used as an attack vector.<a href="#section-5-6.3" class="pilcrow">¶</a>
 </li>
-      </ol>
+      </ul>
 <p id="section-5-7">Per <span>[<a href="#DNS" class="xref">DNS</a>], a TXT record can comprise several "character-string" objects. BIMI TXT records with multiple strings must be treated in an identical manner to </span><a href="https://tools.ietf.org/html/rfc7208#section-3.3">SPF Section 3.3</a>.<a href="#section-5-7" class="pilcrow">¶</a></p>
 <div id="mua_guidance">
 <section id="section-5.1">
