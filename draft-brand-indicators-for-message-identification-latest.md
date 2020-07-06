@@ -345,15 +345,15 @@ v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI re
 
     bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
-a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualified domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrievable evidence document.
+a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualified domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrievable evidence document. The format for evidence documents is defined in another document.
 
-If the evidence document is specified and retrieved, it MUST only contain one VMC certificate and SHOULD contain CA certificates in issuing order, all in PEM format. The evidence document SHOULD start with the end entity VMC certificate, followed by the immediate issuer CA certificate of the end entity, and then its issuing CA certificates. Potentially this issuing sequence of certificate terminates at the self-signed trusted root certificate, where the trusted root certificate MAY optionally be included in the evidence document.  Intermediate certificates and any issuer certificates needed to reach the root of the VMC issuer SHOULD be provided in the evidence document.  If the a= tag is not present, it is assumed to have an empty value.
+If the a= tag is not present, it is assumed to have an empty value.
 
     ABNF:
 
-    bimi-evidence-location = %x61 *WSP "=" bimi-evidence-location-uri
+    bimi-evidence-location = %x61 *WSP "=" bimi-uri
 
-    bimi-evidence-location-uri = \[FWS\] URI \[FWS\]
+    bimi-uri = \[FWS\] URI \[FWS\]
 
     ; "URI" is imported from [URI]
     ; HTTPS only
@@ -363,13 +363,7 @@ l= location (URI; REQUIRED).  The value of this tag is either empty indicating d
 
     ABNF:
 
-    bimi-location = %x6c *WSP "=" bimi-location-uri
-
-    bimi-location-uri = \[FWS\] URI \[FWS\]
-
-    ; "URI" is imported from [URI]
-    ; HTTPS only
-    ; commas (ASCII ; 0x2C) MUST be encoded
+    bimi-location = %x6c *WSP "=" bimi-uri
 
 Therefore, the formal definition of the BIMI Assertion Record, using [ABNF], is as follows:
 
@@ -451,17 +445,17 @@ v= Version (plain-text; REQUIRED). The version of BIMI. It MUST have the value o
 
     The ABNF for bimi-header-version is imported exactly from the [BIMI Selector Header](#bimi-selector).
 
-l: location of the BIMI Indicator (URI; OPTIONAL if a bimi-evidence-location-uri is specified, otherwise REQUIRED.). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the Brand Indicator file.  HTTPS is the only supported transport.  
+l: location of the BIMI Indicator (URI; OPTIONAL if a bimi-evidence-location-header-uri is specified, otherwise REQUIRED.). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the Brand Indicator file.  HTTPS is the only supported transport.  
 
     ABNF:
 
-    bimi-location-header-uri = "l" *WSP "=" bimi-location-uri
+    bimi-location-header-uri = "l" *WSP "=" bimi-uri
 
 a: location of the BIMI VMC (URI; REQUIRED if the VMC was verified). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the VMC file.  HTTPS is the only supported transport.  
 
     ABNF:
 
-    bimi-evidenced-location-header-uri = "a" *WSP "=" bimi-evidence-location-uri
+    bimi-evidenced-location-header-uri = "a" *WSP "=" bimi-uri
 
 And the formal definition of the BIMI Location Header, using ABNF, is as follows:
 
@@ -613,7 +607,7 @@ If the receiver supports VMC validation, and an Assertion Record is found which 
 Indicator Discovery Without Evidence. {#indicator-discovery-without-evidence}
 ----------------------------------
 
-If an Assertion Record is found, and has an empty or missing bimi-evidence-location entry then no evidence has is presented, and the Indicator MUST be retrieved from the URI specified in the bimi-location-uri entry using the following algorithm:
+If an Assertion Record is found, and has an empty or missing bimi-evidence-location entry then no evidence has is presented, and the Indicator MUST be retrieved from the URI specified in the bimi-location entry using the following algorithm:
 
 1. Retrieve the SVG Indicator from the URI specified in the l= tag. This MUST be a URI with a HTTPS transport. 
 
@@ -662,7 +656,7 @@ Construct BIMI-Location URI
 
 This header MUST NOT be added if Discovery or Validation steps failed.
 
-The URI used to retrieve the validated SVG Indicator. If the receiver extracted the Indicator from the VMC then this SHOULD be the bimi-evidence-location-uri added with a a= tag, otherwise it SHOULD be the bimi-location-uri added with a l= tag. If both a= and l= tags are included then the MTA MUST perform checks to ensure that the SVG Indicator referenced by the bimi-location-uri is identical to the SVG Indicator extracted from the VMC.
+The URI used to retrieve the validated SVG Indicator. If the receiver extracted the Indicator from the VMC then this SHOULD be the bimi-evidence-location added with a a= tag, otherwise it SHOULD be the bimi-location added with a l= tag. If both a= and l= tags are included then the MTA MUST perform checks to ensure that the SVG Indicator referenced by the bimi-location is identical to the SVG Indicator extracted from the VMC.
 
 (Note to WG, If the Indicator was pulled from the VMC then the document referenced by the bimi-location may be unverified and potentially malicious. If the BIMI-Location needs to be the bimi-location then we need to make retrieval and comparison of the bimi-location Indicator against the Indicator embedded within the VMC a MUST, this introduces an extra HTTPS request into the pipeline, I would prefer to avoid this.)
 
