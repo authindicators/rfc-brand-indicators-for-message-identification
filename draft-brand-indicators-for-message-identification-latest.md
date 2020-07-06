@@ -282,10 +282,17 @@ Mark Verifying Authority (MVA)
 
 An entity or organization that can provide evidence of verification of Indicators asserted by a Domain Owner to Verifying Protocol Clients.  The MVA may choose to uphold and confirm the meeting of certain Indicator standards (ie. size, trademark, content, etc).
 
+BIMI Evidence Document
+-------------
+
+A document published by a Mark Verifying Authority to assert evicence of verification. These are defined in a separate document.
+
 Verified Mark Certificate (VMC)
 -------------
 
 A certificate issued by a Certificate Authority in accordance with the Verified Mark Certificate Guidelines.  These guidelines are defined in a separate document.
+
+A Verified Mark Certificate is one example of a BIMI Evidence Document.
 
 Protocol Client
 -------------
@@ -345,7 +352,7 @@ v= Version (plain-text; REQUIRED).  Identifies the record retrieved as a BIMI re
 
     bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
 
-a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualified domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrievable evidence document. The format for evidence documents is defined in another document.
+a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this tag MUST have an empty value or its value MUST be a single URI.  An empty value for the tag is interpreted to mean the Domain Owner does not wish to publish or does not have authority evidence to disclose.  The URI, if present, MUST contain a fully qualified domain name (FQDN) and MUST specify HTTPS as the URI scheme ("https").  The URI SHOULD specify the location of a publicly retrievable BIMI Evidence Document. The format for evidence documents is defined in a separate document.
 
 If the a= tag is not present, it is assumed to have an empty value.
 
@@ -451,7 +458,7 @@ l: location of the BIMI Indicator (URI; OPTIONAL if a bimi-evidence-location-hea
 
     bimi-location-header-uri = "l" *WSP "=" bimi-uri
 
-a: location of the BIMI VMC (URI; REQUIRED if the VMC was verified). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the VMC file.  HTTPS is the only supported transport.  
+a: location of the BIMI Evidence Document (URI; REQUIRED if the BIMI Evidence Document was verified). Inserted by the MTA after performing the required checks and obtaining the applicable domain's published Assertion Record.  The value of this tag is a URI representing the location of the BIMI Evidence Document.  HTTPS is the only supported transport.  
 
     ABNF:
 
@@ -581,28 +588,14 @@ Indicator Discovery. {#indicator-discovery}
 
 1. If the retrieved Assertion Record does not include a valid bimi-location in the l= tag, then Indicator Discovery has failed, and the Indicator MUST NOT be displayed. The bimi-location entry MUST be a URI with a HTTPS transport. 
 
-2. If the retrieved Assertion Record includes a bimi-evidence-location entry in the a= tag, and the receiver supports VMC validation, then proceed to the [Indicator Discovery With Evidence](#indicator-discovery-with-evidence) step. 
+2. If the retrieved Assertion Record includes a bimi-evidence-location entry in the a= tag, and the receiver supports BIMI Evidence Document validation, then proceed to the [Indicator Discovery With Evidence](#indicator-discovery-with-evidence) step. 
 
-3. If the receiver does not support VMC validation, or the retrieved Assertion Record does not include a bimi-evidence-location entry, then proceed to the [Indicator Discovery Without Evidence](#indicator-discovery-without-evidence) step. 
+3. If the receiver does not support BIMI Evidence Document validation, or the retrieved Assertion Record does not include a bimi-evidence-location entry, then proceed to the [Indicator Discovery Without Evidence](#indicator-discovery-without-evidence) step. 
 
 Indicator Discovery With Evidence. {#indicator-discovery-with-evidence}
 ----------------------------------
 
-If the receiver supports VMC validation, and an Assertion Record is found which has bimi-evidence-location entry in the a= tag, then the VMC document MUST be used to validate the Indicator using the following algorithm:
-
-1. Use the mechanism in the bimi-evidence-location to retrieve the VMC, this MUST be a URI with a HTTPS transport. 
-
-2. If the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts then Indicator Discovery has failed and the Indicator MUST NOT be displayed. 
-
-3. If the evidence document does not contain a single valid VMC certificate chain then Indicator Discovery has failed, and the Indicator MUST NOT be displayed. 
-
-4. Validate the certificate back to a trusted root certificate using the supplied intermediate certificates as necessary. If validation fails then Indicator Discovery has failed, and the Indicator MUST NOT be displayed. 
-
-5. Retrieve the SVG Indicator from the [Logotype] Extension (oui 1.3.6.1.5.5.7.1.12) of the validated VMC. 
-
-6. Optionally, the receiver MAY choose to retrieve the SVG Indicator from the URI specified in the bimi-location entry of the Assertion Record and compare this to the SVG Indicator embedded within the VMC. The receiver MAY fail validation if these Indicators differ. 
-
-7. Proceed to the [Indicator Validation](#indicator-validation) step. 
+Individual types of BIMI Evidence Document MAY specify extra discovery and validation steps. These will be defined in separate documents.
 
 Indicator Discovery Without Evidence. {#indicator-discovery-without-evidence}
 ----------------------------------
@@ -640,9 +633,9 @@ header.d: Domain of the BIMI Assertion Record which was evaluated (plain-text; R
 
 header.selector: Selector of the BIMI Assertion Record which was evaluated (plain-text; REQUIRED if bimi=pass). For example, if a BIMI-Selector Header was present and used to discover a BIMI Assertion Record then this will be the Selector used, otherwise this will be 'default'.
 
-policy.authority: Authority verification status of the Brand Identifier (plain-text; REQUIRED if the authority evidence was checked). If the Authority Evidence presented in the BIMI Assertion Record was checked and found to be valid then this MUST be set to pass. If the validation failed then this MUST be set to fail. If no Authority Evidence was presented, or the MTA did not check the Authority Evidence then this SHOULD be set to none.
+policy.authority: Authority verification status of the Brand Identifier (plain-text; REQUIRED if the BIMI Evidence Document was checked). If the Authority Evidence presented in the BIMI Assertion Record was checked and found to be valid then this MUST be set to pass. If the validation failed then this MUST be set to fail. If no Authority Evidence was presented, or the MTA did not check the Authority Evidence then this SHOULD be set to none.
 
-policy.authority-uri: The URI of the Authority Evidence document checked, as found in the a= tag of the BIMI Assertion Record (plain-text; OPTIONAL).
+policy.authority-uri: The URI of the BIMI Evidence Document checked, as found in the a= tag of the BIMI Assertion Record (plain-text; OPTIONAL).
 
 Handle Existing BIMI-Location and BIMI-Indicator Headers
 ---------------
@@ -656,9 +649,7 @@ Construct BIMI-Location URI
 
 This header MUST NOT be added if Discovery or Validation steps failed.
 
-The URI used to retrieve the validated SVG Indicator. If the receiver extracted the Indicator from the VMC then this SHOULD be the bimi-evidence-location added with a a= tag, otherwise it SHOULD be the bimi-location added with a l= tag. If both a= and l= tags are included then the MTA MUST perform checks to ensure that the SVG Indicator referenced by the bimi-location is identical to the SVG Indicator extracted from the VMC.
-
-(Note to WG, If the Indicator was pulled from the VMC then the document referenced by the bimi-location may be unverified and potentially malicious. If the BIMI-Location needs to be the bimi-location then we need to make retrieval and comparison of the bimi-location Indicator against the Indicator embedded within the VMC a MUST, this introduces an extra HTTPS request into the pipeline, I would prefer to avoid this.)
+The URI used to retrieve the validated SVG Indicator. If the receiver extracted the Indicator from the BIMI Evidence Document then this SHOULD be the bimi-evidence-location added with a a= tag, otherwise it SHOULD be the bimi-location added with a l= tag. If both a= and l= tags are included then the MTA MUST perform checks to ensure that the SVG Indicator referenced by the bimi-location is identical to the SVG Indicator extracted from the BIMI Evidence Document.
 
 Construct BIMI-Indicator header
 ----------------
