@@ -145,6 +145,7 @@ author:
     ins: T. Zink
     name: Terry Zink
     role: editor
+    organization: Zink Magical Contraptions
     email: tzink@terryzink.com
  -
     ins: M. Bradshaw
