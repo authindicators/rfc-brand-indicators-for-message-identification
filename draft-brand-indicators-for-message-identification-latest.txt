@@ -8,6 +8,7 @@ Intended status: Experimental                                   Valimail
 Expires: 7 January 2021                                    T. Loder, Ed.
                                                      Skye Logicworks LLC
                                                             T. Zink, Ed.
+                                               Zink Magical Contraptions
                                                         M. Bradshaw, Ed.
                                                                 Fastmail
                                                              6 July 2020
