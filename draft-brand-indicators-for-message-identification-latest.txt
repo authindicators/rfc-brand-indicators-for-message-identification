@@ -5,13 +5,13 @@
 Network Working Group                                           S. Blank
 Internet-Draft                                              P. Goldstein
 Intended status: Experimental                                   Valimail
-Expires: 7 January 2021                                    T. Loder, Ed.
+Expires: 1 February 2021                                   T. Loder, Ed.
                                                      Skye Logicworks LLC
                                                             T. Zink, Ed.
                                                Zink Magical Contraptions
                                                         M. Bradshaw, Ed.
                                                                 Fastmail
-                                                             6 July 2020
+                                                            31 July 2020
 
 
            Brand Indicators for Message Identification (BIMI)
@@ -46,7 +46,7 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 7 January 2021.
+   This Internet-Draft will expire on 1 February 2021.
 
 Copyright Notice
 
