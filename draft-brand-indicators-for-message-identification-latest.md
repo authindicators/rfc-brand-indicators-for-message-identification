@@ -138,7 +138,7 @@ author:
  -
     ins: T. Loder
     name: Thede Loder
-    organization: Skye Logicworks LLC
+    organization: Skye Logicworks, LLC
     role: editor
     email: thede@skyelogicworks.com
  -
