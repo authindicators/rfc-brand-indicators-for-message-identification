@@ -6,7 +6,7 @@ Network Working Group                                           S. Blank
 Internet-Draft                                              P. Goldstein
 Intended status: Experimental                                   Valimail
 Expires: 1 February 2021                                   T. Loder, Ed.
-                                                     Skye Logicworks LLC
+                                                    Skye Logicworks, LLC
                                                             T. Zink, Ed.
                                                Zink Magical Contraptions
                                                         M. Bradshaw, Ed.
@@ -1034,7 +1034,7 @@ Table of Contents
    Encode the SVG Indicator retrieved and validated during the Indicator
    Discovery and Indicator Validation steps as base64 encoded data.  If
    the Indicator was compressed with gzip when retrieved then the data
-   SHOULD NOT be uncompressed before being base64 encoded.
+   MUST be uncompressed before being base64 encoded.
 
    The MTA MUST fold the header to be within the line length limits of
    [SMTP].
@@ -1227,7 +1227,7 @@ Table of Contents
 
    [BIMI-OVERVIEW]
               Blank, S., Kumaran, N., and J. Levine, "An Overview of the
-              Design of BIMI", July 2020,
+              Design of BIMI", August 2020,
               <https://tools.ietf.org/html/draft-bkl-bimi-overview-00>.
 
 Appendix A.  Example Selector Discovery (INFORMATIVE)

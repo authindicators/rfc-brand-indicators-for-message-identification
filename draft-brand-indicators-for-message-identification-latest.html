@@ -850,7 +850,7 @@ table.left {
 <div class="author">
       <div class="author-name">T. Loder, <span class="editor">Ed.</span>
 </div>
-<div class="org">Skye Logicworks LLC</div>
+<div class="org">Skye Logicworks, LLC</div>
 </div>
 <div class="author">
       <div class="author-name">T. Zink, <span class="editor">Ed.</span>
@@ -1832,7 +1832,7 @@ bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
 <a href="#section-8.10" class="section-number selfRef">8.10. </a><a href="#name-construct-bimi-indicator-he" class="section-name selfRef">Construct BIMI-Indicator header</a>
         </h3>
 <p id="section-8.10-1">This header MUST NOT be added if Discovery or Validation steps failed.<a href="#section-8.10-1" class="pilcrow">¶</a></p>
-<p id="section-8.10-2">Encode the SVG Indicator retrieved and validated during the Indicator Discovery and Indicator Validation steps as base64 encoded data. If the Indicator was compressed with gzip when retrieved then the data SHOULD NOT be uncompressed before being base64 encoded.<a href="#section-8.10-2" class="pilcrow">¶</a></p>
+<p id="section-8.10-2">Encode the SVG Indicator retrieved and validated during the Indicator Discovery and Indicator Validation steps as base64 encoded data. If the Indicator was compressed with gzip when retrieved then the data MUST be uncompressed before being base64 encoded.<a href="#section-8.10-2" class="pilcrow">¶</a></p>
 <p id="section-8.10-3">The MTA MUST fold the header to be within the line length limits of <span>[<a href="#SMTP" class="xref">SMTP</a>].</span><a href="#section-8.10-3" class="pilcrow">¶</a></p>
 </section>
 </div>
@@ -2024,7 +2024,7 @@ to bear as additional factors.<a href="#section-9.2-1" class="pilcrow">¶</a></p
 <dl class="references">
 <dt id="BIMI-OVERVIEW">[BIMI-OVERVIEW]</dt>
       <dd>
-<span class="refAuthor">Blank, S.</span><span class="refAuthor">, Kumaran, N.</span><span class="refAuthor">, and J. Levine</span>, <span class="refTitle">"An Overview of the Design of BIMI"</span>, <time datetime="2020-07">July 2020</time>
+<span class="refAuthor">Blank, S.</span><span class="refAuthor">, Kumaran, N.</span><span class="refAuthor">, and J. Levine</span>, <span class="refTitle">"An Overview of the Design of BIMI"</span>, <time datetime="2020-08">August 2020</time>
           <span>, &lt;<a href="https://tools.ietf.org/html/draft-bkl-bimi-overview-00">https://tools.ietf.org/html/draft-bkl-bimi-overview-00</a>&gt;</span>. </dd>
 </dl>
 </section>
