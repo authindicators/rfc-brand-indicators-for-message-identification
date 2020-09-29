@@ -832,7 +832,7 @@ Subdomain has no default record, but organizational domain does
     From: sender@sub.example.com
     Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 
-Subdomain and orgznizational domain shave no record for selector, but organization domain has a default
+Subdomain and orgznizational domain have no record for selector, but organization domain has a default
 ---------------
 
     From: sender@sub.example.com
