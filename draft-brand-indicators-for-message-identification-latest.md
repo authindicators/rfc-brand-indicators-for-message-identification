@@ -568,7 +568,7 @@ To balance the conflicting requirements of supporting wildcarding, allowing subd
 
 4. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
-5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.\<organizationalDomain\>, and NOT \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
+5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string '_bimi', and the Organizational Domain (as defined in [DMARC]) corresponding to the Author Domain. A custom selector that does not exist falls back to \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records is returned.
 
 6. Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.
 
@@ -792,9 +792,9 @@ With BIMI-Selector Header on a subdomain
 The domain foo.example.com sends without a BIMI-Selector header:
 
     From: sender@foo.example.com
-    BIMI-Selector: v=BIMI1; s=selector;
+    BIMI-Selector: v=BIMI1; s=myselector;
     
-The MTA would lookup selector._bimi.foo.example.com for the BIMI DNS record. If it did not exist, it would fall back to the lookup default._bimi.example.com.
+The MTA would lookup myselector._bimi.foo.example.com for the BIMI DNS record. If it did not exist, it would fall back to the lookup myselector._bimi.example.com.
 
 Invalid BIMI-Selector Header
 ---------
@@ -802,7 +802,7 @@ Invalid BIMI-Selector Header
 The domain example.com sends with a BIMI-Selector header, but does not include the required field 'v=':
 
     From: sender@example.com
-    BIMI-Selector: s=selector;
+    BIMI-Selector: s=myselector;
 
 The MTA would ignore this header, and lookup default._bimi.example.com.
 
@@ -815,8 +815,8 @@ Successful BIMI lookup
 -------------
 
     From: sender@example.com
-    BIMI-Selector: v=BIMI1; s=selector;
-    Authentication-Results: bimi=pass header.d=example.com header.selector=selector;
+    BIMI-Selector: v=BIMI1; s=myselector;
+    Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
 
 No BIMI record
 --------------
@@ -832,14 +832,25 @@ Subdomain has no default record, but organizational domain does
     From: sender@sub.example.com
     Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 
-Subdomain has no record for selector, but organization domain has a default
+Subdomain and orgznizational domain shave no record for selector, but organization domain has a default
 ---------------
 
     From: sender@sub.example.com
-    BIMI-Selector: v=BIMI1; s=selector;
-    Authentication-Results: bimi=pass header.d=example.com header.selector=default;
+    BIMI-Selector: v=BIMI1; s=myselector;
+    Authentication-Results: bimi=none;
 
-In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.
+In this example, the sender specified a DNS record at myselector._bimi.sub.example.com but it did not exist. The fallback is to use myselector._bimi.example.com, 
+which also does not exist. The assertion record does exist for the default selector at the organizational domain default._bimi.example.com, however this is not 
+used as the sender specified a selector of myselector.
+
+Subdomain has no record for selector, but organization domain does
+---------------
+
+    From: sender@sub.example.com
+    BIMI-Selector: v=BIMI1; s=myselector;
+    Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+
+In this example, the sender specified a DNS record at myselector._bimi.sub.example.com but it did not exist. The fallback is to use myselector._bimi.example.com.
 
 
 Example BIMI Headers Construction (INFORMATIONAL)   {#bimi-headers-example}
