@@ -906,7 +906,8 @@ The MUA displays the Indicator
 The mail is opened from the mail store in an MUA. The MUA performs locally defined checks to make sure that it can trust the BIMI-Indicator header. Finally, the MUA extracts the Indicator from the BIMI-Indicator header and displays it to the user.
 
 Acknowledgements 
-------------
+============
+
 Many people have contributed to the development of BIMI.  Along with thanks to members of the current AuthIndicators Working Group, the editors wish to acknowledge the efforts of Sri Somanchi, Don Cardinal, Steve Jones, and John Levine.  
 
 
