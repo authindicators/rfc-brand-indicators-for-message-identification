@@ -203,7 +203,14 @@ BIMI removes the substantial burden of curating and maintaining an Indicator dat
 
 The structure of BIMI is as follows:
 
-* Domain Owners: Publish their preferred Brand Indicators via the [DNS].
+* Domain Owners: 
+  * Fully implement the [DMARC] mechanism, to include:
+    * Creating and publishing in [DNS] a [DMARC] policy record that meets the following criteria:
+      * The policy record MUST express a Requested Mail Receiver policy of “quarantine” or “reject” for the Organizational Domain and all sub-domains
+      * The Requested Mail Receiver policy MUST apply to a percentage of mail not less than 100
+    * Establishing an address to receive aggregate reports at least daily; other than in exceptional circumstances such as resource exhaustion, the address must support receiving reports up to at least ten megabytes in size.
+    * Deploying authentication technologies to ensure Identifier Alignment
+  * Publish their preferred Brand Indicators via the [DNS].
 * Senders: Ensure mail is properly authenticated, and has a sufficiently strict [DMARC] policy.
 * MTA:
   * Confirm authenticity of the message using [DMARC] and whatever other authentication mechanisms they wish to apply.
