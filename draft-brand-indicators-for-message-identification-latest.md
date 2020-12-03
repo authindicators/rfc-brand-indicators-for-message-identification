@@ -593,6 +593,9 @@ Individual types of BIMI Evidence Document MAY specify extra discovery and valid
 Indicator Discovery Without Evidence. {#indicator-discovery-without-evidence}
 ----------------------------------
 
+If an Assertion Record is found, and it has empty bimi-location and bimi-evidence-location then this is a Declination to Publish record. BIMI processing MUST not occur 
+on this message and the MTA SHOULD reflect this in the Authentication-Results header by adding a bimi=declined entry.
+
 If an Assertion Record is found, and has an empty or missing bimi-evidence-location entry then no evidence has is presented, and the Indicator MUST be retrieved from the URI specified in the bimi-location entry using the following algorithm:
 
 1. Retrieve the SVG Indicator from the URI specified in the l= tag. This MUST be a URI with a HTTPS transport. 
@@ -620,7 +623,7 @@ Affix BIMI Status to Authentication Results Header Field {#bimi-results}
 
 Upon completion of Assertion Record Discovery, Indicator Discovery, and Indicator Validation, an MTA SHOULD affix the result in the Authentication-Results header using the following syntax, with the following key=value pairs:
 
-bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, failure in Discovery or Validation steps, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check was not performed, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., "bimi=fail (Invalid SVG)", "bimi=skipped (sender not trusted)" or "bimi=skipped (message failed DMARC)".
+bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, failure in Discovery or Validation steps, or some other error), 'temperror' (DNS lookup problem), 'declined' (The domain owner published an explicit declination record), or 'skipped' (BIMI check was not performed, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., "bimi=fail (Invalid SVG)", "bimi=skipped (sender not trusted)" or "bimi=skipped (message failed DMARC)".
 
 header.d: Domain of the BIMI Assertion Record which was evaluated (plain-text; REQUIRED if bimi=pass). For example, this will be the organizational domain if the BIMI lookup used the fallback record, otherwise it will be the RFC5322.From domain.
 
@@ -825,6 +828,15 @@ No BIMI record
     Authentication-Results: bimi=none;
 
 In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com
+
+Declination to Publish
+--------------
+
+    From: sender@example.com
+    Authentication-Results: bimi=declined;
+
+In this example the record found at default._bimi.example.com was "v=BIMI1; l=; a=;", indicating a Declination to Publish a BIMI Assertion Record, and 
+so indicating that BIMI processing should not occur on this message.
 
 Subdomain has no default record, but organizational domain does
 ----------------
