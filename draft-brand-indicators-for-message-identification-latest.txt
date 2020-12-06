@@ -133,10 +133,13 @@ Table of Contents
    Appendix B.  Example Authentication-Results entry (INFORMATIONAL)
        B.1.  Successful BIMI lookup
        B.2.  No BIMI record
-       B.3.  Subdomain has no default record, but organizational
+       B.3.  Declination to Publish
+       B.4.  Subdomain has no default record, but organizational
              domain does
-       B.4.  Subdomain has no record for selector, but
-             organization domain has a default
+       B.5.  Subdomain and orgznizational domain have no record
+             for selector, but organization domain has a default
+       B.6.  Subdomain has no record for selector, but
+             organization domain does
    Appendix C.  Example BIMI Headers Construction (INFORMATIONAL)
        C.1.  MTA Receives an email
        C.2.  MTA does its authentication checks
@@ -145,7 +148,7 @@ Table of Contents
        C.5.  MTA Constructs BIMI-Location and BIMI-Indicator
              headers
        C.6.  The MUA displays the Indicator
-       C.7.  Acknowledgements
+   Appendix D.  Acknowledgements
    Authors' Addresses
 
 1.  Introduction
@@ -872,10 +875,9 @@ Table of Contents
 
    5.  If the set is now empty, the Client MUST query the DNS for a BIMI
        TXT record at the DNS domain constructed by concatenating the
-       selector 'default', the string '_bimi', and the Organizational
-       Domain (as defined in [DMARC]) corresponding to the Author
-       Domain.  A custom selector that does not exist falls back to
-       default._bimi.<organizationalDomain>, and NOT
+       selector, the string '_bimi', and the Organizational Domain (as
+       defined in [DMARC]) corresponding to the Author Domain.  A custom
+       selector that does not exist falls back to
        <selector>._bimi.<organizationalDomain>.  A possibly empty set of
        records is returned.
 
@@ -913,6 +915,12 @@ Table of Contents
    documents.
 
 8.5.  Indicator Discovery Without Evidence.
+
+   If an Assertion Record is found, and it has empty bimi-location and
+   bimi-evidence-location then this is a Declination to Publish record.
+   BIMI processing MUST not occur on this message and the MTA SHOULD
+   reflect this in the Authentication-Results header by adding a
+   bimi=declined entry.
 
    If an Assertion Record is found, and has an empty or missing bimi-
    evidence-location entry then no evidence has is presented, and the
@@ -966,12 +974,13 @@ Table of Contents
    values are 'pass' (BIMI successfully validated), 'none' (no BIMI
    record present), 'fail' (syntax error in the BIMI record, failure in
    Discovery or Validation steps, or some other error), 'temperror' (DNS
-   lookup problem), or 'skipped' (BIMI check was not performed, possibly
-   because the message did not comply with the minimum requirements such
-   as passing DMARC, or the MTA does not trust the sending domain).  The
-   MTA MAY put comments in parentheses after bimi result, e.g.,
-   "bimi=fail (Invalid SVG)", "bimi=skipped (sender not trusted)" or
-   "bimi=skipped (message failed DMARC)".
+   lookup problem), 'declined' (The domain owner published an explicit
+   declination record), or 'skipped' (BIMI check was not performed,
+   possibly because the message did not comply with the minimum
+   requirements such as passing DMARC, or the MTA does not trust the
+   sending domain).  The MTA MAY put comments in parentheses after bimi
+   result, e.g., "bimi=fail (Invalid SVG)", "bimi=skipped (sender not
+   trusted)" or "bimi=skipped (message failed DMARC)".
 
    header.d: Domain of the BIMI Assertion Record which was evaluated
    (plain-text; REQUIRED if bimi=pass).  For example, this will be the
@@ -1227,7 +1236,7 @@ Table of Contents
 
    [BIMI-OVERVIEW]
               Blank, S., Kumaran, N., and J. Levine, "An Overview of the
-              Design of BIMI", August 2020,
+              Design of BIMI", December 2020,
               <https://tools.ietf.org/html/draft-bkl-bimi-overview-00>.
 
 Appendix A.  Example Selector Discovery (INFORMATIVE)
@@ -1269,11 +1278,11 @@ A.4.  With BIMI-Selector Header on a subdomain
    The domain foo.example.com sends without a BIMI-Selector header:
 
    From: sender@foo.example.com
-   BIMI-Selector: v=BIMI1; s=selector;
+   BIMI-Selector: v=BIMI1; s=myselector;
 
-   The MTA would lookup selector._bimi.foo.example.com for the BIMI DNS
-   record.  If it did not exist, it would fall back to the lookup
-   default._bimi.example.com.
+   The MTA would lookup myselector._bimi.foo.example.com for the BIMI
+   DNS record.  If it did not exist, it would fall back to the lookup
+   myselector._bimi.example.com.
 
 A.5.  Invalid BIMI-Selector Header
 
@@ -1281,7 +1290,7 @@ A.5.  Invalid BIMI-Selector Header
    not include the required field 'v=':
 
    From: sender@example.com
-   BIMI-Selector: s=selector;
+   BIMI-Selector: s=myselector;
 
    The MTA would ignore this header, and lookup
    default._bimi.example.com.
@@ -1294,8 +1303,8 @@ Appendix B.  Example Authentication-Results entry (INFORMATIONAL)
 B.1.  Successful BIMI lookup
 
    From: sender@example.com
-   BIMI-Selector: v=BIMI1; s=selector;
-   Authentication-Results: bimi=pass header.d=example.com header.selector=selector;
+   BIMI-Selector: v=BIMI1; s=myselector;
+   Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
 
 B.2.  No BIMI record
 
@@ -1305,22 +1314,44 @@ B.2.  No BIMI record
    In this example, sub.example.com does not have a BIMI record at
    default._bimi.sub.example.com, nor does default._bimi.example.com
 
-B.3.  Subdomain has no default record, but organizational domain does
+B.3.  Declination to Publish
+
+   From: sender@example.com
+   Authentication-Results: bimi=declined;
+
+   In this example the record found at default._bimi.example.com was
+   "v=BIMI1; l=; a=;", indicating a Declination to Publish a BIMI
+   Assertion Record, and so indicating that BIMI processing should not
+   occur on this message.
+
+B.4.  Subdomain has no default record, but organizational domain does
 
    From: sender@sub.example.com
    Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 
-B.4.  Subdomain has no record for selector, but organization domain has a
-default
+B.5.  Subdomain and orgznizational domain have no record for selector, but
+organization domain has a default
 
    From: sender@sub.example.com
-   BIMI-Selector: v=BIMI1; s=selector;
-   Authentication-Results: bimi=pass header.d=example.com header.selector=default;
+   BIMI-Selector: v=BIMI1; s=myselector;
+   Authentication-Results: bimi=none;
 
    In this example, the sender specified a DNS record at
-   selector._bimi.sub.example.com but it did not exist.  The fallback is
-   to use default._bimi.example.com, not selector._bimi.example.com even
-   if that record exists.
+   myselector._bimi.sub.example.com but it did not exist.  The fallback
+   is to use myselector._bimi.example.com, which also does not exist.
+   The assertion record does exist for the default selector at the
+   organizational domain default._bimi.example.com, however this is not
+   used as the sender specified a selector of myselector.
+
+B.6.  Subdomain has no record for selector, but organization domain does
+
+   From: sender@sub.example.com
+   BIMI-Selector: v=BIMI1; s=myselector;
+   Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+
+   In this example, the sender specified a DNS record at
+   myselector._bimi.sub.example.com but it did not exist.  The fallback
+   is to use myselector._bimi.example.com.
 
 Appendix C.  Example BIMI Headers Construction (INFORMATIONAL)
 
@@ -1399,7 +1430,7 @@ C.6.  The MUA displays the Indicator
    Indicator header.  Finally, the MUA extracts the Indicator from the
    BIMI-Indicator header and displays it to the user.
 
-C.7.  Acknowledgements
+Appendix D.  Acknowledgements
 
    Many people have contributed to the development of BIMI.  Along with
    thanks to members of the current AuthIndicators Working Group, the

@@ -1133,10 +1133,16 @@ table.left {
                 <p id="section-boilerplate.3-1.13.2.2.1"><a href="#section-b.2" class="xref">B.2</a>.  <a href="#name-no-bimi-record" class="xref">No BIMI record</a><a href="#section-boilerplate.3-1.13.2.2.1" class="pilcrow">¶</a></p>
 </li>
               <li class="toc ulEmpty" id="section-boilerplate.3-1.13.2.3">
-                <p id="section-boilerplate.3-1.13.2.3.1"><a href="#section-b.3" class="xref">B.3</a>.  <a href="#name-subdomain-has-no-default-re" class="xref">Subdomain has no default record, but organizational domain does</a><a href="#section-boilerplate.3-1.13.2.3.1" class="pilcrow">¶</a></p>
+                <p id="section-boilerplate.3-1.13.2.3.1"><a href="#section-b.3" class="xref">B.3</a>.  <a href="#name-declination-to-publish-2" class="xref">Declination to Publish</a><a href="#section-boilerplate.3-1.13.2.3.1" class="pilcrow">¶</a></p>
 </li>
               <li class="toc ulEmpty" id="section-boilerplate.3-1.13.2.4">
-                <p id="section-boilerplate.3-1.13.2.4.1"><a href="#section-b.4" class="xref">B.4</a>.  <a href="#name-subdomain-has-no-record-for" class="xref">Subdomain has no record for selector, but organization domain has a default</a><a href="#section-boilerplate.3-1.13.2.4.1" class="pilcrow">¶</a></p>
+                <p id="section-boilerplate.3-1.13.2.4.1"><a href="#section-b.4" class="xref">B.4</a>.  <a href="#name-subdomain-has-no-default-re" class="xref">Subdomain has no default record, but organizational domain does</a><a href="#section-boilerplate.3-1.13.2.4.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="toc ulEmpty" id="section-boilerplate.3-1.13.2.5">
+                <p id="section-boilerplate.3-1.13.2.5.1"><a href="#section-b.5" class="xref">B.5</a>.  <a href="#name-subdomain-and-orgznizationa" class="xref">Subdomain and orgznizational domain have no record for selector, but organization domain has a default</a><a href="#section-boilerplate.3-1.13.2.5.1" class="pilcrow">¶</a></p>
+</li>
+              <li class="toc ulEmpty" id="section-boilerplate.3-1.13.2.6">
+                <p id="section-boilerplate.3-1.13.2.6.1"><a href="#section-b.6" class="xref">B.6</a>.  <a href="#name-subdomain-has-no-record-for" class="xref">Subdomain has no record for selector, but organization domain does</a><a href="#section-boilerplate.3-1.13.2.6.1" class="pilcrow">¶</a></p>
 </li>
             </ul>
 </li>
@@ -1161,13 +1167,13 @@ table.left {
               <li class="toc ulEmpty" id="section-boilerplate.3-1.14.2.6">
                 <p id="section-boilerplate.3-1.14.2.6.1"><a href="#section-c.6" class="xref">C.6</a>.  <a href="#name-the-mua-displays-the-indica" class="xref">The MUA displays the Indicator</a><a href="#section-boilerplate.3-1.14.2.6.1" class="pilcrow">¶</a></p>
 </li>
-              <li class="toc ulEmpty" id="section-boilerplate.3-1.14.2.7">
-                <p id="section-boilerplate.3-1.14.2.7.1"><a href="#section-c.7" class="xref">C.7</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a><a href="#section-boilerplate.3-1.14.2.7.1" class="pilcrow">¶</a></p>
-</li>
             </ul>
 </li>
           <li class="toc ulEmpty" id="section-boilerplate.3-1.15">
-            <p id="section-boilerplate.3-1.15.1"><a href="#section-appendix.d" class="xref"></a>  <a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-boilerplate.3-1.15.1" class="pilcrow">¶</a></p>
+            <p id="section-boilerplate.3-1.15.1"><a href="#section-appendix.d" class="xref">Appendix D</a>.  <a href="#name-acknowledgements" class="xref">Acknowledgements</a><a href="#section-boilerplate.3-1.15.1" class="pilcrow">¶</a></p>
+</li>
+          <li class="toc ulEmpty" id="section-boilerplate.3-1.16">
+            <p id="section-boilerplate.3-1.16.1"><a href="#section-appendix.e" class="xref"></a>  <a href="#name-authors-addresses" class="xref">Authors' Addresses</a><a href="#section-boilerplate.3-1.16.1" class="pilcrow">¶</a></p>
 </li>
         </ul>
 </nav>
@@ -1726,7 +1732,7 @@ bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
 </li>
           <li id="section-8.2-4.4">Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.<a href="#section-8.2-4.4" class="pilcrow">¶</a>
 </li>
-          <li id="section-8.2-4.5">If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector 'default', the string '_bimi', and the Organizational Domain (as defined in <span>[<a href="#DMARC" class="xref">DMARC</a>]) corresponding to the Author Domain. A custom selector that does not exist falls back to default._bimi.&lt;organizationalDomain&gt;, and NOT &lt;selector&gt;._bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records is returned.</span><a href="#section-8.2-4.5" class="pilcrow">¶</a>
+          <li id="section-8.2-4.5">If the set is now empty, the Client MUST query the DNS for a BIMI TXT record at the DNS domain constructed by concatenating the selector, the string '_bimi', and the Organizational Domain (as defined in <span>[<a href="#DMARC" class="xref">DMARC</a>]) corresponding to the Author Domain. A custom selector that does not exist falls back to &lt;selector&gt;._bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records is returned.</span><a href="#section-8.2-4.5" class="pilcrow">¶</a>
 </li>
           <li id="section-8.2-4.6">Records that do not start with a "v=" tag that identifies the current version of BIMI MUST be discarded.<a href="#section-8.2-4.6" class="pilcrow">¶</a>
 </li>
@@ -1765,13 +1771,15 @@ bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
         <h3 id="name-indicator-discovery-without">
 <a href="#section-8.5" class="section-number selfRef">8.5. </a><a href="#name-indicator-discovery-without" class="section-name selfRef">Indicator Discovery Without Evidence.</a>
         </h3>
-<p id="section-8.5-1">If an Assertion Record is found, and has an empty or missing bimi-evidence-location entry then no evidence has is presented, and the Indicator MUST be retrieved from the URI specified in the bimi-location entry using the following algorithm:<a href="#section-8.5-1" class="pilcrow">¶</a></p>
-<ol type="1" start="1" class="normal" id="section-8.5-2">
-          <li id="section-8.5-2.1">Retrieve the SVG Indicator from the URI specified in the l= tag. This MUST be a URI with a HTTPS transport.<a href="#section-8.5-2.1" class="pilcrow">¶</a>
+<p id="section-8.5-1">If an Assertion Record is found, and it has empty bimi-location and bimi-evidence-location then this is a Declination to Publish record. BIMI processing MUST not occur 
+on this message and the MTA SHOULD reflect this in the Authentication-Results header by adding a bimi=declined entry.<a href="#section-8.5-1" class="pilcrow">¶</a></p>
+<p id="section-8.5-2">If an Assertion Record is found, and has an empty or missing bimi-evidence-location entry then no evidence has is presented, and the Indicator MUST be retrieved from the URI specified in the bimi-location entry using the following algorithm:<a href="#section-8.5-2" class="pilcrow">¶</a></p>
+<ol type="1" start="1" class="normal" id="section-8.5-3">
+          <li id="section-8.5-3.1">Retrieve the SVG Indicator from the URI specified in the l= tag. This MUST be a URI with a HTTPS transport.<a href="#section-8.5-3.1" class="pilcrow">¶</a>
 </li>
-          <li id="section-8.5-2.2">If the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts then Indicator validation has failed and the Indicator MUST NOT be displayed.<a href="#section-8.5-2.2" class="pilcrow">¶</a>
+          <li id="section-8.5-3.2">If the TLS server identity certificate presented during the TLS session setup does not chain-up to a root certificate the Client trusts then Indicator validation has failed and the Indicator MUST NOT be displayed.<a href="#section-8.5-3.2" class="pilcrow">¶</a>
 </li>
-          <li id="section-8.5-2.3">Proceed to the <a href="#indicator-validation" class="xref">Indicator Validation</a> step.<a href="#section-8.5-2.3" class="pilcrow">¶</a>
+          <li id="section-8.5-3.3">Proceed to the <a href="#indicator-validation" class="xref">Indicator Validation</a> step.<a href="#section-8.5-3.3" class="pilcrow">¶</a>
 </li>
         </ol>
 </section>
@@ -1801,7 +1809,7 @@ bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
 <a href="#section-8.7" class="section-number selfRef">8.7. </a><a href="#name-affix-bimi-status-to-authen" class="section-name selfRef">Affix BIMI Status to Authentication Results Header Field</a>
         </h3>
 <p id="section-8.7-1">Upon completion of Assertion Record Discovery, Indicator Discovery, and Indicator Validation, an MTA SHOULD affix the result in the Authentication-Results header using the following syntax, with the following key=value pairs:<a href="#section-8.7-1" class="pilcrow">¶</a></p>
-<p id="section-8.7-2">bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, failure in Discovery or Validation steps, or some other error), 'temperror' (DNS lookup problem), or 'skipped' (BIMI check was not performed, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., "bimi=fail (Invalid SVG)", "bimi=skipped (sender not trusted)" or "bimi=skipped (message failed DMARC)".<a href="#section-8.7-2" class="pilcrow">¶</a></p>
+<p id="section-8.7-2">bimi: Result of the bimi lookup (plain-text; REQUIRED). Range of values are 'pass' (BIMI successfully validated), 'none' (no BIMI record present), 'fail' (syntax error in the BIMI record, failure in Discovery or Validation steps, or some other error), 'temperror' (DNS lookup problem), 'declined' (The domain owner published an explicit declination record), or 'skipped' (BIMI check was not performed, possibly because the message did not comply with the minimum requirements such as passing DMARC, or the MTA does not trust the sending domain). The MTA MAY put comments in parentheses after bimi result, e.g., "bimi=fail (Invalid SVG)", "bimi=skipped (sender not trusted)" or "bimi=skipped (message failed DMARC)".<a href="#section-8.7-2" class="pilcrow">¶</a></p>
 <p id="section-8.7-3">header.d: Domain of the BIMI Assertion Record which was evaluated (plain-text; REQUIRED if bimi=pass). For example, this will be the organizational domain if the BIMI lookup used the fallback record, otherwise it will be the RFC5322.From domain.<a href="#section-8.7-3" class="pilcrow">¶</a></p>
 <p id="section-8.7-4">header.selector: Selector of the BIMI Assertion Record which was evaluated (plain-text; REQUIRED if bimi=pass). For example, if a BIMI-Selector Header was present and used to discover a BIMI Assertion Record then this will be the Selector used, otherwise this will be 'default'.<a href="#section-8.7-4" class="pilcrow">¶</a></p>
 <p id="section-8.7-5">policy.authority: Authority verification status of the Brand Identifier (plain-text; REQUIRED if the BIMI Evidence Document was checked). If the Authority Evidence presented in the BIMI Assertion Record was checked and found to be valid then this MUST be set to pass. If the validation failed then this MUST be set to fail. If no Authority Evidence was presented, or the MTA did not check the Authority Evidence then this SHOULD be set to none.<a href="#section-8.7-5" class="pilcrow">¶</a></p>
@@ -2024,7 +2032,7 @@ to bear as additional factors.<a href="#section-9.2-1" class="pilcrow">¶</a></p
 <dl class="references">
 <dt id="BIMI-OVERVIEW">[BIMI-OVERVIEW]</dt>
       <dd>
-<span class="refAuthor">Blank, S.</span><span class="refAuthor">, Kumaran, N.</span><span class="refAuthor">, and J. Levine</span>, <span class="refTitle">"An Overview of the Design of BIMI"</span>, <time datetime="2020-08">August 2020</time>
+<span class="refAuthor">Blank, S.</span><span class="refAuthor">, Kumaran, N.</span><span class="refAuthor">, and J. Levine</span>, <span class="refTitle">"An Overview of the Design of BIMI"</span>, <time datetime="2020-12">December 2020</time>
           <span>, &lt;<a href="https://tools.ietf.org/html/draft-bkl-bimi-overview-00">https://tools.ietf.org/html/draft-bkl-bimi-overview-00</a>&gt;</span>. </dd>
 </dl>
 </section>
@@ -2090,11 +2098,11 @@ From: sender@foo.example.com
 <div class="artwork art-text alignLeft" id="section-a.4-2">
 <pre>
 From: sender@foo.example.com
-BIMI-Selector: v=BIMI1; s=selector;
+BIMI-Selector: v=BIMI1; s=myselector;
 </pre>
 <a href="#section-a.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-a.4-3">The MTA would lookup selector._bimi.foo.example.com for the BIMI DNS record. If it did not exist, it would fall back to the lookup default._bimi.example.com.<a href="#section-a.4-3" class="pilcrow">¶</a></p>
+<p id="section-a.4-3">The MTA would lookup myselector._bimi.foo.example.com for the BIMI DNS record. If it did not exist, it would fall back to the lookup myselector._bimi.example.com.<a href="#section-a.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="invalid-bimi-selector-header">
@@ -2106,7 +2114,7 @@ BIMI-Selector: v=BIMI1; s=selector;
 <div class="artwork art-text alignLeft" id="section-a.5-2">
 <pre>
 From: sender@example.com
-BIMI-Selector: s=selector;
+BIMI-Selector: s=myselector;
 </pre>
 <a href="#section-a.5-2" class="pilcrow">¶</a>
 </div>
@@ -2129,8 +2137,8 @@ BIMI-Selector: s=selector;
 <div class="artwork art-text alignLeft" id="section-b.1-1">
 <pre>
 From: sender@example.com
-BIMI-Selector: v=BIMI1; s=selector;
-Authentication-Results: bimi=pass header.d=example.com header.selector=selector;
+BIMI-Selector: v=BIMI1; s=myselector;
+Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
 </pre>
 <a href="#section-b.1-1" class="pilcrow">¶</a>
 </div>
@@ -2151,34 +2159,68 @@ Authentication-Results: bimi=none;
 <p id="section-b.2-2">In this example, sub.example.com does not have a BIMI record at default._bimi.sub.example.com, nor does default._bimi.example.com<a href="#section-b.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="subdomain-has-no-default-record-but-organizational-domain-does">
+<div id="declination-to-publish-1">
 <section id="section-b.3">
-        <h2 id="name-subdomain-has-no-default-re">
-<a href="#section-b.3" class="section-number selfRef">B.3. </a><a href="#name-subdomain-has-no-default-re" class="section-name selfRef">Subdomain has no default record, but organizational domain does</a>
+        <h2 id="name-declination-to-publish-2">
+<a href="#section-b.3" class="section-number selfRef">B.3. </a><a href="#name-declination-to-publish-2" class="section-name selfRef">Declination to Publish</a>
         </h2>
 <div class="artwork art-text alignLeft" id="section-b.3-1">
 <pre>
-From: sender@sub.example.com
-Authentication-Results: bimi=pass header.d=example.com header.selector=default;
+From: sender@example.com
+Authentication-Results: bimi=declined;
 </pre>
 <a href="#section-b.3-1" class="pilcrow">¶</a>
 </div>
+<p id="section-b.3-2">In this example the record found at default._bimi.example.com was "v=BIMI1; l=; a=;", indicating a Declination to Publish a BIMI Assertion Record, and 
+so indicating that BIMI processing should not occur on this message.<a href="#section-b.3-2" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="subdomain-has-no-record-for-selector-but-organization-domain-has-a-default">
+<div id="subdomain-has-no-default-record-but-organizational-domain-does">
 <section id="section-b.4">
-        <h2 id="name-subdomain-has-no-record-for">
-<a href="#section-b.4" class="section-number selfRef">B.4. </a><a href="#name-subdomain-has-no-record-for" class="section-name selfRef">Subdomain has no record for selector, but organization domain has a default</a>
+        <h2 id="name-subdomain-has-no-default-re">
+<a href="#section-b.4" class="section-number selfRef">B.4. </a><a href="#name-subdomain-has-no-default-re" class="section-name selfRef">Subdomain has no default record, but organizational domain does</a>
         </h2>
 <div class="artwork art-text alignLeft" id="section-b.4-1">
 <pre>
 From: sender@sub.example.com
-BIMI-Selector: v=BIMI1; s=selector;
 Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 </pre>
 <a href="#section-b.4-1" class="pilcrow">¶</a>
 </div>
-<p id="section-b.4-2">In this example, the sender specified a DNS record at selector._bimi.sub.example.com but it did not exist. The fallback is to use default._bimi.example.com, not selector._bimi.example.com even if that record exists.<a href="#section-b.4-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="subdomain-and-orgznizational-domain-have-no-record-for-selector-but-organization-domain-has-a-default">
+<section id="section-b.5">
+        <h2 id="name-subdomain-and-orgznizationa">
+<a href="#section-b.5" class="section-number selfRef">B.5. </a><a href="#name-subdomain-and-orgznizationa" class="section-name selfRef">Subdomain and orgznizational domain have no record for selector, but organization domain has a default</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-b.5-1">
+<pre>
+From: sender@sub.example.com
+BIMI-Selector: v=BIMI1; s=myselector;
+Authentication-Results: bimi=none;
+</pre>
+<a href="#section-b.5-1" class="pilcrow">¶</a>
+</div>
+<p id="section-b.5-2">In this example, the sender specified a DNS record at myselector._bimi.sub.example.com but it did not exist. The fallback is to use myselector._bimi.example.com, 
+which also does not exist. The assertion record does exist for the default selector at the organizational domain default._bimi.example.com, however this is not 
+used as the sender specified a selector of myselector.<a href="#section-b.5-2" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="subdomain-has-no-record-for-selector-but-organization-domain-does">
+<section id="section-b.6">
+        <h2 id="name-subdomain-has-no-record-for">
+<a href="#section-b.6" class="section-number selfRef">B.6. </a><a href="#name-subdomain-has-no-record-for" class="section-name selfRef">Subdomain has no record for selector, but organization domain does</a>
+        </h2>
+<div class="artwork art-text alignLeft" id="section-b.6-1">
+<pre>
+From: sender@sub.example.com
+BIMI-Selector: v=BIMI1; s=myselector;
+Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+</pre>
+<a href="#section-b.6-1" class="pilcrow">¶</a>
+</div>
+<p id="section-b.6-2">In this example, the sender specified a DNS record at myselector._bimi.sub.example.com but it did not exist. The fallback is to use myselector._bimi.example.com.<a href="#section-b.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2275,18 +2317,18 @@ BIMI-Indicator: PD94bW...8L3N2Zz4K
 <p id="section-c.6-1">The mail is opened from the mail store in an MUA. The MUA performs locally defined checks to make sure that it can trust the BIMI-Indicator header. Finally, the MUA extracts the Indicator from the BIMI-Indicator header and displays it to the user.<a href="#section-c.6-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="acknowledgements">
-<section id="section-c.7">
-        <h2 id="name-acknowledgements">
-<a href="#section-c.7" class="section-number selfRef">C.7. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
-        </h2>
-<p id="section-c.7-1">Many people have contributed to the development of BIMI.  Along with thanks to members of the current AuthIndicators Working Group, the editors wish to acknowledge the efforts of Sri Somanchi, Don Cardinal, Steve Jones, and John Levine.<a href="#section-c.7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
+<div id="acknowledgements">
+<section id="section-appendix.d">
+      <h2 id="name-acknowledgements">
+<a href="#section-appendix.d" class="section-number selfRef">Appendix D. </a><a href="#name-acknowledgements" class="section-name selfRef">Acknowledgements</a>
+      </h2>
+<p id="section-appendix.d-1">Many people have contributed to the development of BIMI.  Along with thanks to members of the current AuthIndicators Working Group, the editors wish to acknowledge the efforts of Sri Somanchi, Don Cardinal, Steve Jones, and John Levine.<a href="#section-appendix.d-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
-<section id="section-appendix.d">
+<section id="section-appendix.e">
       <h2 id="name-authors-addresses">
 <a href="#name-authors-addresses" class="section-name selfRef">Authors' Addresses</a>
       </h2>
