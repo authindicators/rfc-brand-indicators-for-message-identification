@@ -177,7 +177,7 @@ The structure of BIMI is as follows:
             - The policy record MUST express either a Requested Mail Receiver
               policy of "quarantine" with an effective percentage of 100%, or a
               Requested Mail Receiver policy of "reject" (with any percentage value).
-            - Is a subdomain policy is published it MUST NOT be "none"
+            - If a subdomain policy is published it MUST NOT be "none"
             - Be published for the Organizational Domain, and any subdomains thereof
         - Deploying authentication technologies to ensure Identifier Alignment
     - Publish their preferred Brand Indicators via the DNS [@!RFC1035].
