@@ -262,7 +262,7 @@ Readers are encouraged to be familiar with the contents of [@!RFC5598].
 In particular, that document defines various roles in the messaging
 infrastructure that can appear the same or separate in various contexts.
 For example, a Domain Owner could, via the messaging mechanisms on which
-BIMI is based, delegate reponsibility for providing preferred brand
+BIMI is based, delegate responsibility for providing preferred brand
 indicators to a third party with another role.  This document does not
 address the distinctions among such roles; the reader is encouraged to
 become familiar with that material before continuing.
@@ -288,12 +288,12 @@ Indicator is defined in a common image format with restrictions detailed in the
 
 An entity or organization that can provide evidence of verification of Indicators
 asserted by a Domain Owner to Verifying Protocol Clients.  The MVA may choose to
-uphold and confirm the meeting of certain Indicator standards (ie. size, trademark,
+uphold and confirm the meeting of certain Indicator standards (i.e., size, trademark,
 content, etc).
 
 ## BIMI Evidence Document
 
-A document published by a Mark Verifying Authority to assert evicence of verification.
+A document published by a Mark Verifying Authority to assert evidence of verification.
 These are defined in a separate document.
 
 ## Verified Mark Certificate (VMC)
@@ -393,7 +393,7 @@ MUST be the first tag in the list.
 
     ABNF:
 
-    bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
+    bimi-version = "v" *WSP "=" *WSP "BIMI1"
 
 a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this
 tag MUST have an empty value or its value MUST be a single URI.  An empty
@@ -408,7 +408,7 @@ If the a= tag is not present, it is assumed to have an empty value.
 
     ABNF:
 
-    bimi-evidence-location = %x61 *WSP "=" bimi-uri
+    bimi-evidence-location = "a" *WSP "=" *WSP [bimi-uri]
 
     bimi-uri = \[FWS\] URI \[FWS\]
 
@@ -422,14 +422,14 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     ABNF:
 
-    bimi-location = %x6c *WSP "=" bimi-uri
+    bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
 Therefore, the formal definition of the BIMI Assertion Record, using ABNF [@!RFC5234],
 is as follows:
 
-    bimi-sep = *WSP %x3b *WSP
+    bimi-sep = *WSP ";" *WSP
 
-    bimi-record = bimi-version (bimi-sep bimi-location) (bimi-sep bimi-evidence-location) \[bimi-sep\]
+    bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [bimi-sep]
  
     ; components other than bimi-version may appear in any order
 
@@ -565,7 +565,7 @@ HTTPS is the only supported transport.
 
     ABNF:
 
-    bimi-evidenced-location-header-uri = "a" *WSP "=" bimi-uri
+    bimi-evidence-location-header-uri = "a" *WSP "=" bimi-uri
 
 And the formal definition of the BIMI Location Header, using ABNF, is as
 follows:
@@ -998,6 +998,12 @@ Other IANA needs
   -- as does the registry for validation actions.
   -->
 
+# Under Discussion
+NOTE: Items currently being discussed
+
+o Can the MUA validate BIMI directly? What hints are needed? How can it be validated with 
+some semblance of trust?
+
 {backmatter}
 
 <reference anchor='BIMI-OVERVIEW' target='http://tools.ietf.org/html/draft-bkl-bimi-overview-00.html'>
@@ -1092,7 +1098,7 @@ Record, and so indicating that BIMI processing should not occur on this message.
     From: sender@sub.example.com
     Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 
-## Subdomain and orgznizational domain have no record for selector, but organization
+## Subdomain and organizational domain have no record for selector, but organization
 domain has a default
 
     From: sender@sub.example.com
