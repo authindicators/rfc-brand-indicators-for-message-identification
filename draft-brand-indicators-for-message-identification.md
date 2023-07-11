@@ -832,6 +832,18 @@ the MTA did not check the Authority Evidence then this SHOULD be set to none.
 policy.authority-uri: The URI of the BIMI Evidence Document checked, as found
 in the a= tag of the BIMI Assertion Record (plain-text; OPTIONAL).
 
+policy.indicator-uri: The URI of the BIMI Indicator, as found in the l= tag
+of the BIMI Assertion Record (plain-text; OPTIONAL).
+
+policy.indicator-hash: In order to prevent MUAs from displaying indicators from
+the BIMI-Indicator header which have been modified since delivery, the MTA MAY
+add a hash of the data referenced in that header into the Authentication-Results
+entry such that the hash can be signed by, and verified by an ARC aware MTA/MUA pair.
+The raw uncompressed data of the SVG Indicator is hashed wuth SHA-256, the resulting
+hash is truncated to the final 8 (at least) characters, and added to the Authentication-Results
+entry.
+If this entry is added then the MTA MUST also add the BIMI-Indicator header.
+
 ## Handle Existing BIMI-Location and BIMI-Indicator Headers
 
 Regardless of success of the BIMI lookup, if a BIMI-Location or a BIMI-Indicator
