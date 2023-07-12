@@ -5,13 +5,13 @@
 Network                                                         S. Blank
 Internet-Draft                                              P. Goldstein
 Intended status: Standards Track                                Valimail
-Expires: 5 August 2021                                     T. Loder (ed)
+Expires: 12 January 2024                                   T. Loder (ed)
                                                      Skye Logicworks LLC
                                                             T. Zink (ed)
                                                                         
                                                         M. Bradshaw (ed)
                                                                 Fastmail
-                                                         1 February 2021
+                                                            11 July 2023
 
 
            Brand Indicators for Message Identification (BIMI)
@@ -46,21 +46,21 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 5 August 2021.
+   This Internet-Draft will expire on 12 January 2024.
 
 
 
 
 
 
-Blank, et al.             Expires 5 August 2021                 [Page 1]
+Blank, et al.            Expires 12 January 2024                [Page 1]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 Copyright Notice
 
-   Copyright (c) 2021 IETF Trust and the persons identified as the
+   Copyright (c) 2023 IETF Trust and the persons identified as the
    document authors.  All rights reserved.
 
    This document is subject to BCP 78 and the IETF Trust's Legal
@@ -77,104 +77,104 @@ Table of Contents
    1.  Introduction  . . . . . . . . . . . . . . . . . . . . . . . .   4
    2.  Overview  . . . . . . . . . . . . . . . . . . . . . . . . . .   5
      2.1.  High-Level Goals  . . . . . . . . . . . . . . . . . . . .   7
-     2.2.  Security  . . . . . . . . . . . . . . . . . . . . . . . .   8
-     2.3.  Out of Scope  . . . . . . . . . . . . . . . . . . . . . .   8
+     2.2.  Security  . . . . . . . . . . . . . . . . . . . . . . . .   7
+     2.3.  Out of Scope  . . . . . . . . . . . . . . . . . . . . . .   7
    3.  Terminology and Definitions . . . . . . . . . . . . . . . . .   8
-     3.1.  BIMI Assertion  . . . . . . . . . . . . . . . . . . . . .   9
-     3.2.  Indicator . . . . . . . . . . . . . . . . . . . . . . . .   9
+     3.1.  BIMI Assertion  . . . . . . . . . . . . . . . . . . . . .   8
+     3.2.  Indicator . . . . . . . . . . . . . . . . . . . . . . . .   8
      3.3.  Mark Verifying Authority (MVA)  . . . . . . . . . . . . .   9
      3.4.  BIMI Evidence Document  . . . . . . . . . . . . . . . . .   9
      3.5.  Verified Mark Certificate (VMC) . . . . . . . . . . . . .   9
-     3.6.  Protocol Client . . . . . . . . . . . . . . . . . . . . .  10
-     3.7.  Verifying Protocol Client . . . . . . . . . . . . . . . .  10
-   4.  BIMI DNS Records  . . . . . . . . . . . . . . . . . . . . . .  10
-     4.1.  MUA Obligations . . . . . . . . . . . . . . . . . . . . .  11
-     4.2.  Assertion Record Definition . . . . . . . . . . . . . . .  11
-       4.2.1.  Declination to Publish  . . . . . . . . . . . . . . .  13
+     3.6.  Protocol Client . . . . . . . . . . . . . . . . . . . . .   9
+     3.7.  Verifying Protocol Client . . . . . . . . . . . . . . . .   9
+   4.  BIMI DNS Records  . . . . . . . . . . . . . . . . . . . . . .   9
+     4.1.  MUA Obligations . . . . . . . . . . . . . . . . . . . . .  10
+     4.2.  Assertion Record Definition . . . . . . . . . . . . . . .  10
+       4.2.1.  Declination to Publish  . . . . . . . . . . . . . . .  12
        4.2.2.  Supported Image Formats for l= tag  . . . . . . . . .  13
      4.3.  Selectors . . . . . . . . . . . . . . . . . . . . . . . .  13
    5.  BIMI Header Fields  . . . . . . . . . . . . . . . . . . . . .  14
      5.1.  BIMI-Selector Header  . . . . . . . . . . . . . . . . . .  14
-     5.2.  BIMI-Location Header  . . . . . . . . . . . . . . . . . .  15
-     5.3.  BIMI-Indicator Header . . . . . . . . . . . . . . . . . .  16
+     5.2.  BIMI-Location Header  . . . . . . . . . . . . . . . . . .  14
+     5.3.  BIMI-Indicator Header . . . . . . . . . . . . . . . . . .  15
      5.4.  Header Signing  . . . . . . . . . . . . . . . . . . . . .  16
-   6.  Domain Owner Actions  . . . . . . . . . . . . . . . . . . . .  17
-     6.1.  Determine and Publish Indicator(s) for Use  . . . . . . .  17
+   6.  Domain Owner Actions  . . . . . . . . . . . . . . . . . . . .  16
+     6.1.  Determine and Publish Indicator(s) for Use  . . . . . . .  16
      6.2.  Publish Assertion Records . . . . . . . . . . . . . . . .  17
      6.3.  Manage multiple uses of the same Indicator(s) within a
            trust boundary  . . . . . . . . . . . . . . . . . . . . .  17
      6.4.  Set the headers on outgoing email as appropriate  . . . .  17
-   7.  Receiver Actions  . . . . . . . . . . . . . . . . . . . . . .  18
-     7.1.  Authentication Requirements . . . . . . . . . . . . . . .  18
+   7.  Receiver Actions  . . . . . . . . . . . . . . . . . . . . . .  17
+     7.1.  Authentication Requirements . . . . . . . . . . . . . . .  17
 
 
 
-Blank, et al.             Expires 5 August 2021                 [Page 2]
+Blank, et al.            Expires 12 January 2024                [Page 2]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
-     7.2.  Assertion Record Discovery  . . . . . . . . . . . . . . .  19
-     7.3.  Indicator Discovery.  . . . . . . . . . . . . . . . . . .  20
+     7.2.  Assertion Record Discovery  . . . . . . . . . . . . . . .  18
+     7.3.  Indicator Discovery.  . . . . . . . . . . . . . . . . . .  19
      7.4.  Indicator Discovery With Evidence.  . . . . . . . . . . .  20
-     7.5.  Indicator Discovery Without Evidence. . . . . . . . . . .  21
-     7.6.  Indicator Validation  . . . . . . . . . . . . . . . . . .  21
+     7.5.  Indicator Discovery Without Evidence. . . . . . . . . . .  20
+     7.6.  Indicator Validation  . . . . . . . . . . . . . . . . . .  20
      7.7.  Affix BIMI Status to Authentication Results Header
-            Field  . . . . . . . . . . . . . . . . . . . . . . . . .  22
+            Field  . . . . . . . . . . . . . . . . . . . . . . . . .  21
      7.8.  Handle Existing BIMI-Location and BIMI-Indicator
-            Headers  . . . . . . . . . . . . . . . . . . . . . . . .  23
-     7.9.  Construct BIMI-Location URI . . . . . . . . . . . . . . .  23
-     7.10. Construct BIMI-Indicator header . . . . . . . . . . . . .  23
-   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  24
-     8.1.  Indirect Mail Flows . . . . . . . . . . . . . . . . . . .  24
-     8.2.  Lookalike Domains and Copycat Indicators  . . . . . . . .  24
-     8.3.  Large files and buffer overflows  . . . . . . . . . . . .  24
-     8.4.  Slow DNS queries  . . . . . . . . . . . . . . . . . . . .  24
-     8.5.  Unaligned Indicators and asserting domains  . . . . . . .  25
-     8.6.  Unsigned BIMI-Selector Header . . . . . . . . . . . . . .  25
-     8.7.  CGI scripts in Indicator payload  . . . . . . . . . . . .  25
-     8.8.  Metadata in Indicators  . . . . . . . . . . . . . . . . .  25
-   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  25
-     9.1.  Permanent Header Field Updates  . . . . . . . . . . . . .  25
-     9.2.  Registry for Supported BIMI Formats . . . . . . . . . . .  26
-     9.3.  Other IANA needs  . . . . . . . . . . . . . . . . . . . .  26
-   10. Normative References  . . . . . . . . . . . . . . . . . . . .  26
-   11. Informative References  . . . . . . . . . . . . . . . . . . .  27
-   Appendix A.  Example Selector Discovery (INFORMATIVE) . . . . . .  28
-     A.1.  No BIMI-Selector Header . . . . . . . . . . . . . . . . .  28
-     A.2.  With BIMI-Selector Header . . . . . . . . . . . . . . . .  28
-     A.3.  Without BIMI-Selector Header on a subdomain . . . . . . .  28
-     A.4.  With BIMI-Selector Header on a subdomain  . . . . . . . .  28
-     A.5.  Invalid BIMI-Selector Header  . . . . . . . . . . . . . .  29
+            Headers  . . . . . . . . . . . . . . . . . . . . . . . .  22
+     7.9.  Construct BIMI-Location URI . . . . . . . . . . . . . . .  22
+     7.10. Construct BIMI-Indicator header . . . . . . . . . . . . .  22
+   8.  Security Considerations . . . . . . . . . . . . . . . . . . .  23
+     8.1.  Indirect Mail Flows . . . . . . . . . . . . . . . . . . .  23
+     8.2.  Lookalike Domains and Copycat Indicators  . . . . . . . .  23
+     8.3.  Large files and buffer overflows  . . . . . . . . . . . .  23
+     8.4.  Slow DNS queries  . . . . . . . . . . . . . . . . . . . .  23
+     8.5.  Unaligned Indicators and asserting domains  . . . . . . .  24
+     8.6.  Unsigned BIMI-Selector Header . . . . . . . . . . . . . .  24
+     8.7.  CGI scripts in Indicator payload  . . . . . . . . . . . .  24
+     8.8.  Metadata in Indicators  . . . . . . . . . . . . . . . . .  24
+   9.  IANA Considerations . . . . . . . . . . . . . . . . . . . . .  24
+     9.1.  Permanent Header Field Updates  . . . . . . . . . . . . .  24
+     9.2.  Registry for Supported BIMI Formats . . . . . . . . . . .  25
+     9.3.  Other IANA needs  . . . . . . . . . . . . . . . . . . . .  25
+   10. Normative References  . . . . . . . . . . . . . . . . . . . .  25
+   11. Informative References  . . . . . . . . . . . . . . . . . . .  26
+   Appendix A.  Example Selector Discovery (INFORMATIVE) . . . . . .  27
+     A.1.  No BIMI-Selector Header . . . . . . . . . . . . . . . . .  27
+     A.2.  With BIMI-Selector Header . . . . . . . . . . . . . . . .  27
+     A.3.  Without BIMI-Selector Header on a subdomain . . . . . . .  27
+     A.4.  With BIMI-Selector Header on a subdomain  . . . . . . . .  27
+     A.5.  Invalid BIMI-Selector Header  . . . . . . . . . . . . . .  28
    Appendix B.  Example Authentication-Results entry
-           (INFORMATIONAL) . . . . . . . . . . . . . . . . . . . . .  29
-     B.1.  Successful BIMI lookup  . . . . . . . . . . . . . . . . .  29
-     B.2.  No BIMI record  . . . . . . . . . . . . . . . . . . . . .  29
-     B.3.  Declination to Publish  . . . . . . . . . . . . . . . . .  29
+           (INFORMATIONAL) . . . . . . . . . . . . . . . . . . . . .  28
+     B.1.  Successful BIMI lookup  . . . . . . . . . . . . . . . . .  28
+     B.2.  No BIMI record  . . . . . . . . . . . . . . . . . . . . .  28
+     B.3.  Declination to Publish  . . . . . . . . . . . . . . . . .  28
      B.4.  Subdomain has no default record, but organizational domain
-           does  . . . . . . . . . . . . . . . . . . . . . . . . . .  29
+           does  . . . . . . . . . . . . . . . . . . . . . . . . . .  28
      B.5.  Subdomain and orgznizational domain have no record for
-           selector, but organization  . . . . . . . . . . . . . . .  30
+           selector, but organization  . . . . . . . . . . . . . . .  29
      B.6.  Subdomain has no record for selector, but organization
-           domain does . . . . . . . . . . . . . . . . . . . . . . .  30
-   Appendix C.  Example BIMI Headers Construction (INFORMATIONAL)  .  30
-     C.1.  MTA Receives an email . . . . . . . . . . . . . . . . . .  30
-     C.2.  MTA does its authentication checks  . . . . . . . . . . .  30
-     C.3.  MTA performs BIMI Assertion . . . . . . . . . . . . . . .  31
-     C.4.  MTA appends to Authentication-Results . . . . . . . . . .  31
+           domain does . . . . . . . . . . . . . . . . . . . . . . .  29
+   Appendix C.  Example BIMI Headers Construction (INFORMATIONAL)  .  29
+     C.1.  MTA Receives an email . . . . . . . . . . . . . . . . . .  29
+     C.2.  MTA does its authentication checks  . . . . . . . . . . .  29
+     C.3.  MTA performs BIMI Assertion . . . . . . . . . . . . . . .  30
+     C.4.  MTA appends to Authentication-Results . . . . . . . . . .  30
 
 
 
-Blank, et al.             Expires 5 August 2021                 [Page 3]
+Blank, et al.            Expires 12 January 2024                [Page 3]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
      C.5.  MTA Constructs BIMI-Location and BIMI-Indicator
-           headers . . . . . . . . . . . . . . . . . . . . . . . . .  31
-     C.6.  The MUA displays the Indicator  . . . . . . . . . . . . .  32
-   Appendix D.  Acknowledgements . . . . . . . . . . . . . . . . . .  32
-   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  32
+           headers . . . . . . . . . . . . . . . . . . . . . . . . .  30
+     C.6.  The MUA displays the Indicator  . . . . . . . . . . . . .  31
+   Appendix D.  Acknowledgements . . . . . . . . . . . . . . . . . .  31
+   Authors' Addresses  . . . . . . . . . . . . . . . . . . . . . . .  31
 
 1.  Introduction
 
@@ -199,19 +199,13 @@ Internet-Draft                    BIMI                     February 2021
 
    *  has no dependency on the deployment of any new Internet protocols
       or services for indicator registration or revocation;
-
    *  makes no attempt to include encryption as part of the mechanism;
-
    *  is compatible with the existing email infrastructure and
       transparent to the fullest extent possible;
-
    *  requires minimal new infrastructure;
-
    *  can be implemented independently of clients in order to reduce
       deployment time;
-
    *  can be deployed incrementally; and
-
    *  allows delegation of indicator hosting to third parties.
 
    To participate in BIMI, Domain Owners MUST have a strong [DMARC]
@@ -219,18 +213,19 @@ Internet-Draft                    BIMI                     February 2021
    the RFC5322.From Domain of the message.  Quarantine policies MUST NOT
    have a pct less than pct=100.
 
-
-
-Blank, et al.             Expires 5 August 2021                 [Page 4]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    This document defines how Domain Owners specify their desired
    indicators through the BIMI Assertion Record in DNS and how that
    record is to be interpreted by MTAs and MUAs.  This document does not
    cover how domains or indicators are verified, how MUAs should display
    the indicators, or how other protocols (i.e.  IMAP, JMAP) can be
+
+
+
+Blank, et al.            Expires 12 January 2024                [Page 4]
+
+Internet-Draft                    BIMI                         July 2023
+
+
    extended to work with BIMI.  Other documents may cover these topics.
    MUAs and Mail Box Providers (MBPs) are free to define their own
    policies for making use of BIMI data and for indicator display as
@@ -265,31 +260,27 @@ Internet-Draft                    BIMI                     February 2021
    1.  It puts a significant burden on each mail-receiving organization,
        because they must identify and manage a large database of Brand
        Indicators.
-
    2.  Scalability is challenging for closed systems that attempt to
        capture and maintain complete sets of data across the whole of
        the Internet.
-
    3.  A lack of uniformity across different mail-receiving
        organizations - each organization will have its own Indicator
        set, which may or may not agree with those maintained by other
        organizations for any given domain.
-
-
-
-Blank, et al.             Expires 5 August 2021                 [Page 5]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    4.  Domain Owners have limited ability to influence the Brand
        Indicator for the domain(s) they own, and any ability they do
        have is likely to be dependent upon direct coordination with each
        of many mail-receiving organizations.
-
    5.  Many Domain Owners have no ability to participate whatsoever as
        they do not have the appropriate relationships to coordinate with
        mail-receiving organizations.
+
+
+
+Blank, et al.            Expires 12 January 2024                [Page 5]
+
+Internet-Draft                    BIMI                         July 2023
+
 
    6.  MUAs that are not associated with a particular mail-receiving
        organization are likely to be disadvantaged, because they are
@@ -311,55 +302,41 @@ Internet-Draft                    BIMI                     February 2021
    The structure of BIMI is as follows:
 
    1.  Domain Owners:
-
        *  Fully implement the DMARC [RFC7489] mechanism, to include:
-
           -  Creating and publishing in DNS [RFC1035] a DMARC [RFC7489]
              policy record that meets the following criteria:
-
              o  The policy record MUST express either a Requested Mail
                 Receiver policy of "quarantine" with an effective
                 percentage of 100%, or a Requested Mail Receiver policy
                 of "reject" (with any percentage value).
-
-             o  Is a subdomain policy is published it MUST NOT be "none"
-
+             o  If a subdomain policy is published it MUST NOT be "none"
              o  Be published for the Organizational Domain, and any
                 subdomains thereof
-
           -  Deploying authentication technologies to ensure Identifier
              Alignment
-
-
-
-
-Blank, et al.             Expires 5 August 2021                 [Page 6]
-
-Internet-Draft                    BIMI                     February 2021
-
-
        *  Publish their preferred Brand Indicators via the DNS
           [RFC1035].
-
    2.  Senders: Ensure mail is properly authenticated, and has a
        sufficiently strict DMARC [RFC7489] policy.
-
    3.  MTAs and MBPs:
-
        *  Confirm authenticity of the message using DMARC [RFC7489] and
           whatever other authentication mechanisms they wish to apply.
-
        *  Check for a corresponding BIMI record, obtaining references to
           the indicator media and optional substantiation of indicator
           ownership rights
-
        *  If both the message is authentic and the logo is deemed
           acceptable, the receiver adds a header to the message which
           can be used by the MUA to obtain the Domain Owner's preferred
           brand indicator.
-
    4.  MUA: retrieves and displays the brand indicator as appropriate
        based on its policy and user interface.
+
+
+
+Blank, et al.            Expires 12 January 2024                [Page 6]
+
+Internet-Draft                    BIMI                         July 2023
+
 
    The purpose of this structure is to reduce operational complexity at
    each step.  It is also to consolidate validation and Indicator
@@ -384,26 +361,13 @@ Internet-Draft                    BIMI                     February 2021
 
    *  Allow Domain Owners to suggest appropriate Indicators for display
       with authenticated messages originating from their domains.
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                 [Page 7]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    *  Enable the authors of MUAs to display meaningful Indicators
       associated with the Domain Owner to recipients of authenticated
       email.
-
    *  Provide mechanisms to prevent attempts by malicious Domain Owners
       to fraudulently represent messages from their domains as
       originating with other entities.
-
    *  Work at Internet Scale.
-
    *  Encourage the adoption of Email Authentication Best Practices.
 
 2.2.  Security
@@ -423,10 +387,15 @@ Internet-Draft                    BIMI                     February 2021
    Several topics and issues are specifically out of scope for the
    initial version of this work.  These include the following:
 
+
+
+Blank, et al.            Expires 12 January 2024                [Page 7]
+
+Internet-Draft                    BIMI                         July 2023
+
+
    *  Publishing policy other than via the DNS.
-
    *  Specific requirements for Indicator display on MUAs.
-
    *  The explicit mechanisms used by Verifying Protocol Clients - this
       will be deferred to a later document.
 
@@ -439,16 +408,6 @@ Internet-Draft                    BIMI                     February 2021
    document are to be interpreted as described in BCP 14
    (https://tools.ietf.org/html/bcp14) [RFC2119] [RFC8174] when, and
    only when, they appear in all capitals, as shown here.
-
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                 [Page 8]
-
-Internet-Draft                    BIMI                     February 2021
-
 
    Readers are encouraged to be familiar with the contents of [RFC5598].
    In particular, that document defines various roles in the messaging
@@ -478,6 +437,19 @@ Internet-Draft                    BIMI                     February 2021
    restrictions detailed in the Assertion Record Definition (#assertion-
    record-definition).
 
+
+
+
+
+
+
+
+
+Blank, et al.            Expires 12 January 2024                [Page 8]
+
+Internet-Draft                    BIMI                         July 2023
+
+
 3.3.  Mark Verifying Authority (MVA)
 
    An entity or organization that can provide evidence of verification
@@ -498,13 +470,6 @@ Internet-Draft                    BIMI                     February 2021
 
    A Verified Mark Certificate is one example of a BIMI Evidence
    Document.
-
-
-
-Blank, et al.             Expires 5 August 2021                 [Page 9]
-
-Internet-Draft                    BIMI                     February 2021
-
 
 3.6.  Protocol Client
 
@@ -532,6 +497,15 @@ Internet-Draft                    BIMI                     February 2021
    Domain Owner's domain.
 
    The use of BIMI is opt-in.  Receivers default to performing no BIMI-
+
+
+
+
+Blank, et al.            Expires 12 January 2024                [Page 9]
+
+Internet-Draft                    BIMI                         July 2023
+
+
    specific message handling until they choose to do so, and then only
    if a BIMI record for the sender's domain is found.
 
@@ -547,20 +521,11 @@ Internet-Draft                    BIMI                     February 2021
 
    1.  There is one and only one mechanism for both simple and complex
        policies to be published.
-
    2.  Operational complexity is reduced.  MTAs only need to check a
        single record in a consistent manner to discover and enforce
        policy.
-
    3.  Indicators SHOULD be verified and cached in advance, so that
        malicious headers cannot be used as an attack vector.
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 10]
-
-Internet-Draft                    BIMI                     February 2021
-
 
    Per DNS [RFC1035], a TXT record can comprise several "character-
    string" objects.  BIMI TXT records with multiple strings must be
@@ -589,6 +554,14 @@ Internet-Draft                    BIMI                     February 2021
    in a TXT record at "default._bimi.example.com".  Similarly, a Mail
    Receiver wishing to query for BIMI policy regarding mail with an
    RFC5322.From Author Domain of "example.com" and a selector "default"
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 10]
+
+Internet-Draft                    BIMI                         July 2023
+
+
    (the default) would query the TXT record located at the subdomain of
    "default._bimi.example.com".  The DNS-based BIMI policy record is
    referred to as the "BIMI Assertion Record" or "Assertion Record".
@@ -610,14 +583,6 @@ Internet-Draft                    BIMI                     February 2021
    v= Version (plain-text; REQUIRED).  Identifies the record retrieved
    as a BIMI record.  It MUST have the value of "BIMI1" for
    implementations compliant with this version of BIMI.  The value of
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 11]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    this tag MUST match precisely; if it does not match or it is absent,
    the entire retrieved record MUST be ignored.  It MUST be the first
    tag in the list.
@@ -637,6 +602,21 @@ Internet-Draft                    BIMI                     February 2021
    documents is defined in a separate document.
 
    If the a= tag is not present, it is assumed to have an empty value.
+
+
+
+
+
+
+
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 11]
+
+Internet-Draft                    BIMI                         July 2023
+
 
    ABNF:
 
@@ -666,14 +646,6 @@ Internet-Draft                    BIMI                     February 2021
 
    ; components other than bimi-version may appear in any order
 
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 12]
-
-Internet-Draft                    BIMI                     February 2021
-
-
 4.2.1.  Declination to Publish
 
    If both the "l=" and "a=" tags are empty, it is an explicit refusal
@@ -687,6 +659,20 @@ Internet-Draft                    BIMI                     February 2021
    An explicit declination to publish looks like:
 
    v=BIMI1; l=; a=;
+
+
+
+
+
+
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 12]
+
+Internet-Draft                    BIMI                         July 2023
+
 
 4.2.2.  Supported Image Formats for l= tag
 
@@ -722,14 +708,6 @@ Internet-Draft                    BIMI                     February 2021
    conventional use in domain names.  In a DNS implementation, this can
    be used to allow delegation of a portion of the selector namespace.
 
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 13]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    ABNF:
 
    selector = sub-domain *( "." sub-domain )
@@ -743,6 +721,14 @@ Internet-Draft                    BIMI                     February 2021
    whereas organizations with more complex branding requirements can
    choose to manage disparate selectors.  BIMI sets no maximum limit on
    the number of selectors.
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 13]
+
+Internet-Draft                    BIMI                         July 2023
+
 
 5.  BIMI Header Fields
 
@@ -776,16 +762,6 @@ Internet-Draft                    BIMI                     February 2021
    s= Selector (plain-text; REQUIRED).  The location of the BIMI DNS
    record, when combined with the RFC5322.From domain.
 
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 14]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    ABNF:
 
    bimi-selector = "s" *WSP "=" *WSP selector
@@ -801,6 +777,14 @@ Internet-Draft                    BIMI                     February 2021
    MUA where to get the BIMI Indicator from.
 
    The syntax of the header is as follows:
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 14]
+
+Internet-Draft                    BIMI                         July 2023
+
 
    v= Version (plain-text; REQUIRED).  The version of BIMI.  It MUST
    have the value of "BIMI1" for implementations compliant with this
@@ -833,15 +817,6 @@ Internet-Draft                    BIMI                     February 2021
 
    bimi-evidenced-location-header-uri = "a" *WSP "=" bimi-uri
 
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 15]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    And the formal definition of the BIMI Location Header, using ABNF, is
    as follows:
 
@@ -859,6 +834,13 @@ Internet-Draft                    BIMI                     February 2021
 
    BIMI-Indicator is the header a Mail Receiver inserts to pass a
    verified Indicator to the MUA.
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 15]
+
+Internet-Draft                    BIMI                         July 2023
+
 
    The header contains the SVG of the Indicator encoded as base64, and
    is inserted by the MTA after performing the required checks and
@@ -888,16 +870,6 @@ Internet-Draft                    BIMI                     February 2021
    chain.  In this case the Receiver MAY choose to treat the message as
    if the BIMI-Selector header was signed.
 
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 16]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    The BIMI-Location and BIMI-Indicator headers MUST NOT be DKIM signed.
    This header is untrusted by definition, and is only for use between
    an MTA and its MUAs, after DKIM has been validated by the MTA.
@@ -917,6 +889,14 @@ Internet-Draft                    BIMI                     February 2021
    provides control over which Indicators are eligible and can be chosen
    for display, but not the ultimate manner in which the MUA will
    display the Indicator.
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 16]
+
+Internet-Draft                    BIMI                         July 2023
+
 
 6.2.  Publish Assertion Records
 
@@ -943,17 +923,6 @@ Internet-Draft                    BIMI                     February 2021
    Domain, all emails from this domain should display the appropriate
    Indicator in participating MUAs.
 
-
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 17]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    If a non-default Indicator is desired, the BIMI-Selector header
    should be set appropriately.  If for some reason this selector cannot
    be accessed by the Protocol Client, the fallback is the default
@@ -977,48 +946,39 @@ Internet-Draft                    BIMI                     February 2021
        any RFC5322.From header contains more than 1 email address then
        BIMI processing MUST NOT be performed for this message.
 
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 17]
+
+Internet-Draft                    BIMI                         July 2023
+
+
    2.  Start with the DNS domain found in the RFC5322.From header in the
        message.  Define this DNS domain as the Author Domain.
-
    3.  Find the Organizational Domain for the Author Domain.  Define
        this DNS domain as the Author Organizational Domain.  If the
        Author Domain is an Organizational Domain then this will be
        identical to the Author Domain.
-
    4.  Evaluate the DMARC [RFC7489] result for the Author Domain.
        Define the result as the BIMI DMARC Result.
-
    5.  If the BIMI DMARC result is not 'pass', then the receiver MAY
        choose to apply additional authentication methods, for example by
        evaluating a trusted ARC [RFC8617] chain, a list of trusted
        forwarders, or by applying a local policy.  In this case the
        Receiver MAY choose to treat the message as if the BIMI DMARC
        Result was 'pass'.
-
    6.  If the DMARC [RFC7489] result for the Author Domain is not
        'pass', and the message could not be authenticated by any
        additional authentication method, then BIMI processing MUST NOT
        be performed for this message.
-
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 18]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    7.  If the DMARC [RFC7489] policy for the Author Domain or Author
        Organizational Domain is p=none then BIMI processing MUST NOT be
        performed for this message.
-
    8.  If the DMARC [RFC7489] record for the Author Domain or Author
        Organizational Domain includes a subdomain policy, and that
        subdomain policy is sp=none then BIMI processing MUST NOT be
        performed for this message.
-
    9.  If the DMARC [RFC7489] policy for the Author Domain or Author
        Organizational Domain is p=quarantine, and the DMARC [RFC7489]
        record defines a percentage tag, then that tag MUST be pct=100,
@@ -1041,31 +1001,27 @@ Internet-Draft                    BIMI                     February 2021
    Protocol Clients MUST employ the following lookup scheme for the
    appropriate BIMI record for the message:
 
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 18]
+
+Internet-Draft                    BIMI                         July 2023
+
+
    1.  Start with the DNS domain found in the RFC5322.From header in the
        message.  Define this DNS domain as the Author Domain.
-
    2.  If the message for which the Indicator is being determined
        specifies a selector value in the BIMI Selector Header (#bimi-
        selector), use this value for the selector.  Otherwise the value
        'default' MUST be used for the selector.
-
    3.  Clients MUST query the DNS for a BIMI TXT record at the DNS
        domain constructed by concatenating the selector, the string
        '_bimi', and the Author Domain.  A possibly empty set of records
        is returned.
-
    4.  Records that do not start with a "v=" tag that identifies the
        current version of BIMI MUST be discarded.
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 19]
-
-Internet-Draft                    BIMI                     February 2021
-
-
    5.  If the set is now empty, the Client MUST query the DNS for a BIMI
        TXT record at the DNS domain constructed by concatenating the
        selector, the string '_bimi', and the Organizational Domain (as
@@ -1073,14 +1029,11 @@ Internet-Draft                    BIMI                     February 2021
        A custom selector that does not exist falls back to
        <selector>._bimi.<organizationalDomain>.  A possibly empty set of
        records is returned.
-
    6.  Records that do not start with a "v=" tag that identifies the
        current version of BIMI MUST be discarded.
-
    7.  If the remaining set contains multiple records or no records,
        Assertion Record Discovery terminates and BIMI processing MUST
        NOT be performed for this message.
-
    8.  If the remaining set contains only a single record, this record
        is used for BIMI Assertion.
 
@@ -1090,37 +1043,34 @@ Internet-Draft                    BIMI                     February 2021
        location in the l= tag, then Indicator Discovery has failed, and
        the Indicator MUST NOT be displayed.  The bimi-location entry
        MUST be a URI with a HTTPS transport.
-
    2.  If the retrieved Assertion Record includes a bimi-evidence-
        location entry in the a= tag, and the receiver supports BIMI
        Evidence Document validation, then proceed to the Indicator
        Discovery With Evidence (#indicator-discovery-with-evidence)
        step.
-
    3.  If the receiver does not support BIMI Evidence Document
        validation, or the retrieved Assertion Record does not include a
        bimi-evidence-location entry, then proceed to the Indicator
        Discovery Without Evidence (#indicator-discovery-without-
        evidence) step.
 
+
+
+
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 19]
+
+Internet-Draft                    BIMI                         July 2023
+
+
 7.4.  Indicator Discovery With Evidence.
 
    Individual types of BIMI Evidence Document MAY specify extra
    discovery and validation steps.  These will be defined in separate
    documents.
-
-
-
-
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 20]
-
-Internet-Draft                    BIMI                     February 2021
-
 
 7.5.  Indicator Discovery Without Evidence.
 
@@ -1137,12 +1087,10 @@ Internet-Draft                    BIMI                     February 2021
 
    1.  Retrieve the SVG Indicator from the URI specified in the l= tag.
        This MUST be a URI with a HTTPS transport.
-
    2.  If the TLS server identity certificate presented during the TLS
        session setup does not chain-up to a root certificate the Client
        trusts then Indicator validation has failed and the Indicator
        MUST NOT be displayed.
-
    3.  Proceed to the Indicator Validation (#indicator-validation) step.
 
 7.6.  Indicator Validation
@@ -1155,14 +1103,11 @@ Internet-Draft                    BIMI                     February 2021
        Indicator.  A receiver MAY choose to implement the size limit as
        a retrieval limit rather than retrieving the entire document and
        then checking the size.
-
    2.  If the SVG Indicator is missing, or is not a valid SVG or SVGZ
        document then validation has failed and the Indicator MUST NOT be
        displayed.
-
    3.  Check the retrieved Indicator against the SVG validation steps
        specified in this document, and in the BIMI SVG document.
-
    4.  If Indicator verification has passed, and the Indicator is from a
        trusted source, then the Indicator MAY be displayed per receiver
        policy.
@@ -1172,10 +1117,9 @@ Internet-Draft                    BIMI                     February 2021
 
 
 
-
-Blank, et al.             Expires 5 August 2021                [Page 21]
+Blank, et al.            Expires 12 January 2024               [Page 20]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 7.7.  Affix BIMI Status to Authentication Results Header Field
@@ -1220,19 +1164,26 @@ Internet-Draft                    BIMI                     February 2021
    as found in the a= tag of the BIMI Assertion Record (plain-text;
    OPTIONAL).
 
+   policy.indicator-uri: The URI of the BIMI Indicator, as found in the
+   l= tag of the BIMI Assertion Record (plain-text; OPTIONAL).
+
+   policy.indicator-hash: In order to prevent MUAs from displaying
+   indicators from the BIMI-Indicator header which have been modified
+   since delivery, the MTA MAY add a hash of the data referenced in that
 
 
 
-
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 22]
+Blank, et al.            Expires 12 January 2024               [Page 21]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
+
+   header into the Authentication-Results entry such that the hash can
+   be signed by, and verified by an ARC aware MTA/MUA pair.  The raw
+   uncompressed data of the SVG Indicator is hashed wuth SHA-256, the
+   resulting hash is truncated to the final 8 (at least) characters, and
+   added to the Authentication-Results entry.  If this entry is added
+   then the MTA MUST also add the BIMI-Indicator header.
 
 7.8.  Handle Existing BIMI-Location and BIMI-Indicator Headers
 
@@ -1274,21 +1225,17 @@ Internet-Draft                    BIMI                     February 2021
    the Indicator was compressed with gzip when retrieved then the data
    MUST be uncompressed before being base64 encoded.
 
+
+
+
+
+Blank, et al.            Expires 12 January 2024               [Page 22]
+
+Internet-Draft                    BIMI                         July 2023
+
+
    The MTA MUST fold the header to be within the line length limits of
    SMTP [RFC5321].
-
-
-
-
-
-
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 23]
-
-Internet-Draft                    BIMI                     February 2021
-
 
 8.  Security Considerations
 
@@ -1338,12 +1285,9 @@ Internet-Draft                    BIMI                     February 2021
 
 
 
-
-
-
-Blank, et al.             Expires 5 August 2021                [Page 24]
+Blank, et al.            Expires 12 January 2024               [Page 23]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 8.5.  Unaligned Indicators and asserting domains
@@ -1397,9 +1341,9 @@ Internet-Draft                    BIMI                     February 2021
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 25]
+Blank, et al.            Expires 12 January 2024               [Page 24]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
    Author/Change controller: IETF
@@ -1453,9 +1397,9 @@ Internet-Draft                    BIMI                     February 2021
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 26]
+Blank, et al.            Expires 12 January 2024               [Page 25]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
@@ -1509,9 +1453,9 @@ Internet-Draft                    BIMI                     February 2021
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 27]
+Blank, et al.            Expires 12 January 2024               [Page 26]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 Appendix A.  Example Selector Discovery (INFORMATIVE)
@@ -1565,9 +1509,9 @@ A.4.  With BIMI-Selector Header on a subdomain
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 28]
+Blank, et al.            Expires 12 January 2024               [Page 27]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 A.5.  Invalid BIMI-Selector Header
@@ -1621,9 +1565,9 @@ B.4.  Subdomain has no default record, but organizational domain does
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 29]
+Blank, et al.            Expires 12 January 2024               [Page 28]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 B.5.  Subdomain and orgznizational domain have no record for selector,
@@ -1677,9 +1621,9 @@ C.2.  MTA does its authentication checks
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 30]
+Blank, et al.            Expires 12 January 2024               [Page 29]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 C.3.  MTA performs BIMI Assertion
@@ -1733,9 +1677,9 @@ C.5.  MTA Constructs BIMI-Location and BIMI-Indicator headers
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 31]
+Blank, et al.            Expires 12 January 2024               [Page 30]
 
-Internet-Draft                    BIMI                     February 2021
+Internet-Draft                    BIMI                         July 2023
 
 
 C.6.  The MUA displays the Indicator
@@ -1789,4 +1733,4 @@ Authors' Addresses
 
 
 
-Blank, et al.             Expires 5 August 2021                [Page 32]
+Blank, et al.            Expires 12 January 2024               [Page 31]

@@ -22,9 +22,9 @@ Record in DNS and how that record is to be interpreted by MTAs and MUAs. MUAs
 and mail-receiving organizations are free to define their own policies for making
 use of BIMI data and for Indicator display as they see fit. 
     " name="description">
-<meta content="xml2rfc 2.44.0" name="generator">
+<meta content="xml2rfc 2.40.0" name="generator">
 <meta content="draft-brand-indicators-for-message-identification-latest-02" name="ietf.draft">
-<link href="draft-brand-indicators-for-message-identification-latest.xml" rel="alternate" type="application/rfc+xml">
+<link href="build/draft-brand-indicators-for-message-identification-latest.xml" rel="alternate" type="application/rfc+xml">
 <link href="#copyright" rel="license">
 <style type="text/css">/*
 
@@ -1001,7 +1001,7 @@ h1#rfcnum {
 }
 /* Make .olPercent look the same as <ol><li> */
 dl.olPercent > dd {
-  margin-bottom: 0.25em;
+  margin: 0 0 0.25em 0;
   min-height: initial;
 }
 /* Give aside some styling to set it apart */
@@ -1039,6 +1039,14 @@ aside > p {
     margin-bottom: 1em;
   }
 }
+/*
+  The margin-left: 0 on <dd> removes all distinction
+  between levels from nested <dl>s.  Undo that.
+*/
+dl.olPercent > dd,
+dd {
+  margin-left: revert;
+}
 /* Avoid narrow tables forcing too narrow table captions, which may render badly */
 table {
   min-width: 20em;
@@ -1048,63 +1056,7 @@ ol.type-a { list-style-type: lower-alpha; }
 ol.type-A { list-style-type: upper-alpha; }
 ol.type-i { list-style-type: lower-roman; }
 ol.type-I { list-style-type: lower-roman; }
-/* Apply the print table and row borders in general, on request from the RPC,
-and increase the contrast between border and odd row background sligthtly */
-table {
-  border: 1px solid #ddd;
-}
-td {
-  border-top: 1px solid #ddd;
-}
-tr:nth-child(2n+1) > td {
-  background-color: #f8f8f8;
-}
-/* Use style rules to govern display of the TOC. */
-@media screen and (max-width: 1023px) {
-  #toc nav { display: none; }
-  #toc.active nav { display: block; }
-}
-/* Add support for keepWithNext */
-.keepWithNext {
-  break-after: avoid-page;
-  break-after: avoid-page;
-}
-/* Add support for keepWithPrevious */
-.keepWithPrevious {
-  break-before: avoid-page;
-}
-/* Change the approach to avoiding breaks inside artwork etc. */
-figure, pre, table, .artwork, .sourcecode  {
-  break-before: avoid-page;
-  break-after: auto;
-}
-/* Avoid breaks between <dt> and <dd> */
-dl {
-  break-inside: auto;
-}
-dt {
-  break-before: auto;
-  break-after: avoid-page;
-}
-dd {
-  break-before: avoid-page;
-  break-after: auto;
-  orphans: 3;
-  widows: 3
-}
-dd.break {
-  margin-bottom: 0;
-  min-height: 0;
-  break-before: auto;
-  break-inside: auto;
-  break-after: auto;
-}
-/* Undo break-before ToC */
-@media print {
-  #toc {
-    break-before: auto;
-  }
-}</style>
+</style>
 <link href="rfc-local.css" rel="stylesheet" type="text/css">
 </head>
 <body>
@@ -1113,11 +1065,11 @@ dd.break {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">BIMI</td>
-<td class="right">February 2021</td>
+<td class="right">July 2023</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Blank, et al.</td>
-<td class="center">Expires 5 August 2021</td>
+<td class="center">Expires 12 January 2024</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1130,12 +1082,12 @@ dd.break {
 <dd class="internet-draft">draft-brand-indicators-for-message-identification-latest-02</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2021-02-01" class="published">1 February 2021</time>
+<time datetime="2023-07-11" class="published">11 July 2023</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2021-08-05">5 August 2021</time></dd>
+<dd class="expires"><time datetime="2024-01-12">12 January 2024</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1193,7 +1145,7 @@ use of BIMI data and for Indicator display as they see fit.<a href="#section-abs
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 5 August 2021.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 12 January 2024.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -1202,7 +1154,7 @@ use of BIMI data and for Indicator display as they see fit.<a href="#section-abs
 <a href="#name-copyright-notice" class="section-name selfRef">Copyright Notice</a>
         </h2>
 <p id="section-boilerplate.2-1">
-            Copyright (c) 2021 IETF Trust and the persons identified as the
+            Copyright (c) 2023 IETF Trust and the persons identified as the
             document authors. All rights reserved.<a href="#section-boilerplate.2-1" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.2-2">
             This document is subject to BCP 78 and the IETF Trust's Legal
@@ -1223,16 +1175,16 @@ use of BIMI data and for Indicator display as they see fit.<a href="#section-abs
         </h2>
 <nav class="toc"><ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.1">
-            <p id="section-toc.1-1.1.1" class="keepWithNext"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
+            <p id="section-toc.1-1.1.1"><a href="#section-1" class="xref">1</a>.  <a href="#name-introduction" class="xref">Introduction</a><a href="#section-toc.1-1.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.2">
             <p id="section-toc.1-1.2.1"><a href="#section-2" class="xref">2</a>.  <a href="#name-overview" class="xref">Overview</a><a href="#section-toc.1-1.2.1" class="pilcrow">¶</a></p>
 <ul class="toc ulEmpty">
 <li class="toc ulEmpty" id="section-toc.1-1.2.2.1">
-                <p id="section-toc.1-1.2.2.1.1" class="keepWithNext"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-high-level-goals" class="xref">High-Level Goals</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.2.2.1.1"><a href="#section-2.1" class="xref">2.1</a>.  <a href="#name-high-level-goals" class="xref">High-Level Goals</a><a href="#section-toc.1-1.2.2.1.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.2.2.2">
-                <p id="section-toc.1-1.2.2.2.1" class="keepWithNext"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-security" class="xref">Security</a><a href="#section-toc.1-1.2.2.2.1" class="pilcrow">¶</a></p>
+                <p id="section-toc.1-1.2.2.2.1"><a href="#section-2.2" class="xref">2.2</a>.  <a href="#name-security" class="xref">Security</a><a href="#section-toc.1-1.2.2.2.1" class="pilcrow">¶</a></p>
 </li>
 <li class="toc ulEmpty" id="section-toc.1-1.2.2.3">
                 <p id="section-toc.1-1.2.2.3.1"><a href="#section-2.3" class="xref">2.3</a>.  <a href="#name-out-of-scope" class="xref">Out of Scope</a><a href="#section-toc.1-1.2.2.3.1" class="pilcrow">¶</a></p>
@@ -1554,7 +1506,7 @@ mail-receiving organizations have developed closed systems for obtaining
 and displaying Brand Indicators for select domains.  While this has enabled
 these mail-receiving organizations to display brand Indicators for a limited
 subset of messages, this closed approach has a number of downsides:<a href="#section-2-3" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-2-4">
+<ol start="1" type="1" class="compact type-1" id="section-2-4">
         <li id="section-2-4.1">It puts a significant burden on each mail-receiving organization, because
 they must identify and manage a large database of Brand Indicators.<a href="#section-2-4.1" class="pilcrow">¶</a>
 </li>
@@ -1586,7 +1538,7 @@ Indicators.  As an additional benefit, mail-originating organizations are
 incentivized to authenticate their email as doing so will enable them to
 influence how email and Indicators from the organization are displayed.<a href="#section-2-6" class="pilcrow">¶</a></p>
 <p id="section-2-7">The structure of BIMI is as follows:<a href="#section-2-7" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-2-8">
+<ol start="1" type="1" class="compact type-1" id="section-2-8">
         <li id="section-2-8.1">
           <p id="section-2-8.1.1">Domain Owners:<a href="#section-2-8.1.1" class="pilcrow">¶</a></p>
 <ul>
@@ -1601,7 +1553,7 @@ that meets the following criteria:<a href="#section-2-8.1.2.1.2.1.1" class="pilc
 policy of "quarantine" with an effective percentage of 100%, or a
 Requested Mail Receiver policy of "reject" (with any percentage value).<a href="#section-2-8.1.2.1.2.1.2.1" class="pilcrow">¶</a>
 </li>
-<li id="section-2-8.1.2.1.2.1.2.2">Is a subdomain policy is published it MUST NOT be "none"<a href="#section-2-8.1.2.1.2.1.2.2" class="pilcrow">¶</a>
+<li id="section-2-8.1.2.1.2.1.2.2">If a subdomain policy is published it MUST NOT be "none"<a href="#section-2-8.1.2.1.2.1.2.2" class="pilcrow">¶</a>
 </li>
 <li id="section-2-8.1.2.1.2.1.2.3">Be published for the Organizational Domain, and any subdomains thereof<a href="#section-2-8.1.2.1.2.1.2.3" class="pilcrow">¶</a>
 </li>
@@ -1815,7 +1767,7 @@ service also has the benefit of reusing an extremely well-established operations
 administration, and management infrastructure, rather than creating a new one.<a href="#section-4-4" class="pilcrow">¶</a></p>
 <p id="section-4-5">BIMI's policy payload is intentionally only published via a DNS record and not via
 one or more email headers. This serves three purposes:<a href="#section-4-5" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-4-6">
+<ol start="1" type="1" class="compact type-1" id="section-4-6">
         <li id="section-4-6.1">There is one and only one mechanism for both simple and complex policies to be published.<a href="#section-4-6.1" class="pilcrow">¶</a>
 </li>
 <li id="section-4-6.2">Operational complexity is reduced.  MTAs only need to check a single record in a consistent
@@ -1852,10 +1804,10 @@ preferences, BIMI defines and uses [selectors]{#selectors}. Senders declare
 which selector to use for a given message by specifying the selector in an
 optional <a href="#bimi-selector">BIMI-Selector header</a>.<a href="#section-4.2-1" class="pilcrow">¶</a></p>
 <p id="section-4.2-2">For example, the Domain Owner of "example.com" would post BIMI policy in a
-TXT record at "default.<em>bimi.example.com".  Similarly, a Mail Receiver wishing
+TXT record at "default._bimi.example.com".  Similarly, a Mail Receiver wishing
 to query for BIMI policy regarding mail with an RFC5322.From Author Domain of
 "example.com" and a selector "default" (the default) would query the TXT record
-located at the subdomain of "default.</em>bimi.example.com".  The DNS-based BIMI
+located at the subdomain of "default._bimi.example.com".  The DNS-based BIMI
 policy record is referred to as the "BIMI Assertion Record" or "Assertion
 Record".<a href="#section-4.2-2" class="pilcrow">¶</a></p>
 <p id="section-4.2-3">BIMI Assertion Records follow the extensible "tag-value" syntax for DNS-based
@@ -1877,6 +1829,7 @@ MUST be the first tag in the list.<a href="#section-4.2-7" class="pilcrow">¶</a
 <pre>ABNF:
 
 bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
+
 </pre><a href="#section-4.2-8" class="pilcrow">¶</a>
 </div>
 <p id="section-4.2-9">a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this
@@ -1898,6 +1851,7 @@ bimi-uri = \[FWS\] URI \[FWS\]
 ; "URI" is imported from [URI]
 ; HTTPS only
 ; commas within a URI (ASCII ; 0x2C) MUST be encoded
+
 </pre><a href="#section-4.2-11" class="pilcrow">¶</a>
 </div>
 <p id="section-4.2-12">l= location (URI; REQUIRED).  The value of this tag is either empty
@@ -1907,6 +1861,7 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.<a hr
 <pre>ABNF:
 
 bimi-location = %x6c *WSP "=" bimi-uri
+
 </pre><a href="#section-4.2-13" class="pilcrow">¶</a>
 </div>
 <p id="section-4.2-14">Therefore, the formal definition of the BIMI Assertion Record, using ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span>,
@@ -1917,6 +1872,7 @@ is as follows:<a href="#section-4.2-14" class="pilcrow">¶</a></p>
 bimi-record = bimi-version (bimi-sep bimi-location) (bimi-sep bimi-evidence-location) \[bimi-sep\]
 
 ; components other than bimi-version may appear in any order
+
 </pre><a href="#section-4.2-15" class="pilcrow">¶</a>
 </div>
 <div id="declination-to-publish">
@@ -1934,6 +1890,7 @@ other selectors would display normally.<a href="#section-4.2.1-1" class="pilcrow
 <p id="section-4.2.1-2">An explicit declination to publish looks like:<a href="#section-4.2.1-2" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-4.2.1-3">
 <pre>v=BIMI1; l=; a=;
+
 </pre><a href="#section-4.2.1-3" class="pilcrow">¶</a>
 </div>
 </section>
@@ -1984,6 +1941,7 @@ selector = sub-domain *( "." sub-domain )
 ; from [SMTP] Domain,
 
 ; excluding address-literal
+
 </pre><a href="#section-4.3-4" class="pilcrow">¶</a>
 </div>
 <p id="section-4.3-5">The number of selectors for each domain is determined by the Domain Owner.
@@ -2009,8 +1967,8 @@ is an error.<a href="#section-5-2" class="pilcrow">¶</a></p>
         <h3 id="name-bimi-selector-header">
 <a href="#section-5.1" class="section-number selfRef">5.1. </a><a href="#name-bimi-selector-header" class="section-name selfRef">BIMI-Selector Header</a>
         </h3>
-<p id="section-5.1-1">BIMI DNS records are placed in &lt;selector&gt;.<em>bimi.&lt;domain&gt;, and by default
-they are placed in default.</em>bimi.&lt;domain&gt;. That is, for example.com, the
+<p id="section-5.1-1">BIMI DNS records are placed in &lt;selector&gt;._bimi.&lt;domain&gt;, and by default
+they are placed in default._bimi.&lt;domain&gt;. That is, for example.com, the
 default Assertion Record is located in the DNS at default._bimi.example.com.
 However, a Domain Owner may override the use of the default selector and
 specify the use of an alternative using the RFC5322-compliant header
@@ -2024,6 +1982,7 @@ the list.<a href="#section-5.1-2" class="pilcrow">¶</a></p>
 <pre>ABNF:
 
 bimi-header-version = "v" *WSP "=" *WSP "BIMI" 1DIGIT
+
 </pre><a href="#section-5.1-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.1-4">s= Selector (plain-text; REQUIRED). The location of the BIMI DNS record,
@@ -2032,11 +1991,13 @@ when combined with the RFC5322.From domain.<a href="#section-5.1-4" class="pilcr
 <pre>ABNF:
 
 bimi-selector = "s" *WSP "=" *WSP selector
+
 </pre><a href="#section-5.1-5" class="pilcrow">¶</a>
 </div>
 <p id="section-5.1-6">And the formal definition of the BIMI Selector Header, using ABNF, is as follows:<a href="#section-5.1-6" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-5.1-7">
 <pre>bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
+
 </pre><a href="#section-5.1-7" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2056,6 +2017,7 @@ he entire header MUST be ignored.  It MUST be the first tag in the list.<a href=
 <div class="artwork art-text alignLeft" id="section-5.2-4">
 <pre>The ABNF for bimi-header-version is imported exactly from the
 [BIMI Selector Header](#bimi-selector).
+
 </pre><a href="#section-5.2-4" class="pilcrow">¶</a>
 </div>
 <p id="section-5.2-5">l: location of the BIMI Indicator (URI; OPTIONAL if a
@@ -2067,6 +2029,7 @@ the location of the Brand Indicator file.  HTTPS is the only supported transport
 <pre>ABNF:
 
 bimi-location-header-uri = "l" *WSP "=" bimi-uri
+
 </pre><a href="#section-5.2-6" class="pilcrow">¶</a>
 </div>
 <p id="section-5.2-7">a: location of the BIMI Evidence Document (URI; REQUIRED if the BIMI Evidence
@@ -2078,6 +2041,7 @@ HTTPS is the only supported transport.<a href="#section-5.2-7" class="pilcrow">�
 <pre>ABNF:
 
 bimi-evidenced-location-header-uri = "a" *WSP "=" bimi-uri
+
 </pre><a href="#section-5.2-8" class="pilcrow">¶</a>
 </div>
 <p id="section-5.2-9">And the formal definition of the BIMI Location Header, using ABNF, is as
@@ -2092,6 +2056,7 @@ bimi-location-header-both = bimi-location-header-uri bimi-evidence-location-head
 bimi-location-options = bimi-location-header-location-only / bimi-location-header-evidence-only / bimi-location-header-both
 
 bimi-location-header = bimi-header-version bimi-sep bimi-location-options \[bimi-sep\]
+
 </pre><a href="#section-5.2-10" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2112,11 +2077,13 @@ file then the MTA MUST uncompress the file before base64 encoding.<a href="#sect
 <div class="artwork art-text alignLeft" id="section-5.3-3">
 <pre>base64string    =  ALPHADIGITPS *([FWS] ALPHADIGITPS)
                    [ [FWS] "=" [ [FWS] "=" ] ]
+
 </pre><a href="#section-5.3-3" class="pilcrow">¶</a>
 </div>
 <p id="section-5.3-4">And the formal definition of the BIMI Indicator Header, using ABNF, is as follows:<a href="#section-5.3-4" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-5.3-5">
 <pre>bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
+
 </pre><a href="#section-5.3-5" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2215,7 +2182,7 @@ takes when evaluating an email message for BIMI Assertion.<a href="#section-7-1"
         </h3>
 <p id="section-7.1-1">Before applying BIMI processing for a message, a receiver MUST verify
 that the message passed the following BIMI authentication requirements:<a href="#section-7.1-1" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-7.1-2">
+<ol start="1" type="1" class="compact type-1" id="section-7.1-2">
           <li id="section-7.1-2.1">If more than 1 RFC5322.From header is present in the message, or any
 RFC5322.From header contains more than 1 email address then BIMI
 processing MUST NOT be performed for this message.<a href="#section-7.1-2.1" class="pilcrow">¶</a>
@@ -2273,7 +2240,7 @@ authentication fails per Receiver policy.<a href="#section-7.2-2" class="pilcrow
 subdomain policy overrides, and limiting DNS query load, Protocol Clients
 MUST employ the following lookup scheme for the appropriate BIMI record
 for the message:<a href="#section-7.2-3" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-7.2-4">
+<ol start="1" type="1" class="compact type-1" id="section-7.2-4">
           <li id="section-7.2-4.1">Start with the DNS domain found in the RFC5322.From header in the message.
 Define this DNS domain as the Author Domain.<a href="#section-7.2-4.1" class="pilcrow">¶</a>
 </li>
@@ -2290,10 +2257,10 @@ possibly empty set of records is returned.<a href="#section-7.2-4.3" class="pilc
 of BIMI MUST be discarded.<a href="#section-7.2-4.4" class="pilcrow">¶</a>
 </li>
 <li id="section-7.2-4.5">If the set is now empty, the Client MUST query the DNS for a BIMI TXT record
-at the DNS domain constructed by concatenating the selector, the string '<em>bimi',
+at the DNS domain constructed by concatenating the selector, the string '_bimi',
 and the Organizational Domain (as defined in DMARC <span>[<a href="#RFC7489" class="xref">RFC7489</a>]</span>) corresponding
 to the Author Domain. A custom selector that does not exist falls back to
-&lt;selector&gt;.</em>bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records
+&lt;selector&gt;._bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records
 is returned.<a href="#section-7.2-4.5" class="pilcrow">¶</a>
 </li>
 <li id="section-7.2-4.6">Records that do not start with a "v=" tag that identifies the current version
@@ -2313,7 +2280,7 @@ Assertion.<a href="#section-7.2-4.8" class="pilcrow">¶</a>
         <h3 id="name-indicator-discovery">
 <a href="#section-7.3" class="section-number selfRef">7.3. </a><a href="#name-indicator-discovery" class="section-name selfRef">Indicator Discovery.</a>
         </h3>
-<ol start="1" type="1" class="normal type-1" id="section-7.3-1">
+<ol start="1" type="1" class="compact type-1" id="section-7.3-1">
           <li id="section-7.3-1.1">If the retrieved Assertion Record does not include a valid bimi-location in
 the l= tag, then Indicator Discovery has failed, and the Indicator MUST NOT
 be displayed. The bimi-location entry MUST be a URI with a HTTPS transport.<a href="#section-7.3-1.1" class="pilcrow">¶</a>
@@ -2352,7 +2319,7 @@ Authentication-Results header by adding a bimi=declined entry.<a href="#section-
 <p id="section-7.5-2">If an Assertion Record is found, and has an empty or missing bimi-evidence-location
 entry then no evidence has is presented, and the Indicator MUST be retrieved from
 the URI specified in the bimi-location entry using the following algorithm:<a href="#section-7.5-2" class="pilcrow">¶</a></p>
-<ol start="1" type="1" class="normal type-1" id="section-7.5-3">
+<ol start="1" type="1" class="compact type-1" id="section-7.5-3">
           <li id="section-7.5-3.1">Retrieve the SVG Indicator from the URI specified in the l= tag. This MUST be
 a URI with a HTTPS transport.<a href="#section-7.5-3.1" class="pilcrow">¶</a>
 </li>
@@ -2370,7 +2337,7 @@ has failed and the Indicator MUST NOT be displayed.<a href="#section-7.5-3.2" cl
         <h3 id="name-indicator-validation">
 <a href="#section-7.6" class="section-number selfRef">7.6. </a><a href="#name-indicator-validation" class="section-name selfRef">Indicator Validation</a>
         </h3>
-<ol start="1" type="1" class="normal type-1" id="section-7.6-1">
+<ol start="1" type="1" class="compact type-1" id="section-7.6-1">
           <li id="section-7.6-1.1">Check the file size of the retrieved Indicator against recommended maximum sizes
 as defined in this document, and in the BIMI SVG document. A receiver MAY choose
 to implement their own file size restrictions. If the Indicator is larger than
@@ -2423,6 +2390,16 @@ then this MUST be set to fail. If no Authority Evidence was presented, or
 the MTA did not check the Authority Evidence then this SHOULD be set to none.<a href="#section-7.7-5" class="pilcrow">¶</a></p>
 <p id="section-7.7-6">policy.authority-uri: The URI of the BIMI Evidence Document checked, as found
 in the a= tag of the BIMI Assertion Record (plain-text; OPTIONAL).<a href="#section-7.7-6" class="pilcrow">¶</a></p>
+<p id="section-7.7-7">policy.indicator-uri: The URI of the BIMI Indicator, as found in the l= tag
+of the BIMI Assertion Record (plain-text; OPTIONAL).<a href="#section-7.7-7" class="pilcrow">¶</a></p>
+<p id="section-7.7-8">policy.indicator-hash: In order to prevent MUAs from displaying indicators from
+the BIMI-Indicator header which have been modified since delivery, the MTA MAY
+add a hash of the data referenced in that header into the Authentication-Results
+entry such that the hash can be signed by, and verified by an ARC aware MTA/MUA pair.
+The raw uncompressed data of the SVG Indicator is hashed wuth SHA-256, the resulting
+hash is truncated to the final 8 (at least) characters, and added to the Authentication-Results
+entry.
+If this entry is added then the MTA MUST also add the BIMI-Indicator header.<a href="#section-7.7-8" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="handle-existing-bimi-location-and-bimi-indicator-headers">
@@ -2639,39 +2616,30 @@ defines it, and a description.<a href="#section-9.2-2" class="pilcrow">¶</a></p
 <dt id="RFC1035">[RFC1035]</dt>
 <dd>
 <span class="refAuthor">Mockapetris, P.</span>, <span class="refTitle">"Domain names - implementation and specification"</span>, <span class="seriesInfo">STD 13</span>, <span class="seriesInfo">RFC 1035</span>, <span class="seriesInfo">DOI 10.17487/RFC1035</span>, <time datetime="1987-11">November 1987</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc1035">https://www.rfc-editor.org/info/rfc1035</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC2119">[RFC2119]</dt>
 <dd>
 <span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc2119">https://www.rfc-editor.org/info/rfc2119</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC5234">[RFC5234]</dt>
 <dd>
 <span class="refAuthor">Crocker, D., Ed.</span><span class="refAuthor"> and P. Overell</span>, <span class="refTitle">"Augmented BNF for Syntax Specifications: ABNF"</span>, <span class="seriesInfo">STD 68</span>, <span class="seriesInfo">RFC 5234</span>, <span class="seriesInfo">DOI 10.17487/RFC5234</span>, <time datetime="2008-01">January 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5234">https://www.rfc-editor.org/info/rfc5234</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC5321">[RFC5321]</dt>
 <dd>
 <span class="refAuthor">Klensin, J.</span>, <span class="refTitle">"Simple Mail Transfer Protocol"</span>, <span class="seriesInfo">RFC 5321</span>, <span class="seriesInfo">DOI 10.17487/RFC5321</span>, <time datetime="2008-10">October 2008</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5321">https://www.rfc-editor.org/info/rfc5321</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC5598">[RFC5598]</dt>
 <dd>
 <span class="refAuthor">Crocker, D.</span>, <span class="refTitle">"Internet Mail Architecture"</span>, <span class="seriesInfo">RFC 5598</span>, <span class="seriesInfo">DOI 10.17487/RFC5598</span>, <time datetime="2009-07">July 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc5598">https://www.rfc-editor.org/info/rfc5598</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC6376">[RFC6376]</dt>
 <dd>
 <span class="refAuthor">Crocker, D., Ed.</span><span class="refAuthor">, Hansen, T., Ed.</span><span class="refAuthor">, and M. Kucherawy, Ed.</span>, <span class="refTitle">"DomainKeys Identified Mail (DKIM) Signatures"</span>, <span class="seriesInfo">STD 76</span>, <span class="seriesInfo">RFC 6376</span>, <span class="seriesInfo">DOI 10.17487/RFC6376</span>, <time datetime="2011-09">September 2011</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc6376">https://www.rfc-editor.org/info/rfc6376</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC7208">[RFC7208]</dt>
 <dd>
 <span class="refAuthor">Kitterman, S.</span>, <span class="refTitle">"Sender Policy Framework (SPF) for Authorizing Use of Domains in Email, Version 1"</span>, <span class="seriesInfo">RFC 7208</span>, <span class="seriesInfo">DOI 10.17487/RFC7208</span>, <time datetime="2014-04">April 2014</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7208">https://www.rfc-editor.org/info/rfc7208</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC7489">[RFC7489]</dt>
 <dd>
 <span class="refAuthor">Kucherawy, M., Ed.</span><span class="refAuthor"> and E. Zwicky, Ed.</span>, <span class="refTitle">"Domain-based Message Authentication, Reporting, and Conformance (DMARC)"</span>, <span class="seriesInfo">RFC 7489</span>, <span class="seriesInfo">DOI 10.17487/RFC7489</span>, <time datetime="2015-03">March 2015</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc7489">https://www.rfc-editor.org/info/rfc7489</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8617">[RFC8617]</dt>
 <dd>
 <span class="refAuthor">Andersen, K.</span><span class="refAuthor">, Long, B., Ed.</span><span class="refAuthor">, Blank, S., Ed.</span><span class="refAuthor">, and M. Kucherawy, Ed.</span>, <span class="refTitle">"The Authenticated Received Chain (ARC) Protocol"</span>, <span class="seriesInfo">RFC 8617</span>, <span class="seriesInfo">DOI 10.17487/RFC8617</span>, <time datetime="2019-07">July 2019</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8617">https://www.rfc-editor.org/info/rfc8617</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 </dl>
 </section>
 <section id="section-11">
@@ -2682,11 +2650,9 @@ defines it, and a description.<a href="#section-9.2-2" class="pilcrow">¶</a></p
 <dt id="BIMI-OVERVIEW">[BIMI-OVERVIEW]</dt>
 <dd>
 <span class="refTitle">"An Overview of the Design of BIMI"</span>, <time></time>, <span>&lt;<a href="http://tools.ietf.org/html/draft-bkl-bimi-overview-00.html">http://tools.ietf.org/html/draft-bkl-bimi-overview-00.html</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 <dt id="RFC8174">[RFC8174]</dt>
 <dd>
 <span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/info/rfc8174">https://www.rfc-editor.org/info/rfc8174</a>&gt;</span>. </dd>
-<dd class="break"></dd>
 </dl>
 </section>
 <div id="bimi-header-examples">
@@ -2704,6 +2670,7 @@ which Assertion Record to use depending on the BIMI-Selector header.<a href="#se
 <p id="section-a.1-1">The domain example.com does not send with a BIMI-Selector header.<a href="#section-a.1-1" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-a.1-2">
 <pre>From: sender@example.com
+
 </pre><a href="#section-a.1-2" class="pilcrow">¶</a>
 </div>
 <p id="section-a.1-3">The MTA would lookup default._bimi.example.com for the BIMI DNS record.<a href="#section-a.1-3" class="pilcrow">¶</a></p>
@@ -2718,6 +2685,7 @@ which Assertion Record to use depending on the BIMI-Selector header.<a href="#se
 <div class="artwork art-text alignLeft" id="section-a.2-2">
 <pre>From: sender@example.com
 BIMI-Selector: v=BIMI1; s=selector;
+
 </pre><a href="#section-a.2-2" class="pilcrow">¶</a>
 </div>
 <p id="section-a.2-3">The MTA would lookup selector._bimi.example.com.<a href="#section-a.2-3" class="pilcrow">¶</a></p>
@@ -2731,10 +2699,11 @@ BIMI-Selector: v=BIMI1; s=selector;
 <p id="section-a.3-1">The domain foo.example.com sends without a BIMI-Selector header:<a href="#section-a.3-1" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-a.3-2">
 <pre>From: sender@foo.example.com
+
 </pre><a href="#section-a.3-2" class="pilcrow">¶</a>
 </div>
-<p id="section-a.3-3">The MTA would lookup default.<em>bimi.foo.example.com for the BIMI DNS record.
-If it did not exist, it would lookup default.</em>bimi.example.com.<a href="#section-a.3-3" class="pilcrow">¶</a></p>
+<p id="section-a.3-3">The MTA would lookup default._bimi.foo.example.com for the BIMI DNS record.
+If it did not exist, it would lookup default._bimi.example.com.<a href="#section-a.3-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="with-bimi-selector-header-on-a-subdomain">
@@ -2746,10 +2715,11 @@ If it did not exist, it would lookup default.</em>bimi.example.com.<a href="#sec
 <div class="artwork art-text alignLeft" id="section-a.4-2">
 <pre>From: sender@foo.example.com
 BIMI-Selector: v=BIMI1; s=myselector;
+
 </pre><a href="#section-a.4-2" class="pilcrow">¶</a>
 </div>
-<p id="section-a.4-3">The MTA would lookup myselector.<em>bimi.foo.example.com for the BIMI DNS record.
-If it did not exist, it would fall back to the lookup myselector.</em>bimi.example.com.<a href="#section-a.4-3" class="pilcrow">¶</a></p>
+<p id="section-a.4-3">The MTA would lookup myselector._bimi.foo.example.com for the BIMI DNS record.
+If it did not exist, it would fall back to the lookup myselector._bimi.example.com.<a href="#section-a.4-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="invalid-bimi-selector-header">
@@ -2762,6 +2732,7 @@ the required field 'v=':<a href="#section-a.5-1" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-a.5-2">
 <pre>From: sender@example.com
 BIMI-Selector: s=myselector;
+
 </pre><a href="#section-a.5-2" class="pilcrow">¶</a>
 </div>
 <p id="section-a.5-3">The MTA would ignore this header, and lookup default._bimi.example.com.<a href="#section-a.5-3" class="pilcrow">¶</a></p>
@@ -2785,6 +2756,7 @@ BIMI lookup statuses.<a href="#section-appendix.b-1" class="pilcrow">¶</a></p>
 <pre>From: sender@example.com
 BIMI-Selector: v=BIMI1; s=myselector;
 Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+
 </pre><a href="#section-b.1-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2797,10 +2769,11 @@ Authentication-Results: bimi=pass header.d=example.com header.selector=myselecto
 <div class="artwork art-text alignLeft" id="section-b.2-1">
 <pre>From: sender@sub.example.com
 Authentication-Results: bimi=none;
+
 </pre><a href="#section-b.2-1" class="pilcrow">¶</a>
 </div>
 <p id="section-b.2-2">In this example, sub.example.com does not have a BIMI record at
-default.<em>bimi.sub.example.com, nor does default.</em>bimi.example.com<a href="#section-b.2-2" class="pilcrow">¶</a></p>
+default._bimi.sub.example.com, nor does default._bimi.example.com<a href="#section-b.2-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="declination-to-publish-1">
@@ -2811,6 +2784,7 @@ default.<em>bimi.sub.example.com, nor does default.</em>bimi.example.com<a href=
 <div class="artwork art-text alignLeft" id="section-b.3-1">
 <pre>From: sender@example.com
 Authentication-Results: bimi=declined;
+
 </pre><a href="#section-b.3-1" class="pilcrow">¶</a>
 </div>
 <p id="section-b.3-2">In this example the record found at default._bimi.example.com was
@@ -2826,6 +2800,7 @@ Record, and so indicating that BIMI processing should not occur on this message.
 <div class="artwork art-text alignLeft" id="section-b.4-1">
 <pre>From: sender@sub.example.com
 Authentication-Results: bimi=pass header.d=example.com header.selector=default;
+
 </pre><a href="#section-b.4-1" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2840,11 +2815,12 @@ Authentication-Results: bimi=pass header.d=example.com header.selector=default;
 <pre>From: sender@sub.example.com
 BIMI-Selector: v=BIMI1; s=myselector;
 Authentication-Results: bimi=none;
+
 </pre><a href="#section-b.5-2" class="pilcrow">¶</a>
 </div>
 <p id="section-b.5-3">In this example, the sender specified a DNS record at
-myselector.<em>bimi.sub.example.com but it did not exist. The fallback is to
-use myselector.</em>bimi.example.com, which also does not exist. The assertion
+myselector._bimi.sub.example.com but it did not exist. The fallback is to
+use myselector._bimi.example.com, which also does not exist. The assertion
 record does exist for the default selector at the organizational domain
 default._bimi.example.com, however this is not used as the sender specified
 a selector of myselector.<a href="#section-b.5-3" class="pilcrow">¶</a></p>
@@ -2859,10 +2835,11 @@ a selector of myselector.<a href="#section-b.5-3" class="pilcrow">¶</a></p>
 <pre>From: sender@sub.example.com
 BIMI-Selector: v=BIMI1; s=myselector;
 Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+
 </pre><a href="#section-b.6-1" class="pilcrow">¶</a>
 </div>
-<p id="section-b.6-2">In this example, the sender specified a DNS record at myselector.<em>bimi.sub.example.com
-but it did not exist. The fallback is to use myselector.</em>bimi.example.com.<a href="#section-b.6-2" class="pilcrow">¶</a></p>
+<p id="section-b.6-2">In this example, the sender specified a DNS record at myselector._bimi.sub.example.com
+but it did not exist. The fallback is to use myselector._bimi.example.com.<a href="#section-b.6-2" class="pilcrow">¶</a></p>
 </section>
 </div>
 </section>
@@ -2886,6 +2863,7 @@ From: sender@example.com
 BIMI-Selector: v=BIMI1; s=brand;
 BIMI-Location: image.example.com/bimi/logo/example-bimi.svg
 Subject: Hi, this is a message from the good folks at Example Learning
+
 </pre><a href="#section-c.1-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2912,6 +2890,7 @@ the BIMI-Selector header. The MTA sees the header validates and contains 'v=BIMI
 and 's=brand'. It performs a DNS query for brand._bimi.example.com and retrieves:<a href="#section-c.3-1" class="pilcrow">¶</a></p>
 <div class="artwork art-text alignLeft" id="section-c.3-2">
 <pre>brand._bimi.example.com IN TXT "v=BIMI1; l=https://image.example.com/bimi/logo/"
+
 </pre><a href="#section-c.3-2" class="pilcrow">¶</a>
 </div>
 <p id="section-c.3-3">The MTA verifies the syntax of the BIMI DNS record, and it, too passes.<a href="#section-c.3-3" class="pilcrow">¶</a></p>
@@ -2932,6 +2911,7 @@ header:<a href="#section-c.4-1" class="pilcrow">¶</a></p>
   dkim=pass (signature was verified) header.d=example.com;
   dmarc=pass header.from=example.com;
   bimi=pass header.d=example.com header.selector=brand;
+
 </pre><a href="#section-c.4-2" class="pilcrow">¶</a>
 </div>
 </section>
@@ -2951,6 +2931,7 @@ stamps the new ones:<a href="#section-c.5-3" class="pilcrow">¶</a></p>
 <pre>BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/
 
 BIMI-Indicator: PD94bW...8L3N2Zz4K
+
 </pre><a href="#section-c.5-4" class="pilcrow">¶</a>
 </div>
 <p id="section-c.5-5">That the original sender signed a BIMI-Location header against this spec is irrelevant.
@@ -3025,13 +3006,45 @@ Sri Somanchi, Don Cardinal, Steve Jones, and John Levine.<a href="#section-appen
 </address>
 </section>
 </div>
-<script>const toc = document.getElementById("toc");
-toc.querySelector("h2").addEventListener("click", e => {
-  toc.classList.toggle("active");
+<script>var toc = document.getElementById("toc");
+var tocToggle = toc.querySelector("h2");
+var tocNav = toc.querySelector("nav");
+
+// mobile menu toggle
+tocToggle.onclick = function(event) {
+    if (window.innerWidth < 1024) {
+ var tocNavDisplay = tocNav.currentStyle ? tocNav.currentStyle.display : getComputedStyle(tocNav, null).display;
+ if (tocNavDisplay == "none") {
+     tocNav.style.display = "block";
+ } else {
+     tocNav.style.display = "none";
+ }
+    }
+}
+
+// toc anchor scroll to anchor
+tocNav.addEventListener("click", function (event) {
+    event.preventDefault();
+    if (event.target.nodeName == 'A') {
+ if (window.innerWidth < 1024) {
+     tocNav.style.display = "none";
+ }
+ var href = event.target.getAttribute("href");
+ var anchorId = href.substr(1);
+ var anchor =  document.getElementById(anchorId);
+ anchor.scrollIntoView(true);
+ window.history.pushState("","",href);
+    }
 });
-toc.querySelector("nav").addEventListener("click", e => {
-  toc.classList.remove("active");
-});
+
+// switch toc mode when window resized
+window.onresize = function () {
+    if (window.innerWidth < 1024) {
+ tocNav.style.display = "none";
+    } else {
+ tocNav.style.display = "block";
+    }
+}
 </script>
 </body>
 </html>

@@ -9,17 +9,17 @@
 VERSION = 02
 DOCNAME = draft-brand-indicators-for-message-identification-latest
 
-all: $(DOCNAME)-$(VERSION).txt $(DOCNAME)-$(VERSION).html
+all: build/$(DOCNAME).xml build/$(DOCNAME)-$(VERSION).txt build/$(DOCNAME)-$(VERSION).html
 
-$(DOCNAME)-$(VERSION).txt: $(DOCNAME).xml
+build/$(DOCNAME)-$(VERSION).txt: build/$(DOCNAME).xml
 	@xml2rfc --text -o $@ $<
 	@cat .header.txt $@ .header.txt > README.md
 
-$(DOCNAME)-$(VERSION).html: $(DOCNAME).xml
+build/$(DOCNAME)-$(VERSION).html: build/$(DOCNAME).xml
 	@xml2rfc --html -o $@ $<
 
-$(DOCNAME).xml: $(DOCNAME).md
+build/$(DOCNAME).xml: $(DOCNAME).md
 	@sed 's/@DOCNAME@/$(DOCNAME)-$(VERSION)/g' $< | mmark   > $@
 
 clean:
-	@rm -f $(DOCNAME)-$(VERSION).txt $(DOCNAME)-$(VERSION).html $(DOCNAME).xml
+	@rm -f build/$(DOCNAME)-$(VERSION).txt build/$(DOCNAME)-$(VERSION).html build/$(DOCNAME).xml

@@ -1,25 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
-<rfc version="3" ipr="trust200902" docName="draft-brand-indicators-for-message-identification-latest-02" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" consensus="true">
+<rfc version="3" ipr="trust200902" docName="draft-brand-indicators-for-message-identification-latest-02" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true">
 
 <front>
 <title abbrev="BIMI">Brand Indicators for Message Identification (BIMI)</title><seriesInfo value="draft-brand-indicators-for-message-identification-latest-02" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="S." surname="Blank" fullname="Seth Blank"><organization>Valimail</organization><address><postal><street></street>
 </postal><email>seth@valimail.com</email>
-</address></author>
-<author initials="P." surname="Goldstein" fullname="Peter Goldstein"><organization>Valimail</organization><address><postal><street></street>
+</address></author><author initials="P." surname="Goldstein" fullname="Peter Goldstein"><organization>Valimail</organization><address><postal><street></street>
 </postal><email>peter@valimail.com</email>
-</address></author>
-<author initials="T." surname="Loder (ed)" fullname="Thede Loder"><organization>Skye Logicworks LLC</organization><address><postal><street></street>
+</address></author><author initials="T." surname="Loder (ed)" fullname="Thede Loder"><organization>Skye Logicworks LLC</organization><address><postal><street></street>
 </postal><email>thede@skyelogicworks.com</email>
-</address></author>
-<author initials="T." surname="Zink (ed)" fullname="Terry Zink"><organization></organization><address><postal><street></street>
+</address></author><author initials="T." surname="Zink (ed)" fullname="Terry Zink"><organization></organization><address><postal><street></street>
 </postal><email>tzink@terryzink.com</email>
-</address></author>
-<author initials="M." surname="Bradshaw (ed)" fullname="Marc Bradshaw"><organization>Fastmail</organization><address><postal><street></street>
+</address></author><author initials="M." surname="Bradshaw (ed)" fullname="Marc Bradshaw"><organization>Fastmail</organization><address><postal><street></street>
 </postal><email>marc@fastmailteam.com</email>
-</address></author>
-<date/>
+</address></author><date/>
 <area>Application</area>
 <workgroup>Network</workgroup>
 
@@ -56,7 +51,7 @@ such as ARC <xref target="RFC8617"></xref>.</t>
 <t>The approach taken by BIMI is heavily influenced by the approach taken
 in DKIM <xref target="RFC6376"></xref>, in that BIMI:</t>
 
-<ul>
+<ul spacing="compact">
 <li>has no dependency on the deployment of any new Internet protocols or
 services for indicator registration or revocation;</li>
 <li>makes no attempt to include encryption as part of the mechanism;</li>
@@ -100,7 +95,7 @@ and displaying Brand Indicators for select domains.  While this has enabled
 these mail-receiving organizations to display brand Indicators for a limited
 subset of messages, this closed approach has a number of downsides:</t>
 
-<ol>
+<ol spacing="compact">
 <li>It puts a significant burden on each mail-receiving organization, because
 they must identify and manage a large database of Brand Indicators.</li>
 <li>Scalability is challenging for closed systems that attempt to capture and
@@ -128,21 +123,21 @@ incentivized to authenticate their email as doing so will enable them to
 influence how email and Indicators from the organization are displayed.</t>
 <t>The structure of BIMI is as follows:</t>
 
-<ol>
+<ol spacing="compact">
 <li><t>Domain Owners:</t>
 
-<ul>
+<ul spacing="compact">
 <li><t>Fully implement the DMARC <xref target="RFC7489"></xref> mechanism, to include:</t>
 
-<ul>
+<ul spacing="compact">
 <li><t>Creating and publishing in DNS <xref target="RFC1035"></xref> a DMARC <xref target="RFC7489"></xref> policy record
 that meets the following criteria:</t>
 
-<ul>
+<ul spacing="compact">
 <li>The policy record MUST express either a Requested Mail Receiver
 policy of &quot;quarantine&quot; with an effective percentage of 100%, or a
 Requested Mail Receiver policy of &quot;reject&quot; (with any percentage value).</li>
-<li>Is a subdomain policy is published it MUST NOT be &quot;none&quot;</li>
+<li>If a subdomain policy is published it MUST NOT be &quot;none&quot;</li>
 <li>Be published for the Organizational Domain, and any subdomains thereof</li>
 </ul></li>
 <li>Deploying authentication technologies to ensure Identifier Alignment</li>
@@ -153,7 +148,7 @@ Requested Mail Receiver policy of &quot;reject&quot; (with any percentage value)
 strict DMARC <xref target="RFC7489"></xref> policy.</li>
 <li><t>MTAs and MBPs:</t>
 
-<ul>
+<ul spacing="compact">
 <li>Confirm authenticity of the message using DMARC <xref target="RFC7489"></xref> and whatever other
 authentication mechanisms they wish to apply.</li>
 <li>Check for a corresponding BIMI record, obtaining references to the
@@ -178,7 +173,7 @@ security dependencies, detailed requirements, and items that are documented as o
 <section anchor="goals"><name>High-Level Goals</name>
 <t>BIMI has the following high-level goals:</t>
 
-<ul>
+<ul spacing="compact">
 <li>Allow Domain Owners to suggest appropriate Indicators for display with authenticated
 messages originating from their domains.</li>
 <li>Enable the authors of MUAs to display meaningful Indicators associated with the Domain
@@ -204,7 +199,7 @@ but BIMI relies upon them to be in deployed in order to control abuse.</t>
 <t>Several topics and issues are specifically out of scope for the initial version of this work.
 These include the following:</t>
 
-<ul>
+<ul spacing="compact">
 <li>Publishing policy other than via the DNS.</li>
 <li>Specific requirements for Indicator display on MUAs.</li>
 <li>The explicit mechanisms used by Verifying Protocol Clients - this will be deferred to a later document.</li>
@@ -290,7 +285,7 @@ administration, and management infrastructure, rather than creating a new one.</
 <t>BIMI's policy payload is intentionally only published via a DNS record and not via
 one or more email headers. This serves three purposes:</t>
 
-<ol>
+<ol spacing="compact">
 <li>There is one and only one mechanism for both simple and complex policies to be published.</li>
 <li>Operational complexity is reduced.  MTAs only need to check a single record in a consistent
 manner to discover and enforce policy.</li>
@@ -317,10 +312,10 @@ preferences, BIMI defines and uses [selectors]{#selectors}. Senders declare
 which selector to use for a given message by specifying the selector in an
 optional <eref target="#bimi-selector">BIMI-Selector header</eref>.</t>
 <t>For example, the Domain Owner of &quot;example.com&quot; would post BIMI policy in a
-TXT record at &quot;default.<em>bimi.example.com&quot;.  Similarly, a Mail Receiver wishing
+TXT record at &quot;default._bimi.example.com&quot;.  Similarly, a Mail Receiver wishing
 to query for BIMI policy regarding mail with an RFC5322.From Author Domain of
 &quot;example.com&quot; and a selector &quot;default&quot; (the default) would query the TXT record
-located at the subdomain of &quot;default.</em>bimi.example.com&quot;.  The DNS-based BIMI
+located at the subdomain of &quot;default._bimi.example.com&quot;.  The DNS-based BIMI
 policy record is referred to as the &quot;BIMI Assertion Record&quot; or &quot;Assertion
 Record&quot;.</t>
 <t>BIMI Assertion Records follow the extensible &quot;tag-value&quot; syntax for DNS-based
@@ -339,9 +334,10 @@ this version of BIMI.  The value of this tag MUST match precisely; if it does
 not match or it is absent, the entire retrieved record MUST be ignored.  It
 MUST be the first tag in the list.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-bimi-version = %x76 *WSP &quot;=&quot; *WSP %x42.49.4d.49 1DIGIT
+bimi-version = %x76 *WSP "=" *WSP %x42.49.4d.49 1DIGIT
+]]>
 </artwork>
 <t>a= Authority Evidence Location (plain-text; URI; OPTIONAL).  If present, this
 tag MUST have an empty value or its value MUST be a single URI.  An empty
@@ -353,32 +349,35 @@ retrievable BIMI Evidence Document. The format for evidence documents is
 defined in a separate document.</t>
 <t>If the a= tag is not present, it is assumed to have an empty value.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-bimi-evidence-location = %x61 *WSP &quot;=&quot; bimi-uri
+bimi-evidence-location = %x61 *WSP "=" bimi-uri
 
 bimi-uri = \[FWS\] URI \[FWS\]
 
-; &quot;URI&quot; is imported from [URI]
+; "URI" is imported from [URI]
 ; HTTPS only
 ; commas within a URI (ASCII ; 0x2C) MUST be encoded
+]]>
 </artwork>
 <t>l= location (URI; REQUIRED).  The value of this tag is either empty
 indicating declination to publish, or a single URI representing the
 location of a Brand Indicator file.  The only supported transport is HTTPS.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-bimi-location = %x6c *WSP &quot;=&quot; bimi-uri
+bimi-location = %x6c *WSP "=" bimi-uri
+]]>
 </artwork>
 <t>Therefore, the formal definition of the BIMI Assertion Record, using ABNF <xref target="RFC5234"></xref>,
 is as follows:</t>
 
-<artwork>bimi-sep = *WSP %x3b *WSP
+<artwork><![CDATA[bimi-sep = *WSP %x3b *WSP
 
 bimi-record = bimi-version (bimi-sep bimi-location) (bimi-sep bimi-evidence-location) \[bimi-sep\]
 
 ; components other than bimi-version may appear in any order
+]]>
 </artwork>
 
 <section anchor="declination-to-publish"><name>Declination to Publish</name>
@@ -391,7 +390,8 @@ has declined to publish will not show an Indicator while messages with
 other selectors would display normally.</t>
 <t>An explicit declination to publish looks like:</t>
 
-<artwork>v=BIMI1; l=; a=;
+<artwork><![CDATA[v=BIMI1; l=; a=;
+]]>
 </artwork>
 </section>
 
@@ -425,13 +425,14 @@ DNS label boundaries in a manner similar to the conventional use in domain
 names.  In a DNS implementation, this can be used to allow delegation of a
 portion of the selector namespace.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-selector = sub-domain *( &quot;.&quot; sub-domain )
+selector = sub-domain *( "." sub-domain )
 
 ; from [SMTP] Domain,
 
 ; excluding address-literal
+]]>
 </artwork>
 <t>The number of selectors for each domain is determined by the Domain Owner.
 Many Domain Owners will be satisfied with just one selector, whereas
@@ -448,8 +449,8 @@ MUAs through the use of BIMI header fields.</t>
 is an error.</t>
 
 <section anchor="bimi-selector"><name>BIMI-Selector Header</name>
-<t>BIMI DNS records are placed in &lt;selector&gt;.<em>bimi.&lt;domain&gt;, and by default
-they are placed in default.</em>bimi.&lt;domain&gt;. That is, for example.com, the
+<t>BIMI DNS records are placed in &lt;selector&gt;._bimi.&lt;domain&gt;, and by default
+they are placed in default._bimi.&lt;domain&gt;. That is, for example.com, the
 default Assertion Record is located in the DNS at default._bimi.example.com.
 However, a Domain Owner may override the use of the default selector and
 specify the use of an alternative using the RFC5322-compliant header
@@ -460,20 +461,23 @@ The value of this tag MUST match precisely; if it does not or it is absent,
 the entire retrieved record MUST be ignored.  It MUST be the first tag in
 the list.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-bimi-header-version = &quot;v&quot; *WSP &quot;=&quot; *WSP &quot;BIMI&quot; 1DIGIT
+bimi-header-version = "v" *WSP "=" *WSP "BIMI" 1DIGIT
+]]>
 </artwork>
 <t>s= Selector (plain-text; REQUIRED). The location of the BIMI DNS record,
 when combined with the RFC5322.From domain.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-bimi-selector = &quot;s&quot; *WSP &quot;=&quot; *WSP selector
+bimi-selector = "s" *WSP "=" *WSP selector
+]]>
 </artwork>
 <t>And the formal definition of the BIMI Selector Header, using ABNF, is as follows:</t>
 
-<artwork>bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
+<artwork><![CDATA[bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
+]]>
 </artwork>
 </section>
 
@@ -486,8 +490,9 @@ value of &quot;BIMI1&quot; for implementations compliant with this version of BI
 The value of this tag MUST match precisely; if it does not or it is absent,
 he entire header MUST be ignored.  It MUST be the first tag in the list.</t>
 
-<artwork>The ABNF for bimi-header-version is imported exactly from the 
+<artwork><![CDATA[The ABNF for bimi-header-version is imported exactly from the 
 [BIMI Selector Header](#bimi-selector).
+]]>
 </artwork>
 <t>l: location of the BIMI Indicator (URI; OPTIONAL if a
 bimi-evidence-location-header-uri is specified, otherwise REQUIRED.). Inserted
@@ -495,9 +500,10 @@ by the MTA after performing the required checks and obtaining the applicable
 domain's published Assertion Record.  The value of this tag is a URI representing
 the location of the Brand Indicator file.  HTTPS is the only supported transport.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-bimi-location-header-uri = &quot;l&quot; *WSP &quot;=&quot; bimi-uri
+bimi-location-header-uri = "l" *WSP "=" bimi-uri
+]]>
 </artwork>
 <t>a: location of the BIMI Evidence Document (URI; REQUIRED if the BIMI Evidence
 Document was verified). Inserted by the MTA after performing the required checks
@@ -505,14 +511,15 @@ and obtaining the applicable domain's published Assertion Record.  The value of
 this tag is a URI representing the location of the BIMI Evidence Document.
 HTTPS is the only supported transport.</t>
 
-<artwork>ABNF:
+<artwork><![CDATA[ABNF:
 
-bimi-evidenced-location-header-uri = &quot;a&quot; *WSP &quot;=&quot; bimi-uri
+bimi-evidenced-location-header-uri = "a" *WSP "=" bimi-uri
+]]>
 </artwork>
 <t>And the formal definition of the BIMI Location Header, using ABNF, is as
 follows:</t>
 
-<artwork>bimi-location-header-location-only = bimi-location-header-uri
+<artwork><![CDATA[bimi-location-header-location-only = bimi-location-header-uri
 
 bimi-location-header-evidence-only = bimi-evidence-location-header-uri
 
@@ -521,6 +528,7 @@ bimi-location-header-both = bimi-location-header-uri bimi-evidence-location-head
 bimi-location-options = bimi-location-header-location-only / bimi-location-header-evidence-only / bimi-location-header-both
 
 bimi-location-header = bimi-header-version bimi-sep bimi-location-options \[bimi-sep\]
+]]>
 </artwork>
 </section>
 
@@ -534,12 +542,14 @@ MUST match the SVG Indicator content retrieved from the URI specified in
 the BIMI-Location header. If he Indicator was supplied as a gzipped SVGZ
 file then the MTA MUST uncompress the file before base64 encoding.</t>
 
-<artwork>base64string    =  ALPHADIGITPS *([FWS] ALPHADIGITPS)
-                   [ [FWS] &quot;=&quot; [ [FWS] &quot;=&quot; ] ]
+<artwork><![CDATA[base64string    =  ALPHADIGITPS *([FWS] ALPHADIGITPS)
+                   [ [FWS] "=" [ [FWS] "=" ] ]
+]]>
 </artwork>
 <t>And the formal definition of the BIMI Indicator Header, using ABNF, is as follows:</t>
 
-<artwork>bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
+<artwork><![CDATA[bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
+]]>
 </artwork>
 </section>
 
@@ -606,7 +616,7 @@ takes when evaluating an email message for BIMI Assertion.</t>
 <t>Before applying BIMI processing for a message, a receiver MUST verify
 that the message passed the following BIMI authentication requirements:</t>
 
-<ol>
+<ol spacing="compact">
 <li>If more than 1 RFC5322.From header is present in the message, or any
 RFC5322.From header contains more than 1 email address then BIMI
 processing MUST NOT be performed for this message.</li>
@@ -652,7 +662,7 @@ subdomain policy overrides, and limiting DNS query load, Protocol Clients
 MUST employ the following lookup scheme for the appropriate BIMI record
 for the message:</t>
 
-<ol>
+<ol spacing="compact">
 <li>Start with the DNS domain found in the RFC5322.From header in the message.
 Define this DNS domain as the Author Domain.</li>
 <li>If the message for which the Indicator is being determined specifies a
@@ -665,10 +675,10 @@ possibly empty set of records is returned.</li>
 <li>Records that do not start with a &quot;v=&quot; tag that identifies the current version
 of BIMI MUST be discarded.</li>
 <li>If the set is now empty, the Client MUST query the DNS for a BIMI TXT record
-at the DNS domain constructed by concatenating the selector, the string '<em>bimi',
+at the DNS domain constructed by concatenating the selector, the string '_bimi',
 and the Organizational Domain (as defined in DMARC <xref target="RFC7489"></xref>) corresponding
 to the Author Domain. A custom selector that does not exist falls back to
-&lt;selector&gt;.</em>bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records
+&lt;selector&gt;._bimi.&lt;organizationalDomain&gt;.  A possibly empty set of records
 is returned.</li>
 <li>Records that do not start with a &quot;v=&quot; tag that identifies the current version
 of BIMI MUST be discarded.</li>
@@ -681,7 +691,7 @@ Assertion.</li>
 
 <section anchor="indicator-discovery"><name>Indicator Discovery.</name>
 
-<ol>
+<ol spacing="compact">
 <li>If the retrieved Assertion Record does not include a valid bimi-location in
 the l= tag, then Indicator Discovery has failed, and the Indicator MUST NOT
 be displayed. The bimi-location entry MUST be a URI with a HTTPS transport.</li>
@@ -710,7 +720,7 @@ Authentication-Results header by adding a bimi=declined entry.</t>
 entry then no evidence has is presented, and the Indicator MUST be retrieved from
 the URI specified in the bimi-location entry using the following algorithm:</t>
 
-<ol>
+<ol spacing="compact">
 <li>Retrieve the SVG Indicator from the URI specified in the l= tag. This MUST be
 a URI with a HTTPS transport.</li>
 <li>If the TLS server identity certificate presented during the TLS session setup
@@ -722,7 +732,7 @@ has failed and the Indicator MUST NOT be displayed.</li>
 
 <section anchor="indicator-validation"><name>Indicator Validation</name>
 
-<ol>
+<ol spacing="compact">
 <li>Check the file size of the retrieved Indicator against recommended maximum sizes
 as defined in this document, and in the BIMI SVG document. A receiver MAY choose
 to implement their own file size restrictions. If the Indicator is larger than
@@ -769,6 +779,16 @@ then this MUST be set to fail. If no Authority Evidence was presented, or
 the MTA did not check the Authority Evidence then this SHOULD be set to none.</t>
 <t>policy.authority-uri: The URI of the BIMI Evidence Document checked, as found
 in the a= tag of the BIMI Assertion Record (plain-text; OPTIONAL).</t>
+<t>policy.indicator-uri: The URI of the BIMI Indicator, as found in the l= tag
+of the BIMI Assertion Record (plain-text; OPTIONAL).</t>
+<t>policy.indicator-hash: In order to prevent MUAs from displaying indicators from
+the BIMI-Indicator header which have been modified since delivery, the MTA MAY
+add a hash of the data referenced in that header into the Authentication-Results
+entry such that the hash can be signed by, and verified by an ARC aware MTA/MUA pair.
+The raw uncompressed data of the SVG Indicator is hashed wuth SHA-256, the resulting
+hash is truncated to the final 8 (at least) characters, and added to the Authentication-Results
+entry.
+If this entry is added then the MTA MUST also add the BIMI-Indicator header.</t>
 </section>
 
 <section anchor="handle-existing-bimi-location-and-bimi-indicator-headers"><name>Handle Existing BIMI-Location and BIMI-Indicator Headers</name>
@@ -916,15 +936,15 @@ defines it, and a description.</t>
 
 <back>
 <references><name>Normative References</name>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5321.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.6376.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7208.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.7489.xml"/>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8617.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.1035.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.2119.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5234.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5321.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.5598.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.6376.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7208.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.7489.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8617.xml"/>
 </references>
 <references><name>Informative References</name>
 <reference anchor="BIMI-OVERVIEW" target="http://tools.ietf.org/html/draft-bkl-bimi-overview-00.html">
@@ -934,7 +954,7 @@ defines it, and a description.</t>
     <date></date>
   </front>
 </reference>
-<xi:include href="https://xml2rfc.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
+<xi:include href="https://bib.ietf.org/public/rfc/bibxml/reference.RFC.8174.xml"/>
 </references>
 
 <section anchor="bimi-header-examples"><name>Example Selector Discovery (INFORMATIVE)</name>
@@ -944,7 +964,8 @@ which Assertion Record to use depending on the BIMI-Selector header.</t>
 <section anchor="no-bimi-selector-header"><name>No BIMI-Selector Header</name>
 <t>The domain example.com does not send with a BIMI-Selector header.</t>
 
-<artwork>From: sender@example.com
+<artwork><![CDATA[From: sender@example.com
+]]>
 </artwork>
 <t>The MTA would lookup default._bimi.example.com for the BIMI DNS record.</t>
 </section>
@@ -952,8 +973,9 @@ which Assertion Record to use depending on the BIMI-Selector header.</t>
 <section anchor="with-bimi-selector-header"><name>With BIMI-Selector Header</name>
 <t>The domain example.com sends with a BIMI-Selector header:</t>
 
-<artwork>From: sender@example.com
+<artwork><![CDATA[From: sender@example.com
 BIMI-Selector: v=BIMI1; s=selector;
+]]>
 </artwork>
 <t>The MTA would lookup selector._bimi.example.com.</t>
 </section>
@@ -961,28 +983,31 @@ BIMI-Selector: v=BIMI1; s=selector;
 <section anchor="without-bimi-selector-header-on-a-subdomain"><name>Without BIMI-Selector Header on a subdomain</name>
 <t>The domain foo.example.com sends without a BIMI-Selector header:</t>
 
-<artwork>From: sender@foo.example.com
+<artwork><![CDATA[From: sender@foo.example.com
+]]>
 </artwork>
-<t>The MTA would lookup default.<em>bimi.foo.example.com for the BIMI DNS record.
-If it did not exist, it would lookup default.</em>bimi.example.com.</t>
+<t>The MTA would lookup default._bimi.foo.example.com for the BIMI DNS record.
+If it did not exist, it would lookup default._bimi.example.com.</t>
 </section>
 
 <section anchor="with-bimi-selector-header-on-a-subdomain"><name>With BIMI-Selector Header on a subdomain</name>
 <t>The domain foo.example.com sends without a BIMI-Selector header:</t>
 
-<artwork>From: sender@foo.example.com
+<artwork><![CDATA[From: sender@foo.example.com
 BIMI-Selector: v=BIMI1; s=myselector;
+]]>
 </artwork>
-<t>The MTA would lookup myselector.<em>bimi.foo.example.com for the BIMI DNS record.
-If it did not exist, it would fall back to the lookup myselector.</em>bimi.example.com.</t>
+<t>The MTA would lookup myselector._bimi.foo.example.com for the BIMI DNS record.
+If it did not exist, it would fall back to the lookup myselector._bimi.example.com.</t>
 </section>
 
 <section anchor="invalid-bimi-selector-header"><name>Invalid BIMI-Selector Header</name>
 <t>The domain example.com sends with a BIMI-Selector header, but does not include
 the required field 'v=':</t>
 
-<artwork>From: sender@example.com
+<artwork><![CDATA[From: sender@example.com
 BIMI-Selector: s=myselector;
+]]>
 </artwork>
 <t>The MTA would ignore this header, and lookup default._bimi.example.com.</t>
 </section>
@@ -994,25 +1019,28 @@ BIMI lookup statuses.</t>
 
 <section anchor="successful-bimi-lookup"><name>Successful BIMI lookup</name>
 
-<artwork>From: sender@example.com
+<artwork><![CDATA[From: sender@example.com
 BIMI-Selector: v=BIMI1; s=myselector;
 Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+]]>
 </artwork>
 </section>
 
 <section anchor="no-bimi-record"><name>No BIMI record</name>
 
-<artwork>From: sender@sub.example.com
+<artwork><![CDATA[From: sender@sub.example.com
 Authentication-Results: bimi=none;
+]]>
 </artwork>
 <t>In this example, sub.example.com does not have a BIMI record at
-default.<em>bimi.sub.example.com, nor does default.</em>bimi.example.com</t>
+default._bimi.sub.example.com, nor does default._bimi.example.com</t>
 </section>
 
 <section anchor="declination-to-publish-1"><name>Declination to Publish</name>
 
-<artwork>From: sender@example.com
+<artwork><![CDATA[From: sender@example.com
 Authentication-Results: bimi=declined;
+]]>
 </artwork>
 <t>In this example the record found at default._bimi.example.com was
 &quot;v=BIMI1; l=; a=;&quot;, indicating a Declination to Publish a BIMI Assertion
@@ -1021,21 +1049,23 @@ Record, and so indicating that BIMI processing should not occur on this message.
 
 <section anchor="subdomain-has-no-default-record-but-organizational-domain-does"><name>Subdomain has no default record, but organizational domain does</name>
 
-<artwork>From: sender@sub.example.com
+<artwork><![CDATA[From: sender@sub.example.com
 Authentication-Results: bimi=pass header.d=example.com header.selector=default;
+]]>
 </artwork>
 </section>
 
 <section anchor="subdomain-and-orgznizational-domain-have-no-record-for-selector-but-organization"><name>Subdomain and orgznizational domain have no record for selector, but organization</name>
 <t>domain has a default</t>
 
-<artwork>From: sender@sub.example.com
+<artwork><![CDATA[From: sender@sub.example.com
 BIMI-Selector: v=BIMI1; s=myselector;
 Authentication-Results: bimi=none;
+]]>
 </artwork>
 <t>In this example, the sender specified a DNS record at
-myselector.<em>bimi.sub.example.com but it did not exist. The fallback is to
-use myselector.</em>bimi.example.com, which also does not exist. The assertion
+myselector._bimi.sub.example.com but it did not exist. The fallback is to
+use myselector._bimi.example.com, which also does not exist. The assertion
 record does exist for the default selector at the organizational domain
 default._bimi.example.com, however this is not used as the sender specified
 a selector of myselector.</t>
@@ -1043,12 +1073,13 @@ a selector of myselector.</t>
 
 <section anchor="subdomain-has-no-record-for-selector-but-organization-domain-does"><name>Subdomain has no record for selector, but organization domain does</name>
 
-<artwork>From: sender@sub.example.com
+<artwork><![CDATA[From: sender@sub.example.com
 BIMI-Selector: v=BIMI1; s=myselector;
 Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+]]>
 </artwork>
-<t>In this example, the sender specified a DNS record at myselector.<em>bimi.sub.example.com
-but it did not exist. The fallback is to use myselector.</em>bimi.example.com.</t>
+<t>In this example, the sender specified a DNS record at myselector._bimi.sub.example.com
+but it did not exist. The fallback is to use myselector._bimi.example.com.</t>
 </section>
 </section>
 
@@ -1059,11 +1090,12 @@ participation, and how it could share that determination with its MUA(s).</t>
 <section anchor="mta-receives-an-email"><name>MTA Receives an email</name>
 <t>The MTA receives the following DKIM signed message:</t>
 
-<artwork>DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
+<artwork><![CDATA[DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
 From: sender@example.com
 BIMI-Selector: v=BIMI1; s=brand;
 BIMI-Location: image.example.com/bimi/logo/example-bimi.svg
 Subject: Hi, this is a message from the good folks at Example Learning
+]]>
 </artwork>
 </section>
 
@@ -1080,7 +1112,8 @@ the DKIM-Signature, and the DKIM-Signature that passed DKIM is the one that cove
 the BIMI-Selector header. The MTA sees the header validates and contains 'v=BIMI1',
 and 's=brand'. It performs a DNS query for brand._bimi.example.com and retrieves:</t>
 
-<artwork>brand._bimi.example.com IN TXT &quot;v=BIMI1; l=https://image.example.com/bimi/logo/&quot;
+<artwork><![CDATA[brand._bimi.example.com IN TXT "v=BIMI1; l=https://image.example.com/bimi/logo/"
+]]>
 </artwork>
 <t>The MTA verifies the syntax of the BIMI DNS record, and it, too passes.</t>
 <t>The MTA knows it has previously retrieved the Indicator referenced by the BIMI DNS
@@ -1092,10 +1125,11 @@ SVG profile. The MTA retrieves the Indicator from the cache.</t>
 <t>The MTA computes and affixes the results of the BIMI to the Authentication-Results
 header:</t>
 
-<artwork>Authentication-Results: spf=fail smtp.mailfrom=example.com;
+<artwork><![CDATA[Authentication-Results: spf=fail smtp.mailfrom=example.com;
   dkim=pass (signature was verified) header.d=example.com;
   dmarc=pass header.from=example.com;
   bimi=pass header.d=example.com header.selector=brand;
+]]>
 </artwork>
 </section>
 
@@ -1107,9 +1141,10 @@ the URL from which the Indicator was retrieved.</t>
 <t>Finally, the MTA removes any existing BIMI-Location and BIMI-Indicator headers, and
 stamps the new ones:</t>
 
-<artwork>BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/
+<artwork><![CDATA[BIMI-Location: v=BIMI1; l=https://image.example.com/bimi/logo/
 
 BIMI-Indicator: PD94bW...8L3N2Zz4K
+]]>
 </artwork>
 <t>That the original sender signed a BIMI-Location header against this spec is irrelevant.
 It was used for DKIM validation and then thrown out by the MTA.</t>
