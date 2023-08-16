@@ -7,7 +7,7 @@
 #   https://miek.nl/2016/march/05/mmark-syntax-document/#xml-references
 
 VERSION = 02
-DOCNAME = draft-brand-indicators-for-message-identification-latest
+DOCNAME = draft-brand-indicators-for-message-identification
 
 all: build/$(DOCNAME).xml build/$(DOCNAME)-$(VERSION).txt build/$(DOCNAME)-$(VERSION).html
 
