@@ -1086,12 +1086,12 @@ BIMI lookup statuses.
 
     From: sender@example.com
     BIMI-Selector: v=BIMI1; s=myselector;
-    Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+    Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=myselector
 
 ## No BIMI record
 
     From: sender@sub.example.com
-    Authentication-Results: bimi=none;
+    Authentication-Results: example.com; bimi=none
 
 In this example, sub.example.com does not have a BIMI record at
 default._bimi.sub.example.com, nor does default._bimi.example.com
@@ -1099,7 +1099,7 @@ default._bimi.sub.example.com, nor does default._bimi.example.com
 ## Declination to Publish
 
     From: sender@example.com
-    Authentication-Results: bimi=declined;
+    Authentication-Results: example.com; bimi=declined
 
 In this example the record found at default._bimi.example.com was
 "v=BIMI1; l=; a=;", indicating a Declination to Publish a BIMI Assertion
@@ -1108,14 +1108,14 @@ Record, and so indicating that BIMI processing should not occur on this message.
 ## Subdomain has no default record, but organizational domain does
 
     From: sender@sub.example.com
-    Authentication-Results: bimi=pass header.d=example.com header.selector=default;
+    Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=default
 
 ## Subdomain and organizational domain have no record for selector, but organization
 domain has a default
 
     From: sender@sub.example.com
     BIMI-Selector: v=BIMI1; s=myselector;
-    Authentication-Results: bimi=none;
+    Authentication-Results: example.com; bimi=none
 
 In this example, the sender specified a DNS record at
 myselector._bimi.sub.example.com but it did not exist. The fallback is to
@@ -1128,7 +1128,7 @@ a selector of myselector.
 
     From: sender@sub.example.com
     BIMI-Selector: v=BIMI1; s=myselector;
-    Authentication-Results: bimi=pass header.d=example.com header.selector=myselector;
+    Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=myselector
 
 In this example, the sender specified a DNS record at myselector._bimi.sub.example.com
 but it did not exist. The fallback is to use myselector._bimi.example.com.
@@ -1176,10 +1176,10 @@ SVG profile. The MTA retrieves the Indicator from the cache.
 The MTA computes and affixes the results of the BIMI to the Authentication-Results
 header:
 
-    Authentication-Results: spf=fail smtp.mailfrom=example.com;
+    Authentication-Results: example.com; spf=fail smtp.mailfrom=example.com;
       dkim=pass (signature was verified) header.d=example.com;
       dmarc=pass header.from=example.com;
-      bimi=pass header.d=example.com header.selector=brand;
+      bimi=pass header.d=example.com header.selector=brand
 
 ## MTA Constructs BIMI-Location and BIMI-Indicator headers
 
