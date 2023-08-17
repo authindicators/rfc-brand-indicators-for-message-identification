@@ -597,7 +597,7 @@ file then the MTA MUST uncompress the file before base64 encoding.
 
 And the formal definition of the BIMI Indicator Header, using ABNF, is as follows:
 
-    bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
+    bimi-indicator-header = base64string
 
 ## Header Signing
 
