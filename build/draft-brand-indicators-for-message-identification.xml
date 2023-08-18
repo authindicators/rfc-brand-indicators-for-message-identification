@@ -550,7 +550,7 @@ file then the MTA MUST uncompress the file before base64 encoding.</t>
 </artwork>
 <t>And the formal definition of the BIMI Indicator Header, using ABNF, is as follows:</t>
 
-<artwork><![CDATA[bimi-indicator-header = bimi-sep base64string \[bimi-sep\]
+<artwork><![CDATA[bimi-indicator-header = base64string
 ]]>
 </artwork>
 </section>
