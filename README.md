@@ -6,7 +6,7 @@
 Network                                                         S. Blank
 Internet-Draft                                              P. Goldstein
 Intended status: Standards Track                                Valimail
-Expires: 19 February 2024                                  T. Loder (ed)
+Expires: 6 March 2024                                      T. Loder (ed)
                                                      Skye Logicworks LLC
                                                             T. Zink (ed)
                                                                         
@@ -14,11 +14,11 @@ Expires: 19 February 2024                                  T. Loder (ed)
                                                                 Fastmail
                                                          A. Brotman (ed)
                                                                  Comcast
-                                                          18 August 2023
+                                                        3 September 2023
 
 
            Brand Indicators for Message Identification (BIMI)
-          draft-brand-indicators-for-message-identification-02
+          draft-brand-indicators-for-message-identification-04
 
 Abstract
 
@@ -49,14 +49,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 19 February 2024.
+   This Internet-Draft will expire on 6 March 2024.
 
 
 
 
-Blank, et al.           Expires 19 February 2024                [Page 1]
+Blank, et al.             Expires 6 March 2024                  [Page 1]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 Copyright Notice
@@ -69,9 +69,9 @@ Copyright Notice
    license-info) in effect on the date of publication of this document.
    Please review these documents carefully, as they describe your rights
    and restrictions with respect to this document.  Code Components
-   extracted from this document must include Simplified BSD License text
-   as described in Section 4.e of the Trust Legal Provisions and are
-   provided without warranty as described in the Simplified BSD License.
+   extracted from this document must include Revised BSD License text as
+   described in Section 4.e of the Trust Legal Provisions and are
+   provided without warranty as described in the Revised BSD License.
 
 Table of Contents
 
@@ -82,7 +82,7 @@ Table of Contents
      2.3.  Out of Scope  . . . . . . . . . . . . . . . . . . . . . .   8
    3.  Terminology and Definitions . . . . . . . . . . . . . . . . .   8
      3.1.  BIMI Assertion  . . . . . . . . . . . . . . . . . . . . .   8
-     3.2.  Indicator . . . . . . . . . . . . . . . . . . . . . . . .   8
+     3.2.  Indicator . . . . . . . . . . . . . . . . . . . . . . . .   9
      3.3.  Mark Verifying Authority (MVA)  . . . . . . . . . . . . .   9
      3.4.  BIMI Evidence Document  . . . . . . . . . . . . . . . . .   9
      3.5.  Verified Mark Certificate (VMC) . . . . . . . . . . . . .   9
@@ -110,9 +110,9 @@ Table of Contents
 
 
 
-Blank, et al.           Expires 19 February 2024                [Page 2]
+Blank, et al.             Expires 6 March 2024                  [Page 2]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
      7.2.  Assertion Record Discovery  . . . . . . . . . . . . . . .  18
@@ -166,9 +166,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024                [Page 3]
+Blank, et al.             Expires 6 March 2024                  [Page 3]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
      C.4.  MTA appends to Authentication-Results . . . . . . . . . .  30
@@ -222,9 +222,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024                [Page 4]
+Blank, et al.             Expires 6 March 2024                  [Page 4]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    the indicators, or how other protocols (i.e.  IMAP, JMAP) can be
@@ -273,16 +273,17 @@ Internet-Draft                    BIMI                       August 2023
        Indicator for the domain(s) they own, and any ability they do
        have is likely to be dependent upon direct coordination with each
        of many mail-receiving organizations.
-   5.  Many Domain Owners have no ability to participate whatsoever as
 
 
 
 
-Blank, et al.           Expires 19 February 2024                [Page 5]
+
+Blank, et al.             Expires 6 March 2024                  [Page 5]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
+   5.  Many Domain Owners have no ability to participate whatsoever as
        they do not have the appropriate relationships to coordinate with
        mail-receiving organizations.
    6.  MUAs that are not associated with a particular mail-receiving
@@ -327,18 +328,21 @@ Internet-Draft                    BIMI                       August 2023
        *  Check for a corresponding BIMI record, obtaining references to
           the indicator media and optional substantiation of indicator
           ownership rights
+
+
+
+
+
+
+Blank, et al.             Expires 6 March 2024                  [Page 6]
+
+Internet-Draft                    BIMI                    September 2023
+
+
        *  If both the message is authentic and the logo is deemed
           acceptable, the receiver adds a header to the message which
           can be used by the MUA to obtain the Domain Owner's preferred
           brand indicator.
-
-
-
-Blank, et al.           Expires 19 February 2024                [Page 6]
-
-Internet-Draft                    BIMI                       August 2023
-
-
    4.  MUA: retrieves and displays the brand indicator as appropriate
        based on its policy and user interface.
 
@@ -383,17 +387,16 @@ Internet-Draft                    BIMI                       August 2023
    receiver.  Without verification and reputation, there is no way to
    prevent a bad actor exxample.com from using example.com's Brand
    Indicators and behaving maliciously.  This document does not cover
+
+
+
+Blank, et al.             Expires 6 March 2024                  [Page 7]
+
+Internet-Draft                    BIMI                    September 2023
+
+
    the different verification and reputation mechanisms available, but
    BIMI relies upon them to be in deployed in order to control abuse.
-
-
-
-
-
-Blank, et al.           Expires 19 February 2024                [Page 7]
-
-Internet-Draft                    BIMI                       August 2023
-
 
 2.3.  Out of Scope
 
@@ -436,20 +439,24 @@ Internet-Draft                    BIMI                       August 2023
    Assertion Record and constructs the URI(s) to the requested
    Indicator(s) to be placed in the BIMI-Location header.
 
+
+
+
+
+
+
+
+Blank, et al.             Expires 6 March 2024                  [Page 8]
+
+Internet-Draft                    BIMI                    September 2023
+
+
 3.2.  Indicator
 
    The icon, logo, image, mark, or other graphical representation of the
    brand.  The Indicator is defined in a common image format with
    restrictions detailed in the Assertion Record Definition (#assertion-
    record-definition).
-
-
-
-
-Blank, et al.           Expires 19 February 2024                [Page 8]
-
-Internet-Draft                    BIMI                       August 2023
-
 
 3.3.  Mark Verifying Authority (MVA)
 
@@ -492,21 +499,20 @@ Internet-Draft                    BIMI                       August 2023
    Published policies are interpreted and applied by Protocol Clients.
    A Domain Owner signals intended BIMI participation for one or more of
    its domains by publishing an Assertion Record in a subdomain under
+
+
+
+Blank, et al.             Expires 6 March 2024                  [Page 9]
+
+Internet-Draft                    BIMI                    September 2023
+
+
    it.  In doing so, Domain Owners make specific requests of MUAs
    regarding the preferred set of Indicators to be displayed with
    messages that are confirmed to be authorized to appear from the
    Domain Owner's domain.
 
    The use of BIMI is opt-in.  Receivers default to performing no BIMI-
-
-
-
-
-Blank, et al.           Expires 19 February 2024                [Page 9]
-
-Internet-Draft                    BIMI                       August 2023
-
-
    specific message handling until they choose to do so, and then only
    if a BIMI record for the sender's domain is found.
 
@@ -549,20 +555,20 @@ Internet-Draft                    BIMI                       August 2023
    between these different preferences, BIMI defines and uses
    [selectors]{#selectors}. Senders declare which selector to use for a
    given message by specifying the selector in an optional BIMI-Selector
+
+
+
+Blank, et al.             Expires 6 March 2024                 [Page 10]
+
+Internet-Draft                    BIMI                    September 2023
+
+
    header (#bimi-selector).
 
    For example, the Domain Owner of "example.com" would post BIMI policy
    in a TXT record at "default._bimi.example.com".  Similarly, a Mail
    Receiver wishing to query for BIMI policy regarding mail with an
    RFC5322.From Author Domain of "example.com" and a selector "default"
-
-
-
-Blank, et al.           Expires 19 February 2024               [Page 10]
-
-Internet-Draft                    BIMI                       August 2023
-
-
    (the default) would query the TXT record located at the subdomain of
    "default._bimi.example.com".  The DNS-based BIMI policy record is
    referred to as the "BIMI Assertion Record" or "Assertion Record".
@@ -608,15 +614,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-
-
-
-
-
-
-Blank, et al.           Expires 19 February 2024               [Page 11]
+Blank, et al.             Expires 6 March 2024                 [Page 11]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    ABNF:
@@ -641,11 +641,11 @@ Internet-Draft                    BIMI                       August 2023
    Therefore, the formal definition of the BIMI Assertion Record, using
    ABNF [RFC5234], is as follows:
 
-   bimi-sep = *WSP ";" *WSP
+bimi-sep = *WSP ";" *WSP
 
-   bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [bimi-sep]
+bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [bimi-sep]
 
-   ; components other than bimi-version may appear in any order
+; components other than bimi-version may appear in any order
 
 4.2.1.  Declination to Publish
 
@@ -670,9 +670,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 12]
+Blank, et al.             Expires 6 March 2024                 [Page 12]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 4.2.2.  Supported Image Formats for l= tag
@@ -726,9 +726,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 13]
+Blank, et al.             Expires 6 March 2024                 [Page 13]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 5.  BIMI Header Fields
@@ -770,7 +770,7 @@ Internet-Draft                    BIMI                       August 2023
    And the formal definition of the BIMI Selector Header, using ABNF, is
    as follows:
 
-   bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
+bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
 
 5.2.  BIMI-Location Header
 
@@ -782,9 +782,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 14]
+Blank, et al.             Expires 6 March 2024                 [Page 14]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    v= Version (plain-text; REQUIRED).  The version of BIMI.  It MUST
@@ -821,15 +821,15 @@ Internet-Draft                    BIMI                       August 2023
    And the formal definition of the BIMI Location Header, using ABNF, is
    as follows:
 
-   bimi-location-header-location-only = bimi-location-header-uri
+bimi-location-header-location-only = bimi-location-header-uri
 
-   bimi-location-header-evidence-only = bimi-evidence-location-header-uri
+bimi-location-header-evidence-only = bimi-evidence-location-header-uri
 
-   bimi-location-header-both = bimi-location-header-uri bimi-evidence-location-header-uri
+bimi-location-header-both = bimi-location-header-uri bimi-evidence-location-header-uri
 
-   bimi-location-options = bimi-location-header-location-only / bimi-location-header-evidence-only / bimi-location-header-both
+bimi-location-options = bimi-location-header-location-only / bimi-location-header-evidence-only / bimi-location-header-both
 
-   bimi-location-header = bimi-header-version bimi-sep bimi-location-options \[bimi-sep\]
+bimi-location-header = bimi-header-version bimi-sep bimi-location-options \[bimi-sep\]
 
 5.3.  BIMI-Indicator Header
 
@@ -838,9 +838,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 15]
+Blank, et al.             Expires 6 March 2024                 [Page 15]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    The header contains the SVG of the Indicator encoded as base64, and
@@ -894,9 +894,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 16]
+Blank, et al.             Expires 6 March 2024                 [Page 16]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 6.2.  Publish Assertion Records
@@ -950,9 +950,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 17]
+Blank, et al.             Expires 6 March 2024                 [Page 17]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    2.  Start with the DNS domain found in the RFC5322.From header in the
@@ -1006,9 +1006,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 18]
+Blank, et al.             Expires 6 March 2024                 [Page 18]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    1.  Start with the DNS domain found in the RFC5322.From header in the
@@ -1062,9 +1062,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 19]
+Blank, et al.             Expires 6 March 2024                 [Page 19]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 7.4.  Indicator Discovery With Evidence.
@@ -1118,9 +1118,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 20]
+Blank, et al.             Expires 6 March 2024                 [Page 20]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 7.7.  Affix BIMI Status to Authentication Results Header Field
@@ -1174,9 +1174,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 21]
+Blank, et al.             Expires 6 March 2024                 [Page 21]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    header into the Authentication-Results entry such that the hash can
@@ -1230,9 +1230,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 22]
+Blank, et al.             Expires 6 March 2024                 [Page 22]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    The MTA MUST fold the header to be within the line length limits of
@@ -1286,9 +1286,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 23]
+Blank, et al.             Expires 6 March 2024                 [Page 23]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 8.5.  Unaligned Indicators and asserting domains
@@ -1342,9 +1342,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 24]
+Blank, et al.             Expires 6 March 2024                 [Page 24]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    Author/Change controller: IETF
@@ -1398,9 +1398,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 25]
+Blank, et al.             Expires 6 March 2024                 [Page 25]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
    [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
@@ -1454,9 +1454,9 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 26]
+Blank, et al.             Expires 6 March 2024                 [Page 26]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 Appendix A.  Example Selector Discovery (INFORMATIVE)
@@ -1510,9 +1510,9 @@ A.4.  With BIMI-Selector Header on a subdomain
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 27]
+Blank, et al.             Expires 6 March 2024                 [Page 27]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 A.5.  Invalid BIMI-Selector Header
@@ -1533,9 +1533,9 @@ Appendix B.  Example Authentication-Results entry (INFORMATIONAL)
 
 B.1.  Successful BIMI lookup
 
-   From: sender@example.com
-   BIMI-Selector: v=BIMI1; s=myselector;
-   Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=myselector
+From: sender@example.com
+BIMI-Selector: v=BIMI1; s=myselector;
+Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=myselector
 
 B.2.  No BIMI record
 
@@ -1557,8 +1557,8 @@ B.3.  Declination to Publish
 
 B.4.  Subdomain has no default record, but organizational domain does
 
-   From: sender@sub.example.com
-   Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=default
+From: sender@sub.example.com
+Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=default
 
 
 
@@ -1566,9 +1566,9 @@ B.4.  Subdomain has no default record, but organizational domain does
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 28]
+Blank, et al.             Expires 6 March 2024                 [Page 28]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 B.5.  Subdomain and organizational domain have no record for selector,
@@ -1589,9 +1589,9 @@ B.5.  Subdomain and organizational domain have no record for selector,
 
 B.6.  Subdomain has no record for selector, but organization domain does
 
-   From: sender@sub.example.com
-   BIMI-Selector: v=BIMI1; s=myselector;
-   Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=myselector
+From: sender@sub.example.com
+BIMI-Selector: v=BIMI1; s=myselector;
+Authentication-Results: example.com; bimi=pass header.d=example.com header.selector=myselector
 
    In this example, the sender specified a DNS record at
    myselector._bimi.sub.example.com but it did not exist.  The fallback
@@ -1607,11 +1607,11 @@ C.1.  MTA Receives an email
 
    The MTA receives the following DKIM signed message:
 
-   DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
-   From: sender@example.com
-   BIMI-Selector: v=BIMI1; s=brand;
-   BIMI-Location: image.example.com/bimi/logo/example-bimi.svg
-   Subject: Hi, this is a message from the good folks at Example Learning
+DKIM-Signature: v=1; s=myExample; d=example.com; h=From;BIMI-Selector;Date;bh=...;b=...
+From: sender@example.com
+BIMI-Selector: v=BIMI1; s=brand;
+BIMI-Location: image.example.com/bimi/logo/example-bimi.svg
+Subject: Hi, this is a message from the good folks at Example Learning
 
 C.2.  MTA does its authentication checks
 
@@ -1622,9 +1622,9 @@ C.2.  MTA does its authentication checks
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 29]
+Blank, et al.             Expires 6 March 2024                 [Page 29]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 C.3.  MTA performs BIMI Assertion
@@ -1635,7 +1635,7 @@ C.3.  MTA performs BIMI Assertion
    the header validates and contains 'v=BIMI1', and 's=brand'.  It
    performs a DNS query for brand._bimi.example.com and retrieves:
 
-   brand._bimi.example.com IN TXT "v=BIMI1; l=https://image.example.com/bimi/logo/"
+brand._bimi.example.com IN TXT "v=BIMI1; l=https://image.example.com/bimi/logo/"
 
    The MTA verifies the syntax of the BIMI DNS record, and it, too
    passes.
@@ -1650,10 +1650,10 @@ C.4.  MTA appends to Authentication-Results
    The MTA computes and affixes the results of the BIMI to the
    Authentication-Results header:
 
-   Authentication-Results: example.com; spf=fail smtp.mailfrom=example.com;
-     dkim=pass (signature was verified) header.d=example.com;
-     dmarc=pass header.from=example.com;
-     bimi=pass header.d=example.com header.selector=brand
+Authentication-Results: example.com; spf=fail smtp.mailfrom=example.com;
+  dkim=pass (signature was verified) header.d=example.com;
+  dmarc=pass header.from=example.com;
+  bimi=pass header.d=example.com header.selector=brand
 
 C.5.  MTA Constructs BIMI-Location and BIMI-Indicator headers
 
@@ -1678,9 +1678,9 @@ C.5.  MTA Constructs BIMI-Location and BIMI-Indicator headers
 
 
 
-Blank, et al.           Expires 19 February 2024               [Page 30]
+Blank, et al.             Expires 6 March 2024                 [Page 30]
 
-Internet-Draft                    BIMI                       August 2023
+Internet-Draft                    BIMI                    September 2023
 
 
 C.6.  The MUA displays the Indicator
@@ -1701,44 +1701,30 @@ Authors' Addresses
 
    Seth Blank
    Valimail
-
    Email: seth@valimail.com
 
 
    Peter Goldstein
    Valimail
-
    Email: peter@valimail.com
 
 
    Thede Loder
    Skye Logicworks LLC
-
    Email: thede@skyelogicworks.com
 
 
    Terry Zink
-
    Email: tzink@terryzink.com
 
 
    Marc Bradshaw
    Fastmail
-
    Email: marc@fastmailteam.com
 
 
    Alex Brotman (ed)
    Comcast
-
-
-
-
-Blank, et al.           Expires 19 February 2024               [Page 31]
-
-Internet-Draft                    BIMI                       August 2023
-
-
    Email: alex_brotman@comcast.com
 
 
@@ -1748,47 +1734,5 @@ Internet-Draft                    BIMI                       August 2023
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-Blank, et al.           Expires 19 February 2024               [Page 32]
+Blank, et al.             Expires 6 March 2024                 [Page 31]
 ```
