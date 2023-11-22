@@ -839,7 +839,7 @@ policy.indicator-hash: In order to prevent MUAs from displaying indicators from
 the BIMI-Indicator header which have been modified since delivery, the MTA MAY
 add a hash of the data referenced in that header into the Authentication-Results
 entry such that the hash can be signed by, and verified by an ARC aware MTA/MUA pair.
-The raw uncompressed data of the SVG Indicator is hashed wuth SHA-256, the resulting
+The raw uncompressed data of the SVG Indicator is hashed with SHA-256, the resulting
 hash is truncated to the final 8 (at least) characters, and added to the Authentication-Results
 entry.
 If this entry is added then the MTA MUST also add the BIMI-Indicator header.
