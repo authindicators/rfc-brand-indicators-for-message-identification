@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
-<rfc version="3" ipr="trust200902" docName="draft-brand-indicators-for-message-identification-05" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true">
+<rfc version="3" ipr="trust200902" docName="draft-brand-indicators-for-message-identification-06" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true">
 
 <front>
-<title abbrev="BIMI">Brand Indicators for Message Identification (BIMI)</title><seriesInfo value="draft-brand-indicators-for-message-identification-05" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<title abbrev="BIMI">Brand Indicators for Message Identification (BIMI)</title><seriesInfo value="draft-brand-indicators-for-message-identification-06" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="S." surname="Blank" fullname="Seth Blank"><organization>Valimail</organization><address><postal><street></street>
 </postal><email>seth@valimail.com</email>
 </address></author><author initials="P." surname="Goldstein" fullname="Peter Goldstein"><organization>Valimail</organization><address><postal><street></street>
@@ -252,10 +252,23 @@ content, etc).</t>
 These are defined in a separate document.</t>
 </section>
 
+<section anchor="mark-certificate-mc"><name>Mark Certificate (MC)</name>
+<t>A certificate issued by a Certificate Authority in accordance with the Minimum
+Security Requirements for Issuance of Mark Certificates.  These requiremetns are
+defined in a separate document.</t>
+<t>A Mark Certificate is one type of a BIMI Evidence Document, and there are two
+types of Mark Certificates.</t>
+
 <section anchor="verified-mark-certificate-vmc"><name>Verified Mark Certificate (VMC)</name>
-<t>A certificate issued by a Certificate Authority in accordance with the Verified Mark
-Certificate Guidelines.  These guidelines are defined in a separate document.</t>
-<t>A Verified Mark Certificate is one example of a BIMI Evidence Document.</t>
+<t>A Verified Mark Certificate is an MC issued by an MVA in support of BIMI Indicators
+that are representations of either Registered Trademarks or Government Marks.</t>
+</section>
+
+<section anchor="common-mark-certificate-cmc"><name>Common Mark Certificate (CMC)</name>
+<t>A Common Mark Certificate is an MC issued by an MVA in support of BIMI Indicators
+that are representations either of Prior Use Marks or Modifications of Registered
+Trademarks.</t>
+</section>
 </section>
 
 <section anchor="protocol-client"><name>Protocol Client</name>
@@ -304,6 +317,16 @@ to the Domain Owner's published BIMI policy.  However, MUAs have final control
 over the user interface published to their end users, and MAY use alternate
 Indicators than those specified in the BIMI assertion record or no Indicator at
 all.</t>
+</section>
+
+<section anchor="personal_avatars"><name>Personal Avatars and BIMI</name>
+<t>Some mailbox providers both participate in BIMI and offer the option of showing
+personal avatars associated with the sender of an email message delivered to their
+platforms, and in fact the support for personal avatar display predates BIMI. Some
+domain owners wishing to participate in BIMI may also desire to have personal avatars
+displayed for some classes of mail sent using their domain. BIMI offers two options
+for this - an optional <eref target="#bimi-selector">BIMI-Selector header</eref> or a tag in the
+<eref target="#assertion-record-definition">BIMI Assertion Record</eref>.</t>
 </section>
 
 <section anchor="assertion-record-definition"><name>Assertion Record Definition</name>
@@ -368,12 +391,32 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.</t>
 
 bimi-location = &quot;l&quot; *WSP &quot;=&quot; *WSP [bimi-uri]
 </artwork>
+<t>p= Avatar Preference (plain-text; OPTIONAL; default is &quot;bimi&quot;). For mail sent
+to those mailbox providers that both participate in BIMI and support the display
+of personal avatars, this flag is a way for the Domain Owner to express its preference
+as to whether to show the BIMI logo or the personal avatar. If the tag is not present
+in an otherwise syntactically valid BIMI record, then the record is treated as if
+it included &quot;p=bimi&quot;. Allowed values are:</t>
+
+<artwork>personal: If BIMI is in place for the sending domain and the sender of the email
+has a personal avatar, then the mailbox provider SHOULD display the personal avatar
+for the message when shown in the recipient’s mailbox. If the sender has no personal
+avatar, then the BIMI logo should be shown if the message qualifies for such display.
+
+bimi: If BIMI is in place for the sending domain and the sender of the email has a
+personal avatar, then the mailbox provider SHOULD display the BIMI logo for the domain
+if the message qualifies for such display.
+
+ABNF:
+
+bimi-logo-preference = &quot;p&quot; *WSP &quot;=&quot; *WSP %s &quot;personal&quot;/&quot;bimi&quot; bimi-sep
+</artwork>
 <t>Therefore, the formal definition of the BIMI Assertion Record, using ABNF <xref target="RFC5234"></xref>,
 is as follows:</t>
 
 <artwork>bimi-sep = *WSP &quot;;&quot; *WSP
 
-bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [bimi-sep]
+bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [(bimi-sep bimi-logo-preference)] [bimi-sep]
 
 ; components other than bimi-version may appear in any order
 </artwork>
@@ -537,6 +580,18 @@ file then the MTA MUST uncompress the file before base64 encoding.</t>
 <t>And the formal definition of the BIMI Indicator Header, using ABNF, is as follows:</t>
 
 <artwork>bimi-indicator-header = base64string
+</artwork>
+</section>
+
+<section anchor="bimi-logo-preference"><name>BIMI-Logo-Preference Header</name>
+<t>BIMI-Logo-Preference is the header a Mail Receiver inserts to pass the Domain
+Owner's preference for personal avatar display to the MUA.</t>
+<t>The header contains the value of the &quot;p&quot; tag from the BIMI record that is
+applicable to the email message.</t>
+
+<artwork>ABNF:
+
+bimi-logo-preference-header = &quot;p&quot; *WSP &quot;=&quot; *WSP %s &quot;personal&quot;/&quot;bimi&quot; bimi-sep
 </artwork>
 </section>
 
@@ -772,7 +827,7 @@ of the BIMI Assertion Record (plain-text; OPTIONAL).</t>
 the BIMI-Indicator header which have been modified since delivery, the MTA MAY
 add a hash of the data referenced in that header into the Authentication-Results
 entry such that the hash can be signed by, and verified by an ARC aware MTA/MUA pair.
-The raw uncompressed data of the SVG Indicator is hashed wuth SHA-256, the resulting
+The raw uncompressed data of the SVG Indicator is hashed with SHA-256, the resulting
 hash is truncated to the final 8 (at least) characters, and added to the Authentication-Results
 entry.
 If this entry is added then the MTA MUST also add the BIMI-Indicator header.</t>
