@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!-- name="GENERATOR" content="github.com/mmarkdown/mmark Mmark Markdown Processor - mmark.miek.nl" -->
-<rfc version="3" ipr="trust200902" docName="draft-brand-indicators-for-message-identification-05" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true">
+<rfc version="3" ipr="trust200902" docName="draft-brand-indicators-for-message-identification-06" submissionType="IETF" category="std" xml:lang="en" xmlns:xi="http://www.w3.org/2001/XInclude" indexInclude="true" consensus="true">
 
 <front>
-<title abbrev="BIMI">Brand Indicators for Message Identification (BIMI)</title><seriesInfo value="draft-brand-indicators-for-message-identification-05" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
+<title abbrev="BIMI">Brand Indicators for Message Identification (BIMI)</title><seriesInfo value="draft-brand-indicators-for-message-identification-06" stream="IETF" status="standard" name="Internet-Draft"></seriesInfo>
 <author initials="S." surname="Blank" fullname="Seth Blank"><organization>Valimail</organization><address><postal><street></street>
 </postal><email>seth@valimail.com</email>
 </address></author><author initials="P." surname="Goldstein" fullname="Peter Goldstein"><organization>Valimail</organization><address><postal><street></street>
@@ -772,7 +772,7 @@ of the BIMI Assertion Record (plain-text; OPTIONAL).</t>
 the BIMI-Indicator header which have been modified since delivery, the MTA MAY
 add a hash of the data referenced in that header into the Authentication-Results
 entry such that the hash can be signed by, and verified by an ARC aware MTA/MUA pair.
-The raw uncompressed data of the SVG Indicator is hashed wuth SHA-256, the resulting
+The raw uncompressed data of the SVG Indicator is hashed with SHA-256, the resulting
 hash is truncated to the final 8 (at least) characters, and added to the Authentication-Results
 entry.
 If this entry is added then the MTA MUST also add the BIMI-Indicator header.</t>
