@@ -296,12 +296,25 @@ content, etc).
 A document published by a Mark Verifying Authority to assert evidence of verification.
 These are defined in a separate document.
 
-## Verified Mark Certificate (VMC)
+## Mark Certificate (MC)
 
-A certificate issued by a Certificate Authority in accordance with the Verified Mark
-Certificate Guidelines.  These guidelines are defined in a separate document.
+A certificate issued by a Certificate Authority in accordance with the Minimum
+Security Requirements for Issuance of Mark Certificates.  These requiremetns are
+defined in a separate document.
 
-A Verified Mark Certificate is one example of a BIMI Evidence Document.
+A Mark Certificate is one type of a BIMI Evidence Document, and there are two
+types of Mark Certificates.
+
+### Verified Mark Certificate (VMC)
+
+A Verified Mark Certificate is an MC issued by an MVA in support of BIMI Indicators
+that are representations of either Registered Trademarks or Government Marks.
+
+### Common Mark Certificate (CMC)
+
+A Common Mark Certificate is an MC issued by an MVA in support of BIMI Indicators
+that are representations either of Prior Use Marks or Modifications of Registered
+Trademarks.
 
 ## Protocol Client
 
@@ -353,6 +366,16 @@ to the Domain Owner's published BIMI policy.  However, MUAs have final control
 over the user interface published to their end users, and MAY use alternate
 Indicators than those specified in the BIMI assertion record or no Indicator at
 all.
+
+## Personal Avatars and BIMI {#personal_avatars}
+
+Some mailbox providers both participate in BIMI and offer the option of showing
+personal avatars associated with the sender of an email message delivered to their
+platforms, and in fact the support for personal avatar display predates BIMI. Some
+domain owners wishing to participate in BIMI may also desire to have personal avatars
+displayed for some classes of mail sent using their domain. BIMI offers two options
+for this - an optional [BIMI-Selector header](#bimi-selector) or a tag in the
+[BIMI Assertion Record](#assertion-record-definition).
 
 ## Assertion Record Definition   {#assertion-record-definition}
 
@@ -424,12 +447,32 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
+p= Avatar Preference (plain-text; OPTIONAL; default is "bimi"). For mail sent
+to those mailbox providers that both participate in BIMI and support the display
+of personal avatars, this flag is a way for the Domain Owner to express its preference
+as to whether to show the BIMI logo or the personal avatar. If the tag is not present
+in an otherwise syntactically valid BIMI record, then the record is treated as if
+it included "p=bimi". Allowed values are:
+
+    personal: If BIMI is in place for the sending domain and the sender of the email
+    has a personal avatar, then the mailbox provider SHOULD display the personal avatar
+    for the message when shown in the recipient’s mailbox. If the sender has no personal
+    avatar, then the BIMI logo should be shown if the message qualifies for such display.
+
+    bimi: If BIMI is in place for the sending domain and the sender of the email has a
+    personal avatar, then the mailbox provider SHOULD display the BIMI logo for the domain
+    if the message qualifies for such display.
+
+    ABNF:
+
+    bimi-logo-preference = "p" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
+
 Therefore, the formal definition of the BIMI Assertion Record, using ABNF [@!RFC5234],
 is as follows:
 
     bimi-sep = *WSP ";" *WSP
 
-    bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [bimi-sep]
+    bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [(bimi-sep bimi-logo-preference)] [bimi-sep]
  
     ; components other than bimi-version may appear in any order
 
@@ -598,6 +641,17 @@ file then the MTA MUST uncompress the file before base64 encoding.
 And the formal definition of the BIMI Indicator Header, using ABNF, is as follows:
 
     bimi-indicator-header = base64string
+
+## BIMI-Logo-Preference Header {#bimi-logo-preference}
+
+BIMI-Logo-Preference is the header a Mail Receiver inserts to pass the Domain
+Owner's preference for personal avatar display to the MUA.
+
+The syntax of the header is as follows:
+
+    ABNF:
+
+    bimi-logo-preference-header = "p" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
 
 ## Header Signing
 
