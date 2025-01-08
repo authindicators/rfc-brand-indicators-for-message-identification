@@ -463,6 +463,9 @@ it included "s=bimi". Allowed values are:
     personal avatar, then the mailbox provider SHOULD display the BIMI logo for the domain
     if the message qualifies for such display.
 
+Any other values MUST be ignored and not included in and added headers. A mailbox provider
+MAY choose to treat an invalid preference value as a failing record.
+
     ABNF:
 
     bimi-logo-preference = "s" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
@@ -664,10 +667,10 @@ header, for example by evaluating a trusted [ARC] chain. In this case the
 Receiver MAY choose to treat the message as if the BIMI-Selector header was
 signed.  
 
-The BIMI-Location and BIMI-Indicator headers MUST NOT be DKIM signed. This
-header is untrusted by definition, and is only for use between an MTA and
-its MUAs, after DKIM has been validated by the MTA. Therefore, signing this
-header is meaningless, and any messages with it signed are either coming from
+The BIMI-Location, BIMI-Indicator, and BIMI-Logo-Preference headers MUST NOT be
+DKIM signed. These headers are untrusted by definition, and is only for use between
+an MTA and its MUAs after DKIM has been validated by the MTA. Therefore, signing
+these headers is meaningless, and any messages with them signed are either coming from
 malicious or misconfigured third parties.
 
 # Domain Owner Actions    {#bimi-sender}
@@ -898,19 +901,26 @@ hash is truncated to the final 8 (at least) characters, and added to the Authent
 entry.
 If this entry is added then the MTA MUST also add the BIMI-Indicator header.
 
+policy.logo-preference: Contains the Domain Owner's preference for personal avatar display
+as defined in the BIMI-Logo-Preference header (plain-text; OPTIONAL).
+The MTA MUST NOT add this entry if the value discovered in the BIMI record was invalid.
+
+
 ## Handle Existing BIMI-Location and BIMI-Indicator Headers
 
-Regardless of success of the BIMI lookup, if a BIMI-Location or a BIMI-Indicator
-header is already present in a message it MUST be either removed or renamed. 
+Regardless of success of the BIMI lookup, if a BIMI-Location, BIMI-Indicator,
+or BIMI-Logo-Preference header is already present in a message it MUST be either
+removed or renamed. 
 This is because the MTA performing BIMI-related processing immediately prior
 to a Mail Delivery Agent (or within the same administrative realm) is the only
-entity allowed to specify the BIMI-Location or BIMI-Indicator headers (e.g.
-not the sending MTA, and not an intermediate MTA).  Allowing one or more
+entity allowed to specify the BIMI-Location, BIMI-Indicator, and BIMI-Logo-Preference
+headers (e.g. not the sending MTA, and not an intermediate MTA).  Allowing one or more
 existing headers through to a MUA is a security risk.
 
 If the original email message had a DKIM signature, it has already been evaluated.
-Removing the BIMI-Location header at this point should not invalidate the signature
-since it should not be included within it per this spec.
+Removing the BIMI-Location, BIMI-Indicator, or BIMI-Logo-Preference headers at this
+point should not invalidate the signature since it should not be included within it
+per this spec.
 
 ## Construct BIMI-Location URI
 
@@ -934,6 +944,17 @@ Indicator was compressed with gzip when retrieved then the data MUST be
 uncompressed before being base64 encoded.
 
 The MTA MUST fold the header to be within the line length limits of SMTP [@!RFC5321].
+
+## Construct BIMI-Logo-Preference header
+
+This header MUST NOT be added if Discovery or Validation steps failed.
+
+This contains the policy from the BIMI record indicating the domain owners preference
+for logo display.
+
+The MTA MUST fold the header to be within the line length limits of SMTP [@!RFC5321].
+
+The MTA MUST NOT add this header if the value discovered in the BIMI record was invalid.
 
 # Security Considerations   {#security-considerations}
 
