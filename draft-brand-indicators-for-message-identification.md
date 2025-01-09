@@ -447,7 +447,7 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
-s= Avatar Preference (plain-text; OPTIONAL; default is "bimi"). For mail sent
+avp= Avatar Preference (plain-text; OPTIONAL; default is "bimi"). For mail sent
 to those mailbox providers that both participate in BIMI and support the display
 of personal avatars, this flag is a way for the Domain Owner to express its preference
 as to whether to show the BIMI logo or the personal avatar. If the tag is not present
@@ -468,7 +468,7 @@ MAY choose to treat an invalid preference value as a failing record.
 
     ABNF:
 
-    bimi-logo-preference = "s" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
+    bimi-logo-preference = "avp" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
 
 Therefore, the formal definition of the BIMI Assertion Record, using ABNF [@!RFC5234],
 is as follows:
@@ -654,7 +654,7 @@ The syntax of the header is as follows:
 
     ABNF:
 
-    bimi-logo-preference-header = "s" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
+    bimi-logo-preference-header = "avp" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
 
 ## Header Signing
 
