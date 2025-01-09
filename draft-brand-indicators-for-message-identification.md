@@ -452,7 +452,7 @@ to those mailbox providers that both participate in BIMI and support the display
 of personal avatars, this flag is a way for the Domain Owner to express its preference
 as to whether to show the BIMI logo or the personal avatar. If the tag is not present
 in an otherwise syntactically valid BIMI record, then the record is treated as if
-it included "s=bimi". Allowed values are:
+it included "avp=bimi". Allowed values are:
 
     personal: If BIMI is in place for the sending domain and the sender of the email
     has a personal avatar, then the mailbox provider SHOULD display the personal avatar
