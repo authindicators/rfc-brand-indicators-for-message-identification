@@ -299,7 +299,7 @@ These are defined in a separate document.
 ## Mark Certificate (MC)
 
 A certificate issued by a Certificate Authority in accordance with the Minimum
-Security Requirements for Issuance of Mark Certificates.  These requiremetns are
+Security Requirements for Issuance of Mark Certificates.  These requirements are
 defined in a separate document.
 
 A Mark Certificate is one type of a BIMI Evidence Document, and there are two
