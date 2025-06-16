@@ -447,19 +447,19 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
-avp= Avatar Preference (plain-text; OPTIONAL; default is "bimi"). For mail sent
+avp= Avatar Preference (plain-text; OPTIONAL; default is "brand"). For mail sent
 to those mailbox providers that both participate in BIMI and support the display
 of personal avatars, this flag is a way for the Domain Owner to express its preference
 as to whether to show the BIMI logo or the personal avatar. If the tag is not present
 in an otherwise syntactically valid BIMI record, then the record is treated as if
-it included "avp=bimi". Allowed values are:
+it included "avp=brand". Allowed values are:
 
     personal: If BIMI is in place for the sending domain and the sender of the email
     has a personal avatar, then the mailbox provider SHOULD display the personal avatar
     for the message when shown in the recipient’s mailbox. If the sender has no personal
     avatar, then the BIMI logo should be shown if the message qualifies for such display.
 
-    bimi: If BIMI is in place for the sending domain and the sender of the email has a
+    brand: If BIMI is in place for the sending domain and the sender of the email has a
     personal avatar, then the mailbox provider SHOULD display the BIMI logo for the domain
     if the message qualifies for such display.
 
@@ -468,7 +468,7 @@ MAY choose to treat an invalid preference value as a failing record.
 
     ABNF:
 
-    bimi-logo-preference = "avp" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
+    bimi-logo-preference = "avp" *WSP "=" *WSP %s "personal"/"brand" bimi-sep
 
 Therefore, the formal definition of the BIMI Assertion Record, using ABNF [@!RFC5234],
 is as follows:
@@ -654,7 +654,7 @@ The syntax of the header is as follows:
 
     ABNF:
 
-    bimi-logo-preference-header = "avp" *WSP "=" *WSP %s "personal"/"bimi" bimi-sep
+    bimi-logo-preference-header = "avp" *WSP "=" *WSP %s "personal"/"brand" bimi-sep
 
 ## Header Signing
 
@@ -672,6 +672,19 @@ DKIM signed. These headers are untrusted by definition, and is only for use betw
 an MTA and its MUAs after DKIM has been validated by the MTA. Therefore, signing
 these headers is meaningless, and any messages with them signed are either coming from
 malicious or misconfigured third parties.
+
+## Header Removal
+
+When a site is BIMI-aware, the receiving MTA MUST remove the MTA-produced 
+headers (BIMI-Location, BIMI-Indicator, BIMI-Logo-Preference) when those
+headers originate from outside the current site.  For example, a multi-stage
+platform will likely want to leave those in place.  However, when the message
+arrives from another site with those headers available, they MUST be removed.
+
+When a site is not BIMI-aware, they SHOULD remove those headers.  If the
+receiving site has no awareness of that evaluation, the headers should be
+treated as suspect, and removed.
+
 
 # Domain Owner Actions    {#bimi-sender}
 

@@ -6,7 +6,7 @@
 # One source for syntax of markdown language is here:
 #   https://miek.nl/2016/march/05/mmark-syntax-document/#xml-references
 
-VERSION = 09
+VERSION = 10
 DOCNAME = draft-brand-indicators-for-message-identification
 
 all: build/$(DOCNAME).xml build/$(DOCNAME)-$(VERSION).txt build/$(DOCNAME)-$(VERSION).html
