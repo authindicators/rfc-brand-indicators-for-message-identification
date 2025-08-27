@@ -326,6 +326,12 @@ specification for the purpose of discovering and fetching published Indicators.
 A Protocol Client that uses optional capabilities to obtain and evaluate evidence
 concerning the Domain Owner's rights to use the published Indicators. 
 
+## Local-part
+
+The locally interpret string part of an email address which appears before the
+at-sign character ("@", ASCII value 64) which is then followed by an Internet
+domain.
+
 # BIMI DNS Records   {#bimi-dns}
 
 Domain owners publish BIMI policies by adding BIMI Assertion Records in the
@@ -374,7 +380,7 @@ personal avatars associated with the sender of an email message delivered to the
 platforms, and in fact the support for personal avatar display predates BIMI. Some
 domain owners wishing to participate in BIMI may also desire to have personal avatars
 displayed for some classes of mail sent using their domain. BIMI offers two options
-for this - an optional [BIMI-Selector header](#bimi-selector) or a tag in the
+for this - an optional [BIMI-Selector header](#bimi-selector), a local-part selector tag, or avatar preference tag in the
 [BIMI Assertion Record](#assertion-record-definition).
 
 ## Assertion Record Definition   {#assertion-record-definition}
@@ -447,6 +453,15 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
+lps=Boolean (plain-text; OPTIONAL; default if "false").
+
+If true, then the MBP MUST lookup a selector derived from the local-part of the
+sending email address.
+
+    ABNF:
+
+    local-part-selector = "lps" *WSP "=" *WSP %s "true"/"false" bimi-sep
+
 avp= Avatar Preference (plain-text; OPTIONAL; default is "brand"). For mail sent
 to those mailbox providers that both participate in BIMI and support the display
 of personal avatars, this flag is a way for the Domain Owner to express its preference
@@ -475,7 +490,7 @@ is as follows:
 
     bimi-sep = *WSP ";" *WSP
 
-    bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [(bimi-sep bimi-logo-preference)] [bimi-sep]
+    bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [(local-part-selector)] [(bimi-sep bimi-logo-preference)] [bimi-sep]
  
     ; components other than bimi-version may appear in any order
 
@@ -492,6 +507,12 @@ other selectors would display normally.
 An explicit declination to publish looks like:
 
     v=BIMI1; l=; a=;
+
+If the sender wishes to only enable BIMI on specific selectors utilizing
+the local-part selector mechanism, but decline BIMI for the default case
+then the BIMI record may look like:
+
+    v=BIMI1; l=; a=; lps=true;
 
 ### Supported Image Formats for l= tag
 
@@ -518,7 +539,8 @@ selectors are modeled after
 
 The selector "default" is the default Assertion Record. Domain Owners can
 specify which other selector to use on a per-message basis by utilizing
-the [BIMI-Selector Header](#bimi-selector).
+the [BIMI-Selector Header](#bimi-selector), or by utilizing
+[Loca-lpart Selectors](#local-part-delectors).
 
 Periods are allowed in selectors and are component separators.  When BIMI
 Assertion Records are retrieved from the DNS, periods in selectors define
@@ -538,6 +560,61 @@ The number of selectors for each domain is determined by the Domain Owner.
 Many Domain Owners will be satisfied with just one selector, whereas
 organizations with more complex branding requirements can choose to manage
 disparate selectors.  BIMI sets no maximum limit on the number of selectors.
+
+## Local-part Selectors    {#local-part-selectors}
+
+To support the case where a domain owner may wish to display more than one
+distinct Brand Indicator per domain, or decline to publish a Brand Indicator
+for specific messages, but is unable to easily add BIMI-Selector headers to
+the relevant outbound mail the BIMI assertion record may include the tag
+lps=true (local-part selector)
+
+If this tag is present then a supporting MBP MUST perform the following actions.
+
+ 1 - Each time a BIMI assertion record is queried, either for the RFC5322 domain
+     or for the Organizational domain thereof.
+
+ 2 - Lookup the BIMI assertion record and check for the lps=true tag, if this is
+     not present then processing continues as normal.
+
+ 3 - Normalize the local-part of the sending email address using the following algorithm
+ 
+ - Remove any Subaddress Extension ([@!RFC5233]) part (sometimes called plus addressing)
+   from the local-part address.
+   If the local-part contains the plus character ("+", ASCII value 43) then remove
+   this character along with all following characters from the string.
+
+ - Replace all underscores ("_", ASCII value 95) and periods
+   (".", ASCII value 46) with a dash ("-", ASCII value 45). If more
+   than 1 of these occur sequentially then replace the group with
+   a single dash. Dashes at the beginning and end of the string
+   are removed.
+
+ - If the remaining local-part contains only letters ("A-Z", ASCII value 65-90) 
+  ("a-z", ASCII value 97-122), digits ("0-9", ASCII value 48-57), and dashes ("-", ASCII value 45, and is at most 63 characters long, then the string is in normalized form and
+  may be used as a selector.
+
+ - If the remaining local-part contains any other characters then it may
+   not be used as a selector, There are several RFCs which discuss
+   potential solutions to this, including ([@!RFC3492]), ([@!RFC7929])
+   and ([@!RFC6530]), however to simplify the selector name and
+   resulting DNS record, it is recommended that only the above mentioned
+   characters be used in sending email addresses for BIMI local-part
+   selectors. 
+
+ - While the local-part may be considered case sensitive, the selector is case insensitive.
+  This must be taken into consideration when choosing the local-part for sending
+  BIMI selector enabled mail.
+
+ 4 - Using the normalized local-part as a selector, lookup the BIMI assertion
+     record from the domain at which the lps=true tag was found with the new
+     local-part selector present.
+
+ 5 - If this record is found then processing MUST continue as if this was the
+     record found at step 1
+
+ 6 - If this record is not found then processing MUST continue using the
+     original record as discovered at step 1
 
 # BIMI Header Fields   {#bimi-headers}
 
@@ -795,17 +872,33 @@ for the message:
    possibly empty set of records is returned.
 4. Records that do not start with a "v=" tag that identifies the current version
    of BIMI MUST be discarded.
-5. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record
+5. If the resulting record includes the [Local-part Selector](#local-part-selectors)
+   tag lps=true then the client MUST first normalize the local-part of the
+   RFC5322.From header as detailed in [Local-part Selector](#local-part-selectors),
+   and if this differs from any selector and domain combination already queried,
+   MUST query DNS for the BIMI TXT record at the domain constructed by concatenating
+   the normalized selector, the string '_bimi', and the Author domain. If a valid
+   BIMI record is found then this should be used, if not then the BIMI record
+   retrieved in step 3 MUST be used instead.
+6. If the set is now empty, the Client MUST query the DNS for a BIMI TXT record
    at the DNS domain constructed by concatenating the selector, the string '_bimi',
    and the Organizational Domain (as defined in DMARC [@!RFC7489]) corresponding
    to the Author Domain. A custom selector that does not exist falls back to
    \<selector\>._bimi.\<organizationalDomain\>.  A possibly empty set of records
    is returned.
-6. Records that do not start with a "v=" tag that identifies the current version
+7. Records that do not start with a "v=" tag that identifies the current version
    of BIMI MUST be discarded.
-7. If the remaining set contains multiple records or no records, Assertion Record
+8. If the resulting record includes the [Local-part Selector](#local-part-selectors)
+   tag lps=true then the client MUST first normalize the local-part of the
+   RFC5322.From header as detailed in [Local-part Selector](#local-part-selectors),
+   and if this differs from any selector and domain combination already queried,
+   MUST query DNS for the BIMI TXT record at the domain constructed by concatenating
+   the normalized selector, the string '_bimi', and the Organizational domain. If a valid
+   BIMI record is found then this should be used, if not then the BIMI record
+   retrieved in step 6 MUST be used instead.
+8. If the remaining set contains multiple records or no records, Assertion Record
    Discovery terminates and BIMI processing MUST NOT be performed for this message.
-8. If the remaining set contains only a single record, this record is used for BIMI
+9. If the remaining set contains only a single record, this record is used for BIMI
    Assertion.
 
 ## Indicator Discovery. {#indicator-discovery}
