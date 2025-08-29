@@ -5,7 +5,7 @@
 Network                                                         S. Blank
 Internet-Draft                                              P. Goldstein
 Intended status: Standards Track                                Valimail
-Expires: 28 February 2026                                  T. Loder (ed)
+Expires: 2 March 2026                                      T. Loder (ed)
                                                      Skye Logicworks LLC
                                                             T. Zink (ed)
                                                                         
@@ -13,7 +13,7 @@ Expires: 28 February 2026                                  T. Loder (ed)
                                                                 Fastmail
                                                          A. Brotman (ed)
                                                                  Comcast
-                                                          27 August 2025
+                                                          29 August 2025
 
 
            Brand Indicators for Message Identification (BIMI)
@@ -48,12 +48,12 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 28 February 2026.
+   This Internet-Draft will expire on 2 March 2026.
 
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 1]
+Blank, et al.             Expires 2 March 2026                  [Page 1]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -109,7 +109,7 @@ Table of Contents
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 2]
+Blank, et al.             Expires 2 March 2026                  [Page 2]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -165,7 +165,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 3]
+Blank, et al.             Expires 2 March 2026                  [Page 3]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -221,7 +221,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 4]
+Blank, et al.             Expires 2 March 2026                  [Page 4]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -277,7 +277,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 5]
+Blank, et al.             Expires 2 March 2026                  [Page 5]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -333,7 +333,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 6]
+Blank, et al.             Expires 2 March 2026                  [Page 6]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -389,7 +389,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 7]
+Blank, et al.             Expires 2 March 2026                  [Page 7]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -445,7 +445,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 8]
+Blank, et al.             Expires 2 March 2026                  [Page 8]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -501,7 +501,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026                [Page 9]
+Blank, et al.             Expires 2 March 2026                  [Page 9]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -557,7 +557,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 10]
+Blank, et al.             Expires 2 March 2026                 [Page 10]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -613,7 +613,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 11]
+Blank, et al.             Expires 2 March 2026                 [Page 11]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -669,7 +669,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 12]
+Blank, et al.             Expires 2 March 2026                 [Page 12]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -716,7 +716,7 @@ Internet-Draft                    BIMI                       August 2025
 
    bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
-   lps=Boolean (plain-text; OPTIONAL; default if "false").
+   lps=Boolean (plain-text; OPTIONAL; default is "false").
 
    If true, then the MBP MUST lookup a selector derived from the local-
    part of the sending email address.
@@ -725,7 +725,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 13]
+Blank, et al.             Expires 2 March 2026                 [Page 13]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -781,7 +781,7 @@ bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-loc
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 14]
+Blank, et al.             Expires 2 March 2026                 [Page 14]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -837,7 +837,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 15]
+Blank, et al.             Expires 2 March 2026                 [Page 15]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -893,7 +893,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 16]
+Blank, et al.             Expires 2 March 2026                 [Page 16]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -949,7 +949,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 17]
+Blank, et al.             Expires 2 March 2026                 [Page 17]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1005,7 +1005,7 @@ bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 18]
+Blank, et al.             Expires 2 March 2026                 [Page 18]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1061,7 +1061,7 @@ bimi-location-header = bimi-header-version bimi-sep bimi-location-options \[bimi
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 19]
+Blank, et al.             Expires 2 March 2026                 [Page 19]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1117,7 +1117,7 @@ bimi-logo-preference-header = "avp" *WSP "=" *WSP %s "personal"/"brand" bimi-sep
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 20]
+Blank, et al.             Expires 2 March 2026                 [Page 20]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1173,7 +1173,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 21]
+Blank, et al.             Expires 2 March 2026                 [Page 21]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1229,7 +1229,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 22]
+Blank, et al.             Expires 2 March 2026                 [Page 22]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1285,7 +1285,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 23]
+Blank, et al.             Expires 2 March 2026                 [Page 23]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1341,7 +1341,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 24]
+Blank, et al.             Expires 2 March 2026                 [Page 24]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1397,7 +1397,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 25]
+Blank, et al.             Expires 2 March 2026                 [Page 25]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1453,7 +1453,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 26]
+Blank, et al.             Expires 2 March 2026                 [Page 26]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1509,7 +1509,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 27]
+Blank, et al.             Expires 2 March 2026                 [Page 27]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1565,7 +1565,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 28]
+Blank, et al.             Expires 2 March 2026                 [Page 28]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1621,7 +1621,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 29]
+Blank, et al.             Expires 2 March 2026                 [Page 29]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1677,7 +1677,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 30]
+Blank, et al.             Expires 2 March 2026                 [Page 30]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1733,7 +1733,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 31]
+Blank, et al.             Expires 2 March 2026                 [Page 31]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1789,7 +1789,7 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 32]
+Blank, et al.             Expires 2 March 2026                 [Page 32]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1845,7 +1845,7 @@ A.4.  With BIMI-Selector Header on a subdomain
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 33]
+Blank, et al.             Expires 2 March 2026                 [Page 33]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1901,7 +1901,7 @@ Authentication-Results: example.com; bimi=pass header.d=example.com header.selec
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 34]
+Blank, et al.             Expires 2 March 2026                 [Page 34]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -1957,7 +1957,7 @@ C.2.  MTA does its authentication checks
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 35]
+Blank, et al.             Expires 2 March 2026                 [Page 35]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -2013,7 +2013,7 @@ C.5.  MTA Constructs BIMI-Location and BIMI-Indicator headers
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 36]
+Blank, et al.             Expires 2 March 2026                 [Page 36]
 
 Internet-Draft                    BIMI                       August 2025
 
@@ -2069,4 +2069,4 @@ Authors' Addresses
 
 
 
-Blank, et al.           Expires 28 February 2026               [Page 37]
+Blank, et al.             Expires 2 March 2026                 [Page 37]

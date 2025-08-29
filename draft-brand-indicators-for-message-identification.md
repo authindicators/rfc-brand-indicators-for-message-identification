@@ -453,7 +453,7 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
-lps=Boolean (plain-text; OPTIONAL; default if "false").
+lps=Boolean (plain-text; OPTIONAL; default is "false").
 
 If true, then the MBP MUST lookup a selector derived from the local-part of the
 sending email address.
