@@ -539,7 +539,7 @@ selectors are modeled after
 The selector "default" is the default Assertion Record. Domain Owners can
 specify which other selector to use on a per-message basis by utilizing
 the [BIMI-Selector Header](#bimi-selector), or by utilizing
-[Loca-lpart Selectors](#local-part-delectors).
+[Local-part Selectors](#local-part-selectors).
 
 Periods are allowed in selectors and are component separators.  When BIMI
 Assertion Records are retrieved from the DNS, periods in selectors define

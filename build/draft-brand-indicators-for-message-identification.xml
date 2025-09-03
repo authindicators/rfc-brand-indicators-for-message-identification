@@ -488,7 +488,7 @@ selectors are modeled after
 <t>The selector &quot;default&quot; is the default Assertion Record. Domain Owners can
 specify which other selector to use on a per-message basis by utilizing
 the <eref target="#bimi-selector">BIMI-Selector Header</eref>, or by utilizing
-<eref target="#local-part-delectors">Loca-lpart Selectors</eref>.</t>
+<eref target="#local-part-selectors">Local-part Selectors</eref>.</t>
 <t>Periods are allowed in selectors and are component separators.  When BIMI
 Assertion Records are retrieved from the DNS, periods in selectors define
 DNS label boundaries in a manner similar to the conventional use in domain
