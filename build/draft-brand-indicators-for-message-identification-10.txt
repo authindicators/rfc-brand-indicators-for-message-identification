@@ -5,7 +5,7 @@
 Network                                                         S. Blank
 Internet-Draft                                              P. Goldstein
 Intended status: Standards Track                                Valimail
-Expires: 2 March 2026                                      T. Loder (ed)
+Expires: 7 March 2026                                      T. Loder (ed)
                                                      Skye Logicworks LLC
                                                             T. Zink (ed)
                                                                         
@@ -13,7 +13,7 @@ Expires: 2 March 2026                                      T. Loder (ed)
                                                                 Fastmail
                                                          A. Brotman (ed)
                                                                  Comcast
-                                                          29 August 2025
+                                                        3 September 2025
 
 
            Brand Indicators for Message Identification (BIMI)
@@ -48,14 +48,14 @@ Status of This Memo
    time.  It is inappropriate to use Internet-Drafts as reference
    material or to cite them other than as "work in progress."
 
-   This Internet-Draft will expire on 2 March 2026.
+   This Internet-Draft will expire on 7 March 2026.
 
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 1]
+Blank, et al.             Expires 7 March 2026                  [Page 1]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 Copyright Notice
@@ -109,9 +109,9 @@ Table of Contents
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 2]
+Blank, et al.             Expires 7 March 2026                  [Page 2]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
      6.1.  Determine and Publish Indicator(s) for Use  . . . . . . .  21
@@ -165,9 +165,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 3]
+Blank, et al.             Expires 7 March 2026                  [Page 3]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
      B.5.  Subdomain and organizational domain have no record for
@@ -221,9 +221,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 4]
+Blank, et al.             Expires 7 March 2026                  [Page 4]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    *  can be deployed incrementally; and
@@ -277,9 +277,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 5]
+Blank, et al.             Expires 7 March 2026                  [Page 5]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    2.  Scalability is challenging for closed systems that attempt to
@@ -333,9 +333,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 6]
+Blank, et al.             Expires 7 March 2026                  [Page 6]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
              o  If a subdomain policy is published it MUST NOT be "none"
@@ -389,9 +389,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 7]
+Blank, et al.             Expires 7 March 2026                  [Page 7]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 2.1.  High-Level Goals
@@ -445,9 +445,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 8]
+Blank, et al.             Expires 7 March 2026                  [Page 8]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
@@ -501,9 +501,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                  [Page 9]
+Blank, et al.             Expires 7 March 2026                  [Page 9]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 3.5.  Mark Certificate (MC)
@@ -557,9 +557,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 10]
+Blank, et al.             Expires 7 March 2026                 [Page 10]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    regarding the preferred set of Indicators to be displayed with
@@ -613,9 +613,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 11]
+Blank, et al.             Expires 7 March 2026                 [Page 11]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 4.2.  Personal Avatars and BIMI
@@ -669,9 +669,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 12]
+Blank, et al.             Expires 7 March 2026                 [Page 12]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    v= Version (plain-text; REQUIRED).  Identifies the record retrieved
@@ -716,18 +716,18 @@ Internet-Draft                    BIMI                       August 2025
 
    bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
-   lps=Boolean (plain-text; OPTIONAL; default is "false").
-
-   If true, then the MBP MUST lookup a selector derived from the local-
-   part of the sending email address.
-
-
+   lps= Local-Part as selector (plain-text "true" or false"; OPTIONAL;
+   default is "false").  If the value is "true", then the MBP MUST
+   lookup a selector derived from the local-part of the sending email
+   address.
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 13]
+
+
+Blank, et al.             Expires 7 March 2026                 [Page 13]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    ABNF:
@@ -781,9 +781,9 @@ bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-loc
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 14]
+Blank, et al.             Expires 7 March 2026                 [Page 14]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    An explicit declination to publish looks like:
@@ -837,9 +837,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 15]
+Blank, et al.             Expires 7 March 2026                 [Page 15]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    ABNF:
@@ -861,8 +861,8 @@ Internet-Draft                    BIMI                       August 2025
    To support the case where a domain owner may wish to display more
    than one distinct Brand Indicator per domain, or decline to publish a
    Brand Indicator for specific messages, but is unable to easily add
-   BIMI-Selector headers to the relevant outbound mail the BIMI
-   assertion record may include the tag lps=true (local-part selector)
+   BIMI-Selector headers to the relevant outbound mail, the BIMI
+   assertion record may include the tag lps=true (local-part selector).
 
    If this tag is present then a supporting MBP MUST perform the
    following actions.
@@ -893,9 +893,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 16]
+Blank, et al.             Expires 7 March 2026                 [Page 16]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    *  If the remaining local-part contains only letters ("A-Z", ASCII
@@ -949,9 +949,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 17]
+Blank, et al.             Expires 7 March 2026                 [Page 17]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    v= Version (plain-text; REQUIRED).  The version of BIMI.  It MUST
@@ -1005,9 +1005,9 @@ bimi-selector-header = bimi-header-version bimi-sep bimi-selector \[bimi-sep\]
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 18]
+Blank, et al.             Expires 7 March 2026                 [Page 18]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    a: location of the BIMI Evidence Document (URI; REQUIRED if the BIMI
@@ -1061,9 +1061,9 @@ bimi-location-header = bimi-header-version bimi-sep bimi-location-options \[bimi
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 19]
+Blank, et al.             Expires 7 March 2026                 [Page 19]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 5.4.  BIMI-Logo-Preference Header
@@ -1117,9 +1117,9 @@ bimi-logo-preference-header = "avp" *WSP "=" *WSP %s "personal"/"brand" bimi-sep
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 20]
+Blank, et al.             Expires 7 March 2026                 [Page 20]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 6.1.  Determine and Publish Indicator(s) for Use
@@ -1173,9 +1173,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 21]
+Blank, et al.             Expires 7 March 2026                 [Page 21]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 7.1.  Authentication Requirements
@@ -1229,9 +1229,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 22]
+Blank, et al.             Expires 7 March 2026                 [Page 22]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 7.2.  Assertion Record Discovery
@@ -1285,9 +1285,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 23]
+Blank, et al.             Expires 7 March 2026                 [Page 23]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
         Domain.  A custom selector that does not exist falls back to
@@ -1341,9 +1341,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 24]
+Blank, et al.             Expires 7 March 2026                 [Page 24]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 7.4.  Indicator Discovery With Evidence.
@@ -1397,9 +1397,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 25]
+Blank, et al.             Expires 7 March 2026                 [Page 25]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    4.  If Indicator verification has passed, and the Indicator is from a
@@ -1453,9 +1453,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 26]
+Blank, et al.             Expires 7 March 2026                 [Page 26]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    policy.indicator-hash: In order to prevent MUAs from displaying
@@ -1509,9 +1509,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 27]
+Blank, et al.             Expires 7 March 2026                 [Page 27]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 7.10.  Construct BIMI-Indicator header
@@ -1565,9 +1565,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 28]
+Blank, et al.             Expires 7 March 2026                 [Page 28]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 8.2.  Lookalike Domains and Copycat Indicators
@@ -1621,9 +1621,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 29]
+Blank, et al.             Expires 7 March 2026                 [Page 29]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 8.7.  CGI scripts in Indicator payload
@@ -1677,9 +1677,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 30]
+Blank, et al.             Expires 7 March 2026                 [Page 30]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    Status: standard
@@ -1733,9 +1733,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 31]
+Blank, et al.             Expires 7 March 2026                 [Page 31]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    [RFC5234]  Crocker, D., Ed. and P. Overell, "Augmented BNF for Syntax
@@ -1789,9 +1789,9 @@ Internet-Draft                    BIMI                       August 2025
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 32]
+Blank, et al.             Expires 7 March 2026                 [Page 32]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
    [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
@@ -1845,9 +1845,9 @@ A.4.  With BIMI-Selector Header on a subdomain
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 33]
+Blank, et al.             Expires 7 March 2026                 [Page 33]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 A.5.  Invalid BIMI-Selector Header
@@ -1901,9 +1901,9 @@ Authentication-Results: example.com; bimi=pass header.d=example.com header.selec
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 34]
+Blank, et al.             Expires 7 March 2026                 [Page 34]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 B.5.  Subdomain and organizational domain have no record for selector,
@@ -1957,9 +1957,9 @@ C.2.  MTA does its authentication checks
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 35]
+Blank, et al.             Expires 7 March 2026                 [Page 35]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 C.3.  MTA performs BIMI Assertion
@@ -2013,9 +2013,9 @@ C.5.  MTA Constructs BIMI-Location and BIMI-Indicator headers
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 36]
+Blank, et al.             Expires 7 March 2026                 [Page 36]
 
-Internet-Draft                    BIMI                       August 2025
+Internet-Draft                    BIMI                    September 2025
 
 
 C.6.  The MUA displays the Indicator
@@ -2069,4 +2069,4 @@ Authors' Addresses
 
 
 
-Blank, et al.             Expires 2 March 2026                 [Page 37]
+Blank, et al.             Expires 7 March 2026                 [Page 37]

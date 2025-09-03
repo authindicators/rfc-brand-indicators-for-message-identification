@@ -1185,11 +1185,11 @@ li > p:last-of-type {
 <thead><tr>
 <td class="left">Internet-Draft</td>
 <td class="center">BIMI</td>
-<td class="right">August 2025</td>
+<td class="right">September 2025</td>
 </tr></thead>
 <tfoot><tr>
 <td class="left">Blank, et al.</td>
-<td class="center">Expires 2 March 2026</td>
+<td class="center">Expires 7 March 2026</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
 </table>
@@ -1202,12 +1202,12 @@ li > p:last-of-type {
 <dd class="internet-draft">draft-brand-indicators-for-message-identification-10</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
-<time datetime="2025-08-29" class="published">29 August 2025</time>
+<time datetime="2025-09-03" class="published">3 September 2025</time>
     </dd>
 <dt class="label-intended-status">Intended Status:</dt>
 <dd class="intended-status">Standards Track</dd>
 <dt class="label-expires">Expires:</dt>
-<dd class="expires"><time datetime="2026-03-02">2 March 2026</time></dd>
+<dd class="expires"><time datetime="2026-03-07">7 March 2026</time></dd>
 <dt class="label-authors">Authors:</dt>
 <dd class="authors">
 <div class="author">
@@ -1269,7 +1269,7 @@ use of BIMI data and for Indicator display as they see fit.<a href="#section-abs
         time. It is inappropriate to use Internet-Drafts as reference
         material or to cite them other than as "work in progress."<a href="#section-boilerplate.1-3" class="pilcrow">¶</a></p>
 <p id="section-boilerplate.1-4">
-        This Internet-Draft will expire on 2 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
+        This Internet-Draft will expire on 7 March 2026.<a href="#section-boilerplate.1-4" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="copyright">
@@ -2059,22 +2059,22 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.<a hr
 bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 </pre><a href="#section-4.3-13" class="pilcrow">¶</a>
 </div>
-<p id="section-4.3-14">lps=Boolean (plain-text; OPTIONAL; default is "false").<a href="#section-4.3-14" class="pilcrow">¶</a></p>
-<p id="section-4.3-15">If true, then the MBP MUST lookup a selector derived from the local-part of the
-sending email address.<a href="#section-4.3-15" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-16">
+<p id="section-4.3-14">lps= Local-Part as selector (plain-text "true" or false"; OPTIONAL; default is
+"false"). If the value is "true", then the MBP MUST lookup a selector derived
+from the local-part of the sending email address.<a href="#section-4.3-14" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-15">
 <pre>ABNF:
 
 local-part-selector = "lps" *WSP "=" *WSP %s "true"/"false" bimi-sep
-</pre><a href="#section-4.3-16" class="pilcrow">¶</a>
+</pre><a href="#section-4.3-15" class="pilcrow">¶</a>
 </div>
-<p id="section-4.3-17">avp= Avatar Preference (plain-text; OPTIONAL; default is "brand"). For mail sent
+<p id="section-4.3-16">avp= Avatar Preference (plain-text; OPTIONAL; default is "brand"). For mail sent
 to those mailbox providers that both participate in BIMI and support the display
 of personal avatars, this flag is a way for the Domain Owner to express its preference
 as to whether to show the BIMI logo or the personal avatar. If the tag is not present
 in an otherwise syntactically valid BIMI record, then the record is treated as if
-it included "avp=brand". Allowed values are:<a href="#section-4.3-17" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-18">
+it included "avp=brand". Allowed values are:<a href="#section-4.3-16" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-17">
 <pre>personal: If BIMI is in place for the sending domain and the sender of the email
 has a personal avatar, then the mailbox provider SHOULD display the personal avatar
 for the message when shown in the recipient’s mailbox. If the sender has no personal
@@ -2083,25 +2083,25 @@ avatar, then the BIMI logo should be shown if the message qualifies for such dis
 brand: If BIMI is in place for the sending domain and the sender of the email has a
 personal avatar, then the mailbox provider SHOULD display the BIMI logo for the domain
 if the message qualifies for such display.
-</pre><a href="#section-4.3-18" class="pilcrow">¶</a>
+</pre><a href="#section-4.3-17" class="pilcrow">¶</a>
 </div>
-<p id="section-4.3-19">Any other values MUST be ignored and not included in and added headers. A mailbox provider
-MAY choose to treat an invalid preference value as a failing record.<a href="#section-4.3-19" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-20">
+<p id="section-4.3-18">Any other values MUST be ignored and not included in and added headers. A mailbox provider
+MAY choose to treat an invalid preference value as a failing record.<a href="#section-4.3-18" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-19">
 <pre>ABNF:
 
 bimi-logo-preference = "avp" *WSP "=" *WSP %s "personal"/"brand" bimi-sep
-</pre><a href="#section-4.3-20" class="pilcrow">¶</a>
+</pre><a href="#section-4.3-19" class="pilcrow">¶</a>
 </div>
-<p id="section-4.3-21">Therefore, the formal definition of the BIMI Assertion Record, using ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span>,
-is as follows:<a href="#section-4.3-21" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4.3-22">
+<p id="section-4.3-20">Therefore, the formal definition of the BIMI Assertion Record, using ABNF <span>[<a href="#RFC5234" class="xref">RFC5234</a>]</span>,
+is as follows:<a href="#section-4.3-20" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4.3-21">
 <pre>bimi-sep = *WSP ";" *WSP
 
 bimi-record = bimi-version (bimi-sep bimi-location) [(bimi-sep bimi-evidence-location)] [(local-part-selector)] [(bimi-sep bimi-logo-preference)] [bimi-sep]
 
 ; components other than bimi-version may appear in any order
-</pre><a href="#section-4.3-22" class="pilcrow">¶</a>
+</pre><a href="#section-4.3-21" class="pilcrow">¶</a>
 </div>
 <div id="declination-to-publish">
 <section id="section-4.3.1">
@@ -2192,8 +2192,8 @@ disparate selectors.  BIMI sets no maximum limit on the number of selectors.<a h
 <p id="section-4.5-1">To support the case where a domain owner may wish to display more than one
 distinct Brand Indicator per domain, or decline to publish a Brand Indicator
 for specific messages, but is unable to easily add BIMI-Selector headers to
-the relevant outbound mail the BIMI assertion record may include the tag
-lps=true (local-part selector)<a href="#section-4.5-1" class="pilcrow">¶</a></p>
+the relevant outbound mail, the BIMI assertion record may include the tag
+lps=true (local-part selector).<a href="#section-4.5-1" class="pilcrow">¶</a></p>
 <p id="section-4.5-2">If this tag is present then a supporting MBP MUST perform the following actions.<a href="#section-4.5-2" class="pilcrow">¶</a></p>
 <p id="section-4.5-3">1 - Each time a BIMI assertion record is queried, either for the RFC5322 domain
      or for the Organizational domain thereof.<a href="#section-4.5-3" class="pilcrow">¶</a></p>

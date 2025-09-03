@@ -453,10 +453,9 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
-lps=Boolean (plain-text; OPTIONAL; default is "false").
-
-If true, then the MBP MUST lookup a selector derived from the local-part of the
-sending email address.
+lps= Local-Part as selector (plain-text "true" or false"; OPTIONAL; default is
+"false"). If the value is "true", then the MBP MUST lookup a selector derived
+from the local-part of the sending email address.
 
     ABNF:
 
@@ -566,8 +565,8 @@ disparate selectors.  BIMI sets no maximum limit on the number of selectors.
 To support the case where a domain owner may wish to display more than one
 distinct Brand Indicator per domain, or decline to publish a Brand Indicator
 for specific messages, but is unable to easily add BIMI-Selector headers to
-the relevant outbound mail the BIMI assertion record may include the tag
-lps=true (local-part selector)
+the relevant outbound mail, the BIMI assertion record may include the tag
+lps=true (local-part selector).
 
 If this tag is present then a supporting MBP MUST perform the following actions.
 
