@@ -63,6 +63,14 @@ fullname = "Alex Brotman (ed)"
   [author.address]
   email = "alex_brotman@comcast.com"
 
+[[author]]
+initials = "W."
+surname = "Chuang (ed)"
+organization = "Google"
+fullname = "Wei Chuang (ed)"
+  [author.address]
+  email = "weihaw@google.com"
+
 [pi]
 toc = "yes"
 sortrefs = "yes"
@@ -453,13 +461,25 @@ location of a Brand Indicator file.  The only supported transport is HTTPS.
 
     bimi-location = "l" *WSP "=" *WSP [bimi-uri]
 
-lps= Local-Part as selector (plain-text "true" or false"; OPTIONAL; default is
-"false"). If the value is "true", then the MBP MUST lookup a selector derived
-from the local-part of the sending email address.
+lps= Local-Part as selector if this tag is present.  The value of this tag is zero, one
+or more local-part string prefixes that are comma separated.  When one or more string 
+prefixes are specified, then one of the prefixes MUST prefix match the sending email 
+address local-part.  If no string prefix is specified, then the local-part always 
+matches.  When the prefix match is successful, then the MBP MUST lookup a selector 
+derived from the local-part of the sending email address.  String prefix character set
+contains ALPHA and DIGIT which are defined in [@!RFC5234], and '-'.
 
     ABNF:
 
-    local-part-selector = "lps" *WSP "=" *WSP %s "true"/"false" bimi-sep
+    local-part-selector = "lps" *WSP "=" *WSP *1local-part-prefix-list
+
+    local-part-prefix-list = local-part-prefix *[ *WSP ',' *WSP local-part-prefix ]
+
+    local-part-prefix = 1*63local-part-text
+
+    local-part-text = ALPHA / DIGIT / '-'
+    
+    ; ALPHA is A-Z and a-z, DIGIT is 0-9
 
 avp= Avatar Preference (plain-text; OPTIONAL; default is "brand"). For mail sent
 to those mailbox providers that both participate in BIMI and support the display
@@ -511,7 +531,11 @@ If the sender wishes to only enable BIMI on specific selectors utilizing
 the local-part selector mechanism, but decline BIMI for the default case
 then the BIMI record may look like:
 
-    v=BIMI1; l=; a=; lps=true;
+    v=BIMI1; l=; a=; lps=brand-indicators-;
+
+As the string prefix list contains brand-indicators-, any local-part
+that prefix matches brand-indicator- will continue with a BIMI
+assertion record lookup using the local-part selector. 
 
 ### Supported Image Formats for l= tag
 
@@ -566,14 +590,21 @@ To support the case where a domain owner may wish to display more than one
 distinct Brand Indicator per domain, or decline to publish a Brand Indicator
 for specific messages, but is unable to easily add BIMI-Selector headers to
 the relevant outbound mail, the BIMI assertion record may include the tag
-lps=true (local-part selector).
+lps= (local-part selector).  The following are examples including string
+prefixes:
 
-If this tag is present then a supporting MBP MUST perform the following actions.
+    lps=
+
+    lps=brand-indicator-
+
+    lps = brand-one-noreply , brand-two-noreply
+
+If the lps= tag is present then a supporting MBP MUST perform the following actions.
 
  1 - Each time a BIMI assertion record is queried, either for the RFC5322 domain
      or for the Organizational domain thereof.
 
- 2 - Lookup the BIMI assertion record and check for the lps=true tag, if this is
+ 2 - Lookup the BIMI assertion record and check for the lps= tag, if this is
      not present then processing continues as normal.
 
  3 - Normalize the local-part of the sending email address using the following algorithm
@@ -590,8 +621,9 @@ If this tag is present then a supporting MBP MUST perform the following actions.
    are removed.
 
  - If the remaining local-part contains only letters ("A-Z", ASCII value 65-90) 
-  ("a-z", ASCII value 97-122), digits ("0-9", ASCII value 48-57), and dashes ("-", ASCII value 45, and is at most 63 characters long, then the string is in normalized form and
-  may be used as a selector.
+   ("a-z", ASCII value 97-122), digits ("0-9", ASCII value 48-57), and dashes ("-",
+   ASCII value 45, and is at most 63 characters long, then the string is in
+   normalized form and may be used as a selector.
 
  - If the remaining local-part contains any other characters then it may
    not be used as a selector, There are several RFCs which discuss
@@ -602,18 +634,30 @@ If this tag is present then a supporting MBP MUST perform the following actions.
    selectors. 
 
  - While the local-part may be considered case sensitive, the selector is case insensitive.
-  This must be taken into consideration when choosing the local-part for sending
-  BIMI selector enabled mail.
+   This must be taken into consideration when choosing the local-part for sending
+   BIMI selector enabled mail.
+ 
+ 4 - If the lps= tag has a value string, the sender indicates to preform
+     string prefix matching.  Split the value string by the comma ',' separator 
+     and strip off any whitespaces into a list of string prefixes.  Then prefix
+     match the local-part against each of the string prefixes and if any matches,
+     then continue to step 5 otherwise stop here.  If no value string is present,
+     continue to step 5.
 
- 4 - Using the normalized local-part as a selector, lookup the BIMI assertion
-     record from the domain at which the lps=true tag was found with the new
+ 5 - Using the normalized local-part as a selector, lookup the BIMI assertion
+     record from the domain at which the lps= tag was found with the new
      local-part selector present.
 
- 5 - If this record is found then processing MUST continue as if this was the
+ 6 - If this record is found then processing MUST continue as if this was the
      record found at step 1
 
- 6 - If this record is not found then processing MUST continue using the
+ 7 - If this record is not found then processing MUST continue using the
      original record as discovered at step 1
+
+Proper usage of the local-part string prefixes can reduce or eliminate non-matching
+local-part selector lookups, meaning unnecessary DNS lookups.  A receiver MAY mandate
+its usage with a mininmum prefix length before performing the local-part selector
+lookups.
 
 # BIMI Header Fields   {#bimi-headers}
 
@@ -872,7 +916,7 @@ for the message:
 4. Records that do not start with a "v=" tag that identifies the current version
    of BIMI MUST be discarded.
 5. If the resulting record includes the [Local-part Selector](#local-part-selectors)
-   tag lps=true then the client MUST first normalize the local-part of the
+   tag lps= then the client MUST first normalize the local-part of the
    RFC5322.From header as detailed in [Local-part Selector](#local-part-selectors),
    and if this differs from any selector and domain combination already queried,
    MUST query DNS for the BIMI TXT record at the domain constructed by concatenating
@@ -888,7 +932,7 @@ for the message:
 7. Records that do not start with a "v=" tag that identifies the current version
    of BIMI MUST be discarded.
 8. If the resulting record includes the [Local-part Selector](#local-part-selectors)
-   tag lps=true then the client MUST first normalize the local-part of the
+   tag lps= then the client MUST first normalize the local-part of the
    RFC5322.From header as detailed in [Local-part Selector](#local-part-selectors),
    and if this differs from any selector and domain combination already queried,
    MUST query DNS for the BIMI TXT record at the domain constructed by concatenating
