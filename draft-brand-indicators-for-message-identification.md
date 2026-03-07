@@ -48,12 +48,12 @@ fullname = "Terry Zink"
   email = "tzink@terryzink.com"
 
 [[author]]
-initials = "M."
+initials = "J."
 surname = "Bradshaw (ed)"
 organization = "Fastmail"
-fullname = "Marc Bradshaw"
+fullname = "Jemma Bradshaw"
   [author.address]
-  email = "marc@fastmailteam.com"
+  email = "jemma@fastmailteam.com"
 
 [[author]]
 initials = "A."
